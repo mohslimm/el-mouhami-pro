@@ -1,0 +1,468 @@
+/* ============================================================
+   Cabinet Slimani — Desktop CSS & Quiet Luxury Design System
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Backgrounds — Deep Space Palette */
+  --bg-void: #060610;
+  --bg-primary: #0B0D17;
+  --bg-surface: #121526;
+  --bg-elevated: #1A1D2E;
+  --bg-card: #161929;
+
+  /* Gold — Warm Brass */
+  --gold-500: #C39B57;
+  --gold-400: #D4B06A;
+  --gold-300: #E8C77A;
+  --gold-glow: rgba(195, 155, 87, 0.12);
+
+  /* Text */
+  --text-primary: #F0EDE8;
+  --text-secondary: rgba(240, 237, 232, 0.80);
+  --text-muted: rgba(240, 237, 232, 0.50);
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-gold: rgba(195, 155, 87, 0.35);
+
+  /* Semantic */
+  --success: #34D399;
+  --danger: #F87171;
+  --warning: #FBBF24;
+
+  /* Spacing Scale */
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 16px;
+  --gap-lg: 24px;
+  --gap-xl: 32px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+}
+
+/* ── Typography Utility Classes ── */
+.font-serif {
+  font-family: 'Cormorant Garamond', 'Amiri', serif;
+}
+
+.font-sans {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Typography Scale (NEW) ── */
+.text-h1 {
+  @apply font-serif text-5xl font-light tracking-wide;
+}
+
+.text-h2 {
+  @apply font-serif text-3xl font-light tracking-wide;
+}
+
+.text-h3 {
+  @apply font-sans text-xl font-semibold;
+}
+
+.text-body {
+  @apply font-sans text-base font-normal leading-relaxed;
+}
+
+.text-label {
+  @apply text-xs uppercase tracking-wider text-[var(--text-muted)];
+}
+
+.text-caption {
+  @apply text-xs leading-tight;
+}
+
+/* ── Spacing Scale (NEW) ── */
+.gap-xs {
+  gap: var(--gap-xs);
+}
+
+.gap-sm {
+  gap: var(--gap-sm);
+}
+
+.gap-md {
+  gap: var(--gap-md);
+}
+
+.gap-lg {
+  gap: var(--gap-lg);
+}
+
+.gap-xl {
+  gap: var(--gap-xl);
+}
+
+/* ── Focus Rings ── */
+*:focus-visible {
+  outline: 2px solid var(--gold-500);
+  outline-offset: 2px;
+}
+
+/* ── Keyframe Animations ── */
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-gold);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── RTL Support (NEW) ── */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .ltr\:ml-4 {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+[dir="rtl"] .ltr\:mr-4 {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .ltr\:pl-3 {
+  padding-left: 0;
+  padding-right: 0.75rem;
+}
+
+[dir="rtl"] .ltr\:pr-3 {
+  padding-right: 0;
+  padding-left: 0.75rem;
+}
+
+[dir="rtl"] .ltr\:justify-start {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .ltr\:justify-end {
+  justify-content: flex-start;
+}
+
+/* ── Component Classes ── */
+.card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #B8924A 0%, #C39B57 50%, #D4B57A 100%);
+  color: #1A1200;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border-gold);
+  color: var(--gold-400);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  border-color: var(--gold-500);
+  box-shadow: 0 0 0 3px rgba(195, 155, 87, 0.1);
+}
+
+/* ── Select Fix for Chromium / Windows ── */
+select {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+select option,
+option {
+  background-color: #121526 !important;
+  color: #f0ede8 !important;
+  padding: 8px 12px;
+}
+
+select option:hover,
+select option:focus,
+select option:checked,
+option:checked {
+  background-color: #1A1D2E !important;
+  color: #D4B06A !important;
+}
+
+/* ── Dashboard Widget Card (used via inline style + this for hover) ── */
+.widget-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.25rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.widget-card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 16px rgba(195, 155, 87, 0.06);
+}
+
+/* ── Metric KPI Card ── */
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.2s;
+}
+
+.metric-card:hover {
+  border-color: var(--border-gold);
+  transform: translateY(-2px);
+}
+
+/* ── Case Item Row ── */
+.case-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.875rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.case-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-gold);
+}
+
+/* ── Timeline Hearing Card ── */
+.hearing-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.hearing-card:hover {
+  border-color: var(--border-gold);
+}
+
+/* ── CPCA Alert Banner ── */
+.cpca-banner {
+  background: linear-gradient(to right, #231C10, var(--bg-elevated), var(--bg-surface));
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(195, 155, 87, 0.06);
+}
+
+/* ── AI Insight Card ── */
+.ai-insight {
+  background: var(--gold-glow);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 0.875rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Sidebar Nav Button ── */
+.nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.875rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+}
+
+.nav-btn.active {
+  background: var(--gold-glow);
+  border-color: var(--border-gold);
+  color: var(--gold-400);
+  font-weight: 600;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn.active::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--gold-500);
+  border-radius: 3px 0 0 3px;
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+[dir="ltr"] .nav-btn.active::after {
+  right: auto;
+  left: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+/* ── Responsive adjustments ── */
+@media (max-width: 640px) {
+  .text-h2 {
+    @apply text-2xl;
+  }
+
+  .text-h3 {
+    @apply text-lg;
+  }
+
+  .gap-lg {
+    gap: var(--gap-md);
+  }
+}

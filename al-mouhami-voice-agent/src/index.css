@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-arabic: "Amiri", "Cairo", Georgia, serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-gold-400: #e8c77a;
+  --color-gold-500: #c5a059;
+  --color-bg-void: #121212;
+  --color-bg-surface: #181818;
+  --color-bg-elevated: #222222;
+  --color-border-subtle: #2a2a2a;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-void);
+  color: #f0ede8;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-arabic {
+  font-family: "Amiri", "Cairo", Georgia, serif;
+}
