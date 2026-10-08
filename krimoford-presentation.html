@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krimoford — Guide de Présentation Client (Bilingue FR / AR)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ford-blue: #003478;
+            --ford-dark: #071d49;
+            --ford-light: #e0f2fe;
+            --accent-blue: #0284c7;
+            --wa-green: #25D366;
+            --wa-dark: #128C7E;
+            --bg-page: #f8fafc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --card-border: #e2e8f0;
+            --gold: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 5rem;
+        }
+
+        .ar-font {
+            font-family: 'Cairo', system-ui, sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .fr-font {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Top Sticky Presentation Control Bar */
+        .presentation-bar {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            background: linear-gradient(135deg, #071d49 0%, #003478 100%);
+            color: white;
+            padding: 0.85rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: flex;
+            justifyContent: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.15);
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            color: #93c5fd;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            white-space: nowrap;
+        }
+
+        .mode-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--ford-dark);
+            border-color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .print-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 0.45rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            white-space: nowrap;
+        }
+
+        .print-btn:hover {
+            background: #15803d;
+        }
+
+        /* Custom Section Dropdown Component */
+        .custom-dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-dropdown-trigger {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1.5px solid rgba(245, 158, 11, 0.7);
+            color: #ffffff;
+            padding: 0.45rem 0.95rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            user-select: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+
+        .custom-dropdown-trigger:hover,
+        .custom-dropdown-trigger.open {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: #f59e0b;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .dropdown-chevron {
+            font-size: 0.75rem;
+            color: #f59e0b;
+            transition: transform 0.2s ease;
+            margin-left: 2px;
+        }
+
+        .custom-dropdown-trigger.open .dropdown-chevron {
+            transform: rotate(180deg);
+        }
+
+        .custom-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: #0b1329;
+            border: 1.5px solid rgba(245, 158, 11, 0.35);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(245, 158, 11, 0.15);
+            min-width: 320px;
+            padding: 6px;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            backdrop-filter: blur(16px);
+            animation: dropdownSlideIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes dropdownSlideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-dropdown-menu.open {
+            display: flex;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0.7rem 0.9rem;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-item.active {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fef08a;
+        }
+
+        .item-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-icon {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .item-title-fr {
+            font-size: 0.88rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: inherit;
+        }
+
+        .item-title-ar {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            font-family: 'Cairo', sans-serif;
+            margin-top: 2px;
+        }
+
+        .dropdown-item.active .item-title-ar {
+            color: #fde68a;
+        }
+
+        .dropdown-item .check-badge {
+            display: none;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #f59e0b;
+        }
+
+        .dropdown-item.active .check-badge {
+            display: inline-block;
+        }
+
+        /* Section Divider Banners */
+        .section-divider-banner {
+            background: linear-gradient(135deg, #071d49 0%, #0f172a 100%);
+            border: 2px solid #1e3a8a;
+            border-radius: 18px;
+            color: white;
+            padding: 2.25rem;
+            margin: 3.5rem 0 2rem 0;
+            box-shadow: 0 8px 25px rgba(0, 52, 120, 0.15);
+            position: relative;
+        }
+
+        .section-divider-banner.admin-theme {
+            background: linear-gradient(135deg, #0b1329 0%, #1e1b4b 100%);
+            border: 2px solid #4338ca;
+            box-shadow: 0 8px 25px rgba(67, 56, 202, 0.2);
+        }
+
+        .section-divider-badge {
+            display: inline-block;
+            background: #f59e0b;
+            color: #0f172a;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 0.75rem;
+        }
+
+        .admin-theme .section-divider-badge {
+            background: #ea580c;
+            color: white;
+        }
+
+        .section-divider-title {
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .section-divider-desc {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Section Visibility Filtering */
+        body.filter-client-only [data-section="admin"] {
+            display: none !important;
+        }
+        body.filter-client-only #admin-section-divider {
+            display: none !important;
+        }
+
+        body.filter-admin-only [data-section="client"] {
+            display: none !important;
+        }
+        body.filter-admin-only #client-section-divider {
+            display: none !important;
+        }
+        body.filter-admin-only .bonus-section {
+            display: none !important;
+        }
+
+        /* Admin Card Specific Accents */
+        .admin-card .card-badge-num {
+            background: #ea580c !important;
+        }
+        .admin-card .route-pill {
+            background: #1e1b4b !important;
+            color: #a5b4fc !important;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(180deg, #071d49 0%, #0f172a 100%);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-blue);
+        }
+
+        .hero-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(90deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 850px;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        .hero-chips {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1300px;
+            margin: 2.5rem auto;
+            padding: 0 1.25rem;
+        }
+
+        /* Page Card Component */
+        .page-card {
+            background: white;
+            border-radius: 18px;
+            border: 1.5px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .page-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 52, 120, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: #f1f5f9;
+            padding: 1.25rem 1.75rem;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-badge-num {
+            background: var(--ford-blue);
+            color: white;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .route-pill {
+            background: #0f172a;
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 0.88rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        /* 2-Columns Bilingual Layout */
+        .card-content-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .side-fr {
+            padding: 2rem;
+            border-right: 1.5px dashed #cbd5e1;
+            background-color: #ffffff;
+        }
+
+        .side-ar {
+            padding: 2rem;
+            background-color: #fafbfc;
+        }
+
+        /* Mode Filters */
+        body.mode-fr-only .side-ar {
+            display: none !important;
+        }
+        body.mode-fr-only .side-fr {
+            border-right: none !important;
+        }
+        body.mode-fr-only .card-content-split {
+            grid-template-columns: 1fr !important;
+        }
+
+        body.mode-ar-only .side-fr {
+            display: none !important;
+        }
+        body.mode-ar-only .card-content-split {
+            grid-template-columns: 1fr !important;
+        }
+
+        /* Block Typography */
+        .section-tag {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--ford-blue);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .side-ar .section-tag {
+            color: #0369a1;
+        }
+
+        .page-name-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .info-box {
+            margin-bottom: 1.25rem;
+        }
+
+        .info-box h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-box p {
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            font-size: 0.88rem;
+            color: #334155;
+            padding: 0.35rem 0;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .fr-font .feature-list li {
+            padding-left: 1.4rem;
+        }
+
+        .fr-font .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 800;
+        }
+
+        .ar-font .feature-list li {
+            padding-right: 1.4rem;
+        }
+
+        .ar-font .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #0284c7;
+            font-weight: 800;
+        }
+
+        /* Business Value Highlight Box */
+        .benefit-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--ford-blue);
+            padding: 0.85rem 1.15rem;
+            border-radius: 8px;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .side-ar .benefit-box {
+            border-left: none;
+            border-right: 4px solid var(--ford-blue);
+            background: #f0fdf4;
+        }
+
+        .benefit-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--ford-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .side-ar .benefit-title {
+            color: #15803d;
+        }
+
+        .benefit-desc {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .side-ar .benefit-desc {
+            color: #166534;
+        }
+
+        /* Pitch Quote Box */
+        .pitch-box {
+            background: #fffbeb;
+            border: 1.5px dashed #fde68a;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .pitch-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #b45309;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pitch-text {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: #78350f;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        /* Transversal Features Section */
+        .bonus-section {
+            background: linear-gradient(135deg, #071d49 0%, #003478 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 52, 120, 0.25);
+        }
+
+        .bonus-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #60a5fa;
+        }
+
+        .bonus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .bonus-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .bonus-card h3 {
+            font-size: 1.15rem;
+            color: #f8fafc;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bonus-card p {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            .presentation-bar {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                padding-bottom: 0 !important;
+            }
+            .page-card {
+                page-break-inside: avoid;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                margin-bottom: 2rem !important;
+            }
+            .hero-banner {
+                padding: 1.5rem !important;
+            }
+            .hero-title {
+                font-size: 1.8rem !important;
+                color: #003478 !important;
+                -webkit-text-fill-color: #003478 !important;
+            }
+        }
+
+        /* Mobile Breakpoint */
+        @media (max-width: 900px) {
+            .card-content-split {
+                grid-template-columns: 1fr !important;
+            }
+            .side-fr {
+                border-right: none !important;
+                border-bottom: 1.5px dashed #cbd5e1;
+                padding: 1.5rem !important;
+            }
+            .side-ar {
+                padding: 1.5rem !important;
+            }
+            .hero-title {
+                font-size: 1.75rem !important;
+            }
+            .presentation-bar {
+                padding: 0.75rem 1rem !important;
+                gap: 0.75rem !important;
+            }
+            .controls-group {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 0.5rem;
+            }
+            .dropdown-filter-wrapper {
+                flex-grow: 1;
+                max-width: 100%;
+            }
+            .section-filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="mode-both">
+
+    <!-- Top Floating Presentation Bar -->
+    <header class="presentation-bar">
+        <div class="brand-badge">
+            <span class="brand-logo">Krimoford</span>
+            <span class="brand-sub">Comptoir Soummam • Guide Client</span>
+        </div>
+
+        <div class="controls-group">
+            <!-- Language Mode Buttons (Original Look) -->
+            <button class="mode-btn active" id="btn-both" onclick="setMode('both')">
+                <span>🔄</span>
+                <span>Vue Bilingue (FR + AR)</span>
+            </button>
+            <button class="mode-btn" id="btn-fr" onclick="setMode('fr')">
+                <span>🇫🇷</span>
+                <span>Français Seul</span>
+            </button>
+            <button class="mode-btn" id="btn-ar" onclick="setMode('ar')">
+                <span>🇩🇿</span>
+                <span>العربية فقط</span>
+            </button>
+
+            <!-- Print Action (Original Green Button) -->
+            <button class="print-btn" onclick="window.print()">
+                <span>🖨️</span>
+                <span>Imprimer / PDF</span>
+            </button>
+
+            <!-- Custom Styled Section Dropdown (Right Top Side) -->
+            <div class="custom-dropdown-container" id="sectionDropdownContainer">
+                <button type="button" class="custom-dropdown-trigger" id="sectionDropdownTrigger" onclick="toggleSectionDropdown()">
+                    <span id="selectedSectionIcon">📑</span>
+                    <span id="selectedSectionLabel">Toutes les Pages (26)</span>
+                    <span class="dropdown-chevron">▼</span>
+                </button>
+
+                <div class="custom-dropdown-menu" id="sectionDropdownMenu">
+                    <div class="dropdown-item active" id="opt-all" onclick="selectSection('all', '📑', 'Toutes les Pages (26)')">
+                        <div class="item-main">
+                            <span class="item-icon">📑</span>
+                            <div>
+                                <div class="item-title-fr">Toutes les Pages (26 Pages)</div>
+                                <div class="item-title-ar ar-font">عرض كافة صفحات الموقع (الزبائن + الإدارة)</div>
+                            </div>
+                        </div>
+                        <span class="check-badge">✓</span>
+                    </div>
+
+                    <div class="dropdown-item" id="opt-client" onclick="selectSection('client', '🛍️', 'Boutique Client (12)')">
+                        <div class="item-main">
+                            <span class="item-icon">🛍️</span>
+                            <div>
+                                <div class="item-title-fr">Boutique Client (12 Pages)</div>
+                                <div class="item-title-ar ar-font">واجهة وتجربة تسوق الزبائن</div>
+                            </div>
+                        </div>
+                        <span class="check-badge">✓</span>
+                    </div>
+
+                    <div class="dropdown-item" id="opt-admin" onclick="selectSection('admin', '🛠️', 'Tableau Admin (14)')">
+                        <div class="item-main">
+                            <span class="item-icon">🛠️</span>
+                            <div>
+                                <div class="item-title-fr">Tableau de Bord Admin (14 Pages)</div>
+                                <div class="item-title-ar ar-font">لوحة التحكم وتسيير مخزن وطلبيات المحل</div>
+                            </div>
+                        </div>
+                        <span class="check-badge">✓</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <h1 class="hero-title">Krimoford — Guide Global : 12 Pages Clients & 14 Pages Admin</h1>
+        <p class="hero-desc">
+            Document de présentation complet conçu pour expliquer à <strong>Krimo</strong> la valeur commerciale, 
+            les fonctionnalités et l'impact de l'ensemble de sa plateforme web (Boutique Publique + Tableau de Bord de Gestion).
+        </p>
+        <div class="hero-desc ar-font" style="font-size: 1.05rem; color: #93c5fd; margin-top: -0.5rem;">
+            دليل العرض الشامل والمفصل لشرح كافة صفحات المنصة لـ <strong>عمي كريمو</strong> : 12 صفحة لمتجر الزبائن + 14 صفحة للوحة التحكم وتسيير المحل.
+        </div>
+        <div class="hero-chips">
+            <span class="chip">🚗 Spécialiste Ford & Motorcraft</span>
+            <span class="chip">🏢 Comptoir Soummam (Alger Centre)</span>
+            <span class="chip">🚚 Livraison 58 Wilayas (Yalidine)</span>
+            <span class="chip">📸 Devis Carte Grise & Châssis VIN</span>
+            <span class="chip">🛠️ Packs Vidange -15%</span>
+            <span class="chip">📄 Facturation A4 PDF</span>
+            <span class="chip">💬 WhatsApp Direct</span>
+        </div>
+    </section>
+
+    <main class="container">
+
+        <!-- ========================================================
+             SECTION 1 DIVIDER : BOUTIQUE CLIENT (12 PAGES)
+             ======================================================== -->
+        <div class="section-divider-banner" id="client-section-divider">
+            <span class="section-divider-badge">Partie 1 • الجزء الأول</span>
+            <h2 class="section-divider-title">🛍️ SECTION 1 : LA BOUTIQUE CLIENT (12 Pages)</h2>
+            <p class="section-divider-desc">L'expérience vécue par les automobilistes et mécaniciens algériens pour trouver leurs pièces, commander des kits d'entretien et se faire livrer.</p>
+            <div class="ar-font" style="margin-top: 0.75rem;">
+                <h3 class="section-divider-title" style="color: #93c5fd; font-size: 1.45rem;">🛍️ القسم الأول : واجهة متجر الزبائن (12 صفحة)</h3>
+                <p class="section-divider-desc" style="color: #e0f2fe;">تجربة السائقين والميكانيكيين للبحث عن قطع الغيار، طلب باقات الصيانة، والحصول على التوصيل لكافة ولايات الجزائر.</p>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             PAGE 01 : ACCUEIL / HOME
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-1">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">01</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Page d'Accueil • الصفحة الرئيسية</h3>
+                </div>
+                <span class="route-pill">Route: /</span>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🏠 Vitrine & Comptoir Digital</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Accueillir le visiteur, installer une confiance immédiate et le positionner comme LA référence officielle et indépendante des pièces Ford à Alger.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Sélecteur « Mon Garage Ford » :</strong> Filtrage instantané du site par modèle (Focus, Fiesta, Ranger, Transit).</li>
+                            <li><strong>Accès 1-Clic aux 4 Piliers :</strong> Catalogue, Packs Vidange (-15%), Devis Carte Grise, Diagnostic.</li>
+                            <li><strong>Bannières des arrivages récents :</strong> Mise en avant des pièces Motorcraft neuves.</li>
+                            <li><strong>Garanties de confiance :</strong> Comptoir Soummam physique, livraison 58 Wilayas, paiement à la livraison.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Capte le client dès les 5 premières secondes et élimine la méfiance liée aux faux vendeurs en ligne en Algérie.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Votre page d'accueil accueille le client exactement comme au comptoir de la Soummam : professionnel, spécialisé Ford, et prêt à répondre à ses besoins en 1 clic. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🏠 الواجهة الرقمية للمتجر</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>استقبال الزبون، كسب ثقته فوراً، وإبراز متجر كريمو كمرجع أول وموثوق لقطع غيار فورد الأصلية في الجزائر.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>محدد « سيارتي الفورد » :</strong> فلترة الموقع بالكامل حسب موديل سيارة الزبون (فوكس، فييستا، رينجر، ترانزيت).</li>
+                            <li><strong>وصول سريع للأقسام الـ 4 :</strong> الكتالوج، باقات الصيانة (-15%)، تسعيرة البطاقة الرمادية، والفحص الآلي.</li>
+                            <li><strong>بانرات السلع الجديدة :</strong> إبراز القطع الأصلية موتركرافت فور وصولها للمخزن.</li>
+                            <li><strong>ضمانات المتجر :</strong> محل حقيقي بشارع الصومام، توصيل لـ 58 ولاية، ودفع آمن عند الاستلام.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">إقناع الزبون في 5 ثوانٍ فقط، والقضاء على مخاوف الشراء عبر الإنترنت في السوق الجزائري.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« واجهة موقعك تستقبل الزبون تماماً مثل دخول محلك بشارع الصومام: استقبال محترف، تخصص دقيق في سيارات فورد، وجاهزية لتلبية طلبه بنقرة واحدة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 02 : CATALOGUE / CATALOG
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-2">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">02</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Catalogue Pièces Détachées • كتالوج قطع الغيار</h3>
+                </div>
+                <span class="route-pill">Route: /catalog</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🔍 Recherche & Filtrage Avancé</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Permettre à tout automobiliste ou mécanicien de trouver la pièce exacte en stock en moins de 30 secondes chrono.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Recherche par Réf d'Origine OEM :</strong> Taper la référence exacte gravée sur la pièce (ex: <code>1807044</code>).</li>
+                            <li><strong>Filtrage par familles mécaniques :</strong> Freinage, Filtration, Distribution, Suspension, Moteur.</li>
+                            <li><strong>Badge Stock Magasin :</strong> Affichage de la disponibilité immédiate (ex: <em>En stock au comptoir</em>).</li>
+                            <li><strong>Prix transparents en DA :</strong> Tarification claire en Dinars Algériens.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Fini les dizaines d'appels répétitifs demandant « 3andkom disques de frein Focus ? ». Le client vérifie le stock et le prix lui-même.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Votre catalogue classe tout votre stock. Vos clients et les mécaniciens trouvent la pièce simplement avec la référence gravée sur leur ancienne pièce. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🔍 كتالوج البحث المتقدم</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>تمكين الزبون أو الميكانيكي من إيجاد القطعة المتوفرة بدقة متناهية في أقل من 30 ثانية.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>البحث برقم القطعة الأصلي (OEM) :</strong> كتابة الرقم المنقوش على القطعة القديمة (مثل: <code>1807044</code>).</li>
+                            <li><strong>فلترة حسب الأجزاء :</strong> الفرامل، الفلاتر، حزام التوزيع، نظام التعليق، والمحرك.</li>
+                            <li><strong>مؤشر التوفر بالمحل :</strong> يوضح إن كانت القطعة متوفرة فوراً في المحل بشارع الصومام.</li>
+                            <li><strong>أسعار واضحة بالدينار (DA) :</strong> بدون غموض أو الحاجة للسؤال المتكرر.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">تقليل المكالمات المتكررة مثل « خويا عندك ديسك دو فران فوكس ؟ ». الزبون يتأكد من السعر والتوفر بنفسه.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« الكتالوج ينظم كامل مخزونك. الميكانيكيون في العاصمة والولايات يجدون القطعة بسهولة بكتابة الرقم الأصلي فقط. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 03 : PACKS VIDANGE & ENTRETIEN / KITS
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-3">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">03</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Packs Entretien & Vidange • باقات الصيانة وتغيير الزيت</h3>
+                </div>
+                <span class="route-pill">Route: /kits</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🛠️ Ventes Groupées Clés en Main</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Augmenter le panier moyen en vendant des packs complets d'entretien avec une remise attractive de -15%.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Packs Vidange Complète :</strong> Huile Castrol 5W-30 + 4 filtres d'origine Motorcraft.</li>
+                            <li><strong>Calcul de l'Économie :</strong> Prix barré et badge -15% (ex: 19 100 DA au lieu de 22 500 DA).</li>
+                            <li><strong>Contenu détaillé et certifié :</strong> Liste à puces de chaque filtre et composant inclus.</li>
+                            <li><strong>Ajout au panier en 1 clic.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Au lieu de vendre un filtre à 1 200 DA, Krimo vend un pack complet à 20 000 DA tout en fidélisant le client.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Avec cette page, vous vendez de la sérénité : le client achète son pack révision complet d'un seul coup avec 15% de réduction, et vous augmentez votre chiffre d'affaires par commande. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🛠️ باقات الصيانة الشاملة</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>رفع قيمة المبيعات وسلة المشتريات عبر بيع باقات متكاملة للصيانة الدورية بتخفيض 15%.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>باقة الفيدونج الكاملة :</strong> زيت كاسترول 5W-30 + 4 فلاتر أصلية موتركرافت.</li>
+                            <li><strong>إبراز التوفير المالي :</strong> السعر القديم مشطوب مع نسبة الخصم (مثال: 19,100 دج بدل 22,500 دج).</li>
+                            <li><strong>تفاصيل القطع داخل الباقة :</strong> قائمة واضحة بكل قطعة مدمجة في العرض.</li>
+                            <li><strong>إضافة الباقة بنقرة واحدة إلى السلة.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">بدل بيع فيلتر زيت منفرد بـ 1,200 دج، يبيع متجر كريمو باقة كاملة بـ 20,000 دج دفعة واحدة.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« في هذه الصفحة تبيع راحة البال: الزبون يشتري باقة الصيانة كاملة بتخفيض 15% دون نسيان أي قطعة، ومداخيل المحل ترتفع. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 04 : DEVIS CARTE GRISE / VIN-REQUEST
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-4">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">04</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Devis Carte Grise & VIN • تسعيرة بالبطاقة الرمادية</h3>
+                </div>
+                <span class="route-pill">Route: /vin-request</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">📸 Le « Lead Magnet » N°1 en Algérie</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Capter les clients qui ne connaissent ni la référence ni les spécifications techniques de leur pièce (Zéro friction).</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Formulaire en 30 secondes :</strong> Nom, Téléphone, Wilaya, pièce recherchée.</li>
+                            <li><strong>Upload Photo Carte Grise :</strong> Prise de photo directe avec le smartphone.</li>
+                            <li><strong>Arrivée en direct sur l'Admin :</strong> Krimo consulte la carte grise, vérifie le VIN (numéro de châssis).</li>
+                            <li><strong>Bouton 1-Clic WhatsApp :</strong> Envoi du devis chiffré directement sur le WhatsApp du client.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Zéro risque d'erreur de pièce ou de retour de marchandise grâce au numéro de châssis officiel du constructeur.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« C'est votre arme secrète : le client ne se prend pas la tête, il photographie sa carte grise, et vous lui envoyez votre devis directement sur WhatsApp en 1 clic. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📸 تسعيرة سريعة بصورة البطاقة الرمادية</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>استقطاب الزبائن الذين لا يعرفون الرقم التسلسلي لقطع غيارهم لتسهيل الطلب بنسبة 100%.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>استمارة في 30 ثانية :</strong> الاسم، رقم الهاتف، الولاية، والقطعة المطلوبة.</li>
+                            <li><strong>رفع صورة البطاقة الرمادية :</strong> بالتقاط صورة مباشرة عبر الهاتف المحمول.</li>
+                            <li><strong>وصول الطلب للوحة الإدارة :</strong> كريمو يفحص رقم الشاسيه (VIN) بدقة لمنع أي خطأ.</li>
+                            <li><strong>زر واتساب المباشر :</strong> إرسال السعر بنقرة واحدة إلى واتساب الزبون.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">تفادي أخطاء توافق القطع وإرجاع السلع نهائياً، لأن رقم الشاسيه يحدد القطعة الصحيحة بدقة المصنع.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« هذا هو سلاحك الأقوى: الزبون يصور بطاقته الرمادية بهاتفه، وأنت ترسل له السعر الدقيق على واتساب دون أي تعقيد. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 05 : DIAGNOSTIC & TROUBLESHOOTING
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-5">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">05</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Diagnostic & Dépannage • أداة تشخيص الأعطال</h3>
+                </div>
+                <span class="route-pill">Route: /diagnostic</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">⚡ L'Expertise Conseil Mécanique</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Aider le client qui a un bruit anormal, une vibration ou un voyant moteur à cibler la bonne pièce à acheter.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Sélecteur de symptômes réels :</strong> Claquement sur dos d'âne, fumée noire à l'accélération, vibration au volant.</li>
+                            <li><strong>Identification des causes mécaniques :</strong> Silentblocs HS, durite turbo percée, vanne EGR encrassée.</li>
+                            <li><strong>Recommandation directe des pièces :</strong> Liens immédiats vers les pièces d'origine Motorcraft du stock.</li>
+                            <li><strong>Prise de RDV au comptoir Soummam.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Positionne Krimo comme un conseiller expert et pas un simple revendeur. Transforme un doute en vente ferme.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Vous devenez le médecin de confiance de la Ford. Quand le conducteur entend un bruit, le site lui explique la panne et l'envoie chez vous pour acheter la pièce. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">⚡ الاستشارة والمساعدة الميكانيكية</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>مساعدة السائق الذي يسمع صوتاً غريباً أو اهتزازاً في السيارة لمعرفة القطعة المسببة للعطل قبل الشراء.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>اختيار الأعراض الشائعة :</strong> خبط في المطبات، دخان أسود عند التسارع، اهتزاز المقود عند الفرملة.</li>
+                            <li><strong>تحديد الأسباب المحتملة :</strong> سيلانبلوك تالف، خرطوم توربو مثقوب، صمام EGR مسدود.</li>
+                            <li><strong>اقتراح القطعة المناسبة للشراء :</strong> توجيه مباشر لقطع موتركرافت المتوفرة بالمحل.</li>
+                            <li><strong>إمكانية طلب موعد فحص بالمحل.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">إظهار خبرة كريمو كخبير تقني وليس مجرد بائع، وتحويل حيرة السائق إلى شراء مؤكد للقطع من محله.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« تصبح بمثابة المستشار الميكانيكي الموثوق لسائقي فورد: عندما يعاني أحدهم من عطل، يشرح له الموقع السبب ويوجهه لشراء القطعة منك. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 06 : SUIVI DE COMMANDE / TRACK-ORDER
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-6">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">06</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Suivi de Commande 58 Wilayas • تتبع الطلبيات 58 ولاية</h3>
+                </div>
+                <span class="route-pill">Route: /track-order</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">📦 Transparence & Zéro Stress Client</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Permettre aux clients des 58 Wilayas de suivre l'acheminement de leur colis sans harceler le magasin au téléphone.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Recherche rapide :</strong> Par N° de commande ou code de bordereau Yalidine (ex: <code>YAL-77412</code>).</li>
+                            <li><strong>Barre d'étapes visuelle :</strong> Validée ➔ Préparée au comptoir ➔ Expédiée ➔ Arrivée au Bureau Stopdesk.</li>
+                            <li><strong>Transporteur partenaire :</strong> Yalidine Express, ZR Express, Procolis avec délais estimés.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Réduit de 90% les appels et messages de clients inquiets demandant « Waktach telha9 la commande diali ? ».</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Vos clients d'Oran, Constantine ou Ouargla suivent leur colis en direct 24h/24 sans avoir besoin de vous déranger au comptoir. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📦 تتبع الطرود وراحة بال الزبون</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>تمكين زبائن الولايات الـ 58 من تتبع مسار طرودهم مباشرة دون إزعاج المحل بالمكالمات المتكررة.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>بحث برقم التتبع :</strong> برقم الطلب أو رقم إرسالية ياليدين (مثل: <code>YAL-77412</code>).</li>
+                            <li><strong>مخطط مراحل التوصيل :</strong> تم التأكيد ➔ تم التجهيز بالمحل ➔ تم الشحن ➔ وصل إلى مكتب الولاية.</li>
+                            <li><strong>بيانات شركة الشحن :</strong> ياليدين أو زد آر اكسبريس مع المدة التقريبية للوصول.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">تقليص أكثر من 90% من الاتصالات اليومية المقلقة من نوع « وقتاش يوصل الكولي ديالي ؟ ».</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« زبونك في وهران أو قسنطينة أو ورقلة يتابع طرده لحظة بلحظة باحترافية تامة ودون الحاجة للاتصال بك في المحل. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 07 : LIVRAISON & TARIFS / SHIPPING
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-7">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">07</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Guide & Tarifs 58 Wilayas • دليل وأسعار التوصيل</h3>
+                </div>
+                <span class="route-pill">Route: /shipping</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🚚 Clarté Totale des Frais de Port</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Répondre immédiatement à la question universelle : « Combien coûte la livraison chez moi ? » et lever les freins à l'achat.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Grille des 58 Wilayas :</strong> Prix Domicile vs Prix Stopdesk (Bureau).</li>
+                            <li><strong>Badge Gratuité :</strong> Livraison offerte dès 35 000 DA d'achats.</li>
+                            <li><strong>Rappel Retrait Gratuit :</strong> 0 DA pour tout retrait en magasin à la Soummam.</li>
+                            <li><strong>Délais officiels :</strong> 24h pour le Centre/Est/Ouest, 48h/72h pour le Sud.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Élimine l'abandon de commande au panier causé par la peur des frais de port cachés.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Vos clients connaissent exactement les tarifs officiels pour leur wilaya. Tout est transparent, clair, et sans mauvaise surprise au moment de payer. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🚚 الشفافية في تكاليف الشحن</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>الإجابة الفورية على السؤال الدائم: « شحال التوصيل لولايتي ؟ » وإزالة أي تردد لدى الزبون.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>جدول الـ 58 ولاية كاملاً :</strong> سعر التوصيل للمنزل مقابل الاستلام من المكتب (Stopdesk).</li>
+                            <li><strong>توصيل مجاني :</strong> لكل طلبية تتجاوز 35,000 دج.</li>
+                            <li><strong>استلام مجاني بالمحل :</strong> 0 دج عند الاستلام المباشر من شارع الصومام بالجزائر العاصمة.</li>
+                            <li><strong>الآجال الزمنية :</strong> 24 ساعة للشمال و48 إلى 72 ساعة لولايات الجنوب.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">منع إلغاء الطلبات، لأن الزبون يعرف التكلفة بدقة قبل إدخال بياناته.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« الزبون يعرف مسبقاً سعر التوصيل الرسمي لولايته دون أي مفاجأة عند وصول عامل التوصيل لبابه. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 08 : HUB VÉHICULE DÉDIÉ / MODEL
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-8">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">08</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Hub par Véhicule (Focus, Fiesta, Ranger, Transit) • صفحات مخصصة لكل سيارة</h3>
+                </div>
+                <span class="route-pill">Route: /model/:modelName</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🚗 L'Espace Dédié à Chaque Véhicule</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Une page d'accueil personnalisée pour chaque modèle Ford spécifique (ex: un artisan en Transit ou un chauffeur en Focus).</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Pièces les plus demandées :</strong> Filtres, plaquettes, amortisseurs de ce modèle.</li>
+                            <li><strong>Moteurs compatibles :</strong> Motorisations TDCi (1.4, 1.6, 2.0, 2.2) et EcoBoost.</li>
+                            <li><strong>Packs vidange exclusifs :</strong> Affichage uniquement des kits adaptés à son véhicule.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Améliore le référencement Google en Algérie (« pièces Ford Ranger Alger ») et offre une expérience sur mesure.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Si un artisan en Transit visite votre site, il clique sur Transit et ne voit QUE les pièces de son véhicule. Il ne perd pas une seule seconde. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🚗 ركن مخصص لكل طراز فورد</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>صفحة مخصصة لكل موديل سيارة (مثل أصحاب سيارات النقل ترانزيت أو أصحاب سيارات فوكس ورينجر).</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>القطع الأكثر طلباً للموديل :</strong> فلاتر، فرامل، أذرع توجيه مخصصة للسيارة.</li>
+                            <li><strong>محركات معتمدة :</strong> تفاصيل محركات الديزل TDCi ومحركات إيكوبوست.</li>
+                            <li><strong>باقات صيانة متوافقة :</strong> تعرض فقط ما يناسب سيارة الزبون المحددة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">تصدر نتائج بحث قوقل في الجزائر (مثل: « قطع غيار فورد رينجر الجزائر ») وتوفير وقت الزبون.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« حرفي يملك سيارة ترانزيت يدخل للموقع، يضغط على ترانزيت ليرى فقط ما يخص سيارته، ويطلب في ثوانٍ دون تشتيت. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 09 : FICHE PRODUIT / PRODUCT
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-9">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">09</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Fiche Produit Détaillée • صفحة تفاصيل المنتج</h3>
+                </div>
+                <span class="route-pill">Route: /product/:id</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🏷️ La Décision d'Achat</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Rassurer techniquement le client et lui prouver que la pièce est 100% compatible avant qu'il ne passe commande.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Photo haute définition</strong> et référence OEM mise en avant.</li>
+                            <li><strong>Liste des véhicules compatibles :</strong> Années et motorisations vérifiées.</li>
+                            <li><strong>Disponibilité comptoir :</strong> Retrait immédiat possible au magasin.</li>
+                            <li><strong>Bouton d'achat + Commande WhatsApp directe.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Évite les retours de pièces non compatibles et sécurise chaque vente.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Chaque fiche produit détaille les années et modèles compatibles pour que le client achète en toute confiance, avec un bouton WhatsApp pour ses questions. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🏷️ صفحة القرار والشراء</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>طمأنة الزبون ميكانيكياً والتأكد من توافق القطعة 100% مع سيارته قبل إتمام الطلب.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>صورة عالية الجودة</strong> مع الرقم الأصلي OEM بوضوح.</li>
+                            <li><strong>قائمة السيارات المتوافقة :</strong> السنوات والمحركات المدعومة.</li>
+                            <li><strong>حالة التوفر :</strong> إمكانية الاستلام الفوري من المحل.</li>
+                            <li><strong>زر إضافة للسلة + زر طلب مباشر عبر واتساب.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">القضاء على مشكلة شراء قطع غير متوافقة وتفادي تكاليف إرجاع البضائع.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« كل صفحة منتج توضح سنوات الصنع المتوافقة بدقة ليشتري الزبون باطمئنان، مع زر واتساب للأسئلة السريعة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 10 : PANIER / CART
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-10">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">10</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Panier d'Achat • سلة المشتريات</h3>
+                </div>
+                <span class="route-pill">Route: /cart</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">🛒 Récapitulatif & Total</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Valider les articles choisis, ajuster les quantités et visualiser le montant total sans mauvaise surprise.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Ajustement simple des quantités (+ / -).</strong></li>
+                            <li><strong>Calcul dynamique du sous-total en Dinars (DA).</strong></li>
+                            <li><strong>Bandeau de réassurance :</strong> Rappel de la livraison 58 Wilayas et du retrait magasin gratuit.</li>
+                            <li><strong>Passage direct à la commande en 1 clic.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Un panier épuré et sans étapes inutiles pour maximiser la finalisation des commandes.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Votre panier est fluide, clair et conçu pour guider le client directement vers la caisse sans distraction. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🛒 مراجعة الطلبية والمجموع</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>مراجعة القطع المختارة، تعديل الكميات، ومعرفة المجموع بالدينار بكل وضوح قبل إتمام الطلب.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>تعديل الكميات بسهولة (+ أو -).</strong></li>
+                            <li><strong>حساب فوري للمجموع بالدينار الجزائري (DA).</strong></li>
+                            <li><strong>شريط الطمأنينة :</strong> تذكير بخدمة التوصيل لكافة الولايات والاستلام المجاني.</li>
+                            <li><strong>الانتقال الفوري لإتمام الشراء بنقرة واحدة.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">سلة سهلة الاستخدام تمنع تردد الزبون وتدفعه لإكمال الشراء بسرعة.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« السلة بسيطة وواضحة جداً، ترشد الزبون مباشرة لإنهاء الطلب دون أي مراحل معقدة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 11 : CHECKOUT / CAISSE
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-11">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">11</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Page de Commande / Caisse • إتمام الطلب والدفع</h3>
+                </div>
+                <span class="route-pill">Route: /checkout</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">💳 Finalisation 100% Marché Algérien</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Valider la vente en s'adaptant exactement aux habitudes d'achat des Algériens (zéro carte bancaire obligatoire).</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Coordonnées locales :</strong> Nom, Téléphone, Wilaya + Commune.</li>
+                            <li><strong>3 Modes de Livraison au choix :</strong>
+                                <br>• Domicile (Yalidine Express)
+                                <br>• Bureau Stopdesk (Économique)
+                                <br>• Retrait Comptoir Soummam (0 DA).
+                            </li>
+                            <li><strong>Paiement en espèces à la livraison (Cash on Delivery).</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Les commandes arrivent instantanément dans l'espace admin avec l'adresse complète prête pour le bordereau de livraison.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Votre caisse est taillée sur mesure pour l'Algérie : le client choisit sa wilaya, son bureau Stopdesk, et paie en cash quand le livreur lui remet le colis. Simple, sécurisant et efficace. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">💳 إتمام الطلب ملائم 100% للسوق الجزائري</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>تثبيت الطلبية بما يتوافق تماماً مع عادات المشتري الجزائري (دون اشتراط بطاقة بنكية).</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>بيانات سهلة :</strong> الاسم، رقم الهاتف، الولاية مع اختيار البلدية.</li>
+                            <li><strong>3 خيارات للاستلام :</strong>
+                                <br>• توصيل للمنزل (ياليدين اكسبريس)
+                                <br>• استلام من مكتب ياليدين (اقتصادي)
+                                <br>• استلام من متجر الصومام (0 دج).
+                            </li>
+                            <li><strong>الدفع عند الاستلام نقداً (Cash on Delivery).</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">وصول الطلبيات مباشرة للوحة التحكم مع كامل بيانات الشحن جاهزة لطباعة البوليصة.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« صفحة الدفع مصممة خصيصاً للمستهلك الجزائري: يختار ولايته ومكتب الاستلام، ويدفع نقداً عند استلام الصندوق. أمان تام وبساطة مطلقة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             PAGE 12 : CONTACT & COMPTOIR
+             ======================================================== -->
+        <article class="page-card" data-section="client" id="page-12">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">12</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Magasin Soummam & Contact • متجر الصومام والاتصال</h3>
+                </div>
+                <span class="route-pill">Route: /contact</span>
+            </div>
+
+            <div class="card-content-split">
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation Française</div>
+                    <h2 class="page-name-title">📍 L'Ancrage du Magasin Physique</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle Principal :</h4>
+                        <p>Connecter le site web au magasin physique historique de la Soummam et inciter au passage au comptoir.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Adresse exacte :</strong> Boulevard de la Soummam, Alger Centre avec repère Google Maps.</li>
+                            <li><strong>Horaires d'ouverture :</strong> Du Samedi au Jeudi (fermé le Vendredi).</li>
+                            <li><strong>Numéros de téléphone directs et bouton WhatsApp.</strong></li>
+                            <li><strong>Formulaire de contact :</strong> Messages livrés directement dans l'inbox admin.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Bénéfice Commercial pour Krimo :</div>
+                        <div class="benefit-desc">Rassure les clients qu'il s'agit d'un magasin ayant pignon sur rue depuis des années et génère du trafic physique.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Cette page valorise votre historique et votre emplacement stratégique à Alger Centre. Elle invite les clients de la capitale à venir directement vous serrer la main au comptoir. »</div>
+                    </div>
+                </div>
+
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📍 ترسيخ المحل الحقيقي بالعاصمة</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 الدور الأساسي :</h4>
+                        <p>ربط الموقع الإلكتروني بالمحل التجاري العريق بشارع الصومام وتشجيع الزبائن على زيارة المحل.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والمميزات :</h4>
+                        <ul class="feature-list">
+                            <li><strong>العنوان الدقيق :</strong> شارع الصومام، الجزائر الوسطى مع خريطة توضيحية.</li>
+                            <li><strong>أوقات العمل :</strong> من السبت إلى الخميس (الجمعة مغلق).</li>
+                            <li><strong>أرقام الهاتف المباشرة ورابط واتساب السريع.</strong></li>
+                            <li><strong>استمارة المراسلة :</strong> تصل رسائلها مباشرة لصندوق وارد لوحة التحكم.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">تأكيد عراقة المحل وأنه متجر حقيقي قائم وله سمعته الطيبة في العاصمة، مما يعزز زيارات الزبائن.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« هذه الصفحة تبرز موقعك الاستراتيجي في قلب الجزائر العاصمة، وتدعو الزبائن للحضور مباشرة ومصافحتك واستلام قطعهم يداً بيد. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             SECTION 2 DIVIDER : TABLEAU DE BORD ADMIN (14 PAGES)
+             ======================================================== -->
+        <div class="section-divider-banner admin-theme" id="admin-section-divider" data-section="admin">
+            <span class="section-divider-badge">Partie 2 • الجزء الثاني</span>
+            <h2 class="section-divider-title">🛠️ SECTION 2 : TABLEAU DE BORD ADMIN & GESTION DU MAGASIN (14 Pages)</h2>
+            <p class="section-divider-desc">L'espace privé réservé à <strong>Krimo</strong> et son équipe pour piloter le stock de pièces détachées, traiter les devis Carte Grise, imprimer les factures et contrôler les expéditions 58 Wilayas.</p>
+            <div class="ar-font" style="margin-top: 0.75rem;">
+                <h3 class="section-divider-title" style="color: #fed7aa; font-size: 1.45rem;">🛠️ القسم الثاني : لوحة التحكم الإدارية وتسيير المحل (14 صفحة)</h3>
+                <p class="section-divider-desc" style="color: #ffedd5;">المساحة الإدارية الخاصة بـ <strong>عمي كريمو</strong> وفريقه لمتابعة مخزون قطع الغيار، تسعير بطاقات الرمادية عبر واتساب، استخراج الفواتير الرسمية، وإدارة الشحن الوطني عبر 58 ولاية.</p>
+            </div>
+        </div>
+
+        <!-- ========================================================
+             ADMIN 01 : TABLEAU DE BORD GÉNÉRAL / DASHBOARD
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-1">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 01</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Tableau de Bord Général • لوحة التحكم العامة</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin</span>
+                    <a href="http://localhost:5173/admin" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📊 Cockpit de Pilotage Central & Indicateurs Clés</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>La page d'accueil matinale de Krimo. Elle centralise les données vitales du commerce en temps réel pour une prise de décision instantanée dès l'ouverture du magasin.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>4 Widgets KPI en Direct :</strong> Chiffre d'affaires total en Dinars (DA), nombre de commandes à traiter, volume de pièces en stock, et alertes de rupture.</li>
+                            <li><strong>Boutons d'Action Rapide :</strong> Raccourcis pour ajouter une pièce, créer un pack vidange, vérifier les tarifs de livraison ou ouvrir la liste des commandes.</li>
+                            <li><strong>Flux des Devis Carte Grise récents :</strong> Aperçu visuel immédiat des dernières photos reçues avec déclencheur WhatsApp direct.</li>
+                            <li><strong>Historique Récent des Ventes :</strong> Tableau synoptique des dernières commandes reçues des wilayas avec leurs montants.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Supprime les carnets de notes papier et le désordre. En 10 secondes au comptoir, Krimo connaît son chiffre d'affaires exact et les priorités de la journée.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Krimo, chaque matin avec votre premier café au magasin, vous ouvrez cette page. Elle vous montre en un clin d'œil combien de dinars votre boutique a généré, les colis à remettre au livreur Yalidine et les pièces en stock faible. Tout est maîtrisé. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📊 لوحة القيادة المركزية والمؤشرات الحيوية</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>الواجهة الصباحية الأولى لعمي كريمو. تجمع كافة الأرقام الحيوية للمتجر في شاشة واحدة فور فتح المحل في الصباح.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>4 مؤشرات رقمية فورية :</strong> إجمالي المداخيل بالدينار (دج)، الطلبيات المعلقة للشحن، عدد القطع في الرفوف، وتنبيهات القطع النافذة.</li>
+                            <li><strong>أزرار الإجراءات السريعة :</strong> روابط مباشرة لإضافة قطعة جديدة، تعديل باقات الصيانة، أو مراجعة طلبيات الولايات.</li>
+                            <li><strong>شريط صور البطاقات الرمادية :</strong> عرض فوري لآخر بطاقات الزبائن مع زر واتساب مباشر للتسعير السريع.</li>
+                            <li><strong>سجل المبيعات الحديثة :</strong> جدول ملخص يوضح أحدث عمليات الشراء والولايات وقيمة كل طلبية.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">التخلص نهائياً من الكناش الورقي وضياع الحسابات. في 10 ثوانٍ فقط، يعرف مدخول المحل وما يجب تحضيره لزبائن الولايات.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« عمي كريمو، كل صباح مع قهوتك في المحل، تفتح هاد الشاشة تعطيك كامل الحقيقة: شحال دخلت دراهم، واش من كوليات لازم يخرجوا مع ياليدين، وسلعتك واش راهو ناقص منها. تحكم وراحة بال تامة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 02 : DEVIS CARTE GRISE & VIN
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-2">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 02</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Devis Carte Grise & Numéro VIN • تسعير البطاقة الرمادية والشاسي</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/vin-requests</span>
+                    <a href="http://localhost:5173/admin/vin-requests" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📸 Centre de Traitement des Demandes Châssis (17 Caractères)</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>La machine à convertir les prospects hésitants. Permet de répondre aux clients ayant photographié leur carte grise ou saisi leur numéro de châssis Ford.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Visionneuse Photo Haute Définition :</strong> Zoom et agrandissement pour déchiffrer facilement les cartes grises anciennes ou abîmées.</li>
+                            <li><strong>Bouton Copier VIN en 1 clic :</strong> Copie instantanée du numéro de châssis pour recherche dans les catalogues officiels Ford (Microcat / ETIS).</li>
+                            <li><strong>Générateur de Message WhatsApp Pré-rempli :</strong> Crée une réponse polie et complète avec disponibilité, référence Motorcraft, tarif en DA et modalités de livraison.</li>
+                            <li><strong>Filtres par Statut :</strong> En attente, Devis envoyé, Confirmé, Refusé.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Zéro erreur de référence, zéro retour colis coûteux. Krimo vend des pièces lourdes et techniques dans toute l'Algérie avec une certitude absolue de compatibilité.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Quand un client d'Oran ou de Sétif a peur de commander la mauvaise pièce pour son Ford Ranger, il vous envoie la photo de sa carte grise. Vous zoomez, vous vérifiez le châssis, vous tapez le prix et vous cliquez sur WhatsApp. La vente est conclue en 2 minutes. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📸 مركز معالجة طلبات أرقام الشاسي والبطاقات الرمادية</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>أقوى وسيلة لإغلاق المبيعات مع الزبائن المترددين الذين أرسلوا صور البطاقة الرمادية أو رقم الشاسي المكون من 17 رمزاً.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>عارض صور مكبّر عالي الدقة :</strong> تكبير وتوضيح صورة البطاقة الرمادية لقراءة رقم الشاسي في الوثائق القديمة دون عناء.</li>
+                            <li><strong>زر نسخ رقم الشاسي بلمسة واحدة :</strong> لنسخ الرقم ولصقه مباشرة في برنامج قطع فورد الرسمي (Microcat / ETIS).</li>
+                            <li><strong>مولد رسائل واتساب التلقائي :</strong> يجهز رسالة تسعير مهذبة واحترافية فيها اسم المحل، توفر القطعة، سعرها بالدينار، وطريقة استلامها.</li>
+                            <li><strong>تصنيف الطلبيات :</strong> معلقة، تم التسعير، مؤكدة للشراء، أو ملغاة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">القضاء التام على أخطاء عدم تطابق القطع ومصاريف إرجاع الطرود. يبيع كريمو قطع الغيار الدقيقة لجميع الولايات وهو مطمئن 100%.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« الزبون من وهران ولا سطيف لي خايف يغلط في قطعة رينجر ولا فوكس، يبعثلك صورة لاكارت قريز. تكبّر الرقم، تشوف القطعة المناسبة، وتحط السومة وتكليكي واتساب يوصله الدوفي في ثواني. تبيع بلا ما تخرج من محلك. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 03 : GESTION DES COMMANDES / ORDERS
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-3">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 03</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Gestion des Commandes 58 Wilayas • تسيير طلبيات الولايات والشحن</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/orders</span>
+                    <a href="http://localhost:5173/admin/orders" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📦 Registre Central des Ventes & Expéditions Nationales</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Suivi exhaustif de chaque commande passée par les automobilistes et mécaniciens dans les 58 wilayas d'Algérie.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Dossier Acheteur Complet :</strong> Nom, téléphone mobile algérien, wilaya, commune et mode de livraison (Domicile Yalidine, Bureau Stopdesk, ou Comptoir).</li>
+                            <li><strong>Gestion du Code de Suivi Yalidine :</strong> Saisie et mise à jour du numéro d'expédition (ex. <code>YAL-77412</code>).</li>
+                            <li><strong>Statut Évolutif de Commande :</strong> En attente, Acceptée, Expédiée, Livrée, Annulée.</li>
+                            <li><strong>Comptabilisation Automatisée :</strong> Total des pièces + frais de port calculés avec mode de paiement Cash à la livraison.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Visibilité totale sur le chiffre d'affaires à recouvrer auprès du transporteur Yalidine. Plus aucun colis égaré ni de client sans réponse.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Toutes vos commandes sont rangées proprement. Vous savez d'un coup d'œil qui a commandé, dans quelle wilaya, et combien Yalidine doit vous reverser en liquide à chaque fin de semaine. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📦 السجل المركزي الشامل للمبيعات والشحن الوطني</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>المتابعة الدقيقة لكل طلبية شراء يسجلها أصحاب السيارات والميكانيكيون في كافة ولايات الجزائر الـ 58.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>ملف الزبون المتكامل :</strong> الاسم، رقم الهاتف المحمول، الولاية، البلدية، وطريقة الاستلام (توصيل منزلي، مكتب ياليدين، أو المتجر).</li>
+                            <li><strong>تسجيل رقم تتبع ياليدين :</strong> إضافة رمز الشحنة الرسمي (مثل <code>YAL-77412</code>) لتمكين الزبون من متابعة طرده.</li>
+                            <li><strong>حالات تقدم الطلبية :</strong> معلقة، مقبولة، تم شحنها، تم التسليم بنجاح، أو ملغاة.</li>
+                            <li><strong>حساب المبالغ المستحقة :</strong> مجموع السلعة مضافاً إليه سعر الشحن للدفع نقداً عند استلام الصندوق.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">مراقبة دقيقة للأموال التي ستحصلها شركة التوصيل لصالح المتجر. لا توجد طلبيات منسية أو زبائن ينتظرون دون رد.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« كامل الطلبيات مسجلة بنظام. تعرف شكون شرى ومن أي ولاية، وشحال دراهم لازم ترجعلك شركة التوصيل بعد تسليم الطرود. نظام تجاري محكم 100%. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 04 : FACTURATION & BON DE LIVRAISON PDF
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-4">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 04</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Facturation & Bon de Livraison PDF • الفواتير وسندات التسليم الرسمية</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/orders/:id</span>
+                    <a href="http://localhost:5173/admin/orders" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Voir exemple ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📄 Générateur de Facture Officielle & Bon de Livraison (A4 PDF)</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Dossier complet d'une commande spécifique avec outil de génération immédiate d'une facture imprimable prête à être glissée dans le colis.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Téléchargement PDF A4 en 1 Clic :</strong> Génération ultra-rapide sans besoin d'imprimante thermique ni de logiciel tiers.</li>
+                            <li><strong>En-Tête Professionnel Complet :</strong> Coordonnées officielles du magasin Krimoford au Boulevard de la Soummam, numéros de téléphone et mentions fiscales.</li>
+                            <li><strong>Détail Ligne par Ligne :</strong> Référence constructeur de la pièce, quantité, prix unitaire DA, frais de livraison et montant total TTC.</li>
+                            <li><strong>Zone Cachet & Signature :</strong> Emplacement prévu pour apposer le tampon officiel du magasin sur le bon de livraison.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Confère une image de marque d'un sérieux irréprochable. Indispensable pour les entreprises, transporteurs et artisans disposant de flottes Ford Transit / Ranger.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« En un clic sur 'Télécharger Facture PDF', vous sortez un bon de livraison propre avec votre logo, votre adresse à la Soummam et la place pour votre cachet. Vous le mettez dans le carton : le client voit que vous travaillez comme une vraie concession. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📄 استخراج الفواتير وسندات التسليم الرسمية الجاهزة للطباعة</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>صفحة تفاصيل الطلبية الفردية المزودة بمولد فواتير احترافي لاستخراج سند تسليم رسمي يوضع داخل صندوق الشحن.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>تحميل ملف PDF مقاس A4 بضغطة زر :</strong> توليد فوري لسند التسليم دون الحاجة لبرامج إضافية معقدة.</li>
+                            <li><strong>ترويسة متجر رسمية :</strong> عنوان متجر الصومام بالجزائر العاصمة، أرقام الهاتف والبيانات القانونية للمؤسسة.</li>
+                            <li><strong>جدول قطع الغيار المفصل :</strong> مرجع القطعة الأصلي، الكمية، السعر الفردي بالدينار، كلفة الشحن والمجموع الإجمالي.</li>
+                            <li><strong>خانة مخصصة للختم والتوقيع :</strong> مكان جاهز لوضع الختم الرطب للمحل قبل تسليم الطرد.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">إبراز قوة واحترافية متجر كريمو، وهو أمر يطلبه أصحاب الشركات وملاك سيارات الترانزيت النفعية الذين يحتاجون سندات رسمية مع كل عملية شراء.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« كليك وحدة تخرجلك سند تسليم رسمي (Bon de Livraison) فيه عنوانك بشارع الصومام ومكان لختمك. ديره لداخل الكرطونة، الزبون يثق في سلعتك ويعرف بلي كريمو يخدم خدمة احترافية ونظيفة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 05 : PACKS D'ENTRETIEN & VIDANGE / KITS
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-5">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 05</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Packs d'Entretien & Vidange (-15%) • باقات الصيانة وتغيير الزيت</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/kits</span>
+                    <a href="http://localhost:5173/admin/kits" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">🛠️ Gestionnaire de Bundles Promotionnels & Kits Révision</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Outil commercial pour créer des packages regroupant huile moteur et filtres avec une réduction attrayante de 15% pour gonfler le panier moyen.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Créateur de Pack Intelligent :</strong> Combinaison de 4 à 5 pièces (ex. Bidon Castrol 5W-30 + Filtre à huile + Filtre à air + Filtre à gasoil + Filtre habitacle).</li>
+                            <li><strong>Calculateur de Promotion Automatique :</strong> Saisie du prix d'origine cumulé et du tarif préférentiel remisé.</li>
+                            <li><strong>Attribution par Modèle Ford :</strong> Ciblage spécifique (Focus 1.6 TDCi, Fiesta, Ranger 4x4, Transit).</li>
+                            <li><strong>Mise en Avant Page d'Accueil :</strong> Interrupteur pour promouvoir les packs les plus rentables dès l'arrivée du visiteur.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Multiplie le chiffre d'affaires par commande. Au lieu d'encaisser 1 500 DA pour un simple filtre, Krimo encaisse 19 000 DA pour un pack vidange intégral.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Vendre les filtres un par un rapporte peu. Ici, vous composez des packs complets pour Focus ou Ranger avec -15%. Les automobilistes préfèrent tout acheter en un seul paquet pour faire leur vidange tranquillement, et votre panier moyen explose. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🛠️ إدارة باقات الصيانة الشاملة والعروض المجمعة</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>أداة تجارية ذكية لتركيب باقات صيانة تجمع الزيوت والفلاتر بتخفيض 15% لتشجيع الزبون على الشراء بالجملة ومضاعفة قيمة الطلبيات.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>تركيب الباقة بسهولة :</strong> دمج 4 أو 5 قطع في باقة واحدة (زيت كاسترول أصلي + فلتر زيت + فلتر هواء + فلتر مازوت + فلتر مكيف).</li>
+                            <li><strong>حساب السعر المخفض تلقائياً :</strong> إدخال السعر الفردي وسعر الباقة المغري بتخفيض 15%.</li>
+                            <li><strong>ربط الباقة بموديل فورد :</strong> تخصيص الباقات لكل سيارة (فوكس 1.6 TDCi، فييستا، رينجر، ترانزيت).</li>
+                            <li><strong>تثبيت الباقات في الواجهة :</strong> زر لتثبيت الباقات الأكثر مبيعاً في الصفحة الرئيسية للمتجر.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">مضاعفة مداخيل كل عملية بيع. بدلاً من بيع فلتر واحد بـ 1,500 دج، تبيع باقة كاملة بـ 19,000 دج بكل سهولة.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« بيع الفلاتر بالقطعة الواحدة ما فيهش فائدة كبيرة. هنا تركب باقة فيدونج كاملة لسيارات فورد بتخفيض 15%، الزبون يفضل يدير صيانة شاملة ويشري كلش من عندك، ومبيعاتك في كل كوموند تطلع 4 مرات. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 06 : LEADS DIAGNOSTICS & PANNES
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-6">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 06</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Leads Diagnostics & Pannes Ford • تشخيص الأعطال ومتابعة الزبائن</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/diagnostics</span>
+                    <a href="http://localhost:5173/admin/diagnostics" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">⚡ Gestionnaire des Demandes d'Aide & Symptômes Mécaniques</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Tableau de bord recueillant les signalements des conducteurs ayant utilisé l'outil de diagnostic interactif pour identifier un bruit ou une panne.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Fiche Symptôme Précise :</strong> Bruit suspect (claquement train avant), fumée noire à l'accélération, ou vibration dans la pédale de frein.</li>
+                            <li><strong>Véhicule & Coordonnées :</strong> Modèle de Ford, année, numéro de téléphone et wilaya du conducteur.</li>
+                            <li><strong>Causes Suspectées & Pièces Préconisées :</strong> Diagnostic guidé (biellettes, durite turbo percée, disques de frein voilés).</li>
+                            <li><strong>Relance WhatsApp en 1 Clic :</strong> Contact immédiat pour orienter le client et lui proposer la pièce de rechange adéquate.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Positionne Krimo comme l'expert de référence en Algérie. Les automobilistes qui ne savent pas quelle pièce changer sont pris en charge et convertis en acheteurs.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« La plupart des gens ne connaissent pas le nom des pièces, mais ils connaissent le bruit de leur voiture. Quand ils décrivent leur souci sur votre site, vous recevez leur contact ici. Vous leur envoyez la solution sur WhatsApp avec le tarif de la pièce originale : confiance absolue et vente assurée. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">⚡ متابعة أعطال الزبائن وتشخيص مشاكل سيارات فورد</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>لوحة تحكم تجمع بيانات السائقين الذين أبلغوا عن أعراض عطل أو أصوات غير طبيعية في سياراتهم عبر أداة التشخيص بالموقع.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>وصف العَرَض الميكانيكي :</strong> صوت طقطقة في نظام التعليق، دخان أسود، أو اهتزاز أثناء الفرملة.</li>
+                            <li><strong>بيانات السائق والسيارة :</strong> نوع سيارة فورد، سنة الصنع، رقم الهاتف وولايته.</li>
+                            <li><strong>القطع المقترحة الجاهزة :</strong> تشخيص مبدئي مقترح للقطع الواجب تغييرها (خرطوم تيربو، أذرع توازن، أو ديسك فرامل).</li>
+                            <li><strong>متابعة سريعة عبر واتساب :</strong> زر مباشر لمراسلة السائق ونصحه فنياً بقطع الغيار الأصلية المتوفرة في المحل.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">ترسيخ مكانة كريمو كخبير فورد الأول في الجزائر. الزبون المحتار يجد من يفهم مشكلته ويوفر له القطعة الأصلية في نفس الوقت.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« أغلب السائقين ما يعرفوش أسامي البياس، بصح يعرفوا الصوت لي ديره الطوموبيل. كي يشرح المشكل في موقعك، يوصلك رقمه هنا. تفتح الواتساب وتقوله: خويا هذا مشكل بيالات وعندنا دوريجين في الصومام، تكسب الزبون مباشرة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 07 : STOCK PIÈCES DÉTACHÉES / PRODUCTS
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-7">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 07</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Stock & Pièces Détachées • إدارة المخزون وقطع الغيار</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/products</span>
+                    <a href="http://localhost:5173/admin/products" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">🏷️ Inventaire Centralisé & Suivi des Disponibilités</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>La base de données principale de toutes les références en vente au magasin, avec contrôle instantané des stocks et des tarifs.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Recherche Ultra-Rapide :</strong> Par référence constructeur OEM Motorcraft, code SKU interne ou appellation de la pièce.</li>
+                            <li><strong>Alertes Visuelles de Stock :</strong> Vert (En stock), Orange (Stock critique &lt; 5 unités), Rouge (Rupture complète).</li>
+                            <li><strong>Édition Rapide en Ligne :</strong> Mise à jour instantanée du prix en Dinars et de la quantité sans recharger la page.</li>
+                            <li><strong>Filtres Avancés :</strong> Par catégorie technique (Freinage, Filtration, Distribution...) et par modèle Ford.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Évite les ruptures de stock inattendues et empêche de vendre en ligne une pièce qui n'est plus présente physiquement sur les étagères de la Soummam.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Votre magasin tout entier est numérisé sur un seul écran. Quand une référence tombe à moins de 3 boîtes, une alerte orange s'allume. Vous anticipez vos commandes fournisseurs et vous n'êtes jamais pris au dépourvu. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🏷️ الجرد الرقمي الشامل ومتابعة وفرة السلعة في المحل</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>قاعدة البيانات المركزية لكل قطع الغيار المتوفرة للبيع في المتجر، مع مراقبة حية للكميات وتعديل الأسعار.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>بحث فوري وفائق السرعة :</strong> برقم القطعة الأصلي OEM Motorcraft، رمز SKU، أو تسمية القطعة.</li>
+                            <li><strong>إشارات ملونة ذكية للمخزون :</strong> أخضر (متوفر بكثرة)، برتقالي (مخزون حرج أقل من 5 علب)، وأحمر (نفد تماماً).</li>
+                            <li><strong>تعديل الأسعار والكميات مباشرة :</strong> تحديث سعر البيع بالدينار والكمية المتوفرة داخل الجدول بنقرة واحدة.</li>
+                            <li><strong>تصفية متطورة :</strong> حسب نظام القطعة (فرامل، محرك، فلاتر) وحسب نوع سيارة فورد.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">الحماية من نفاد السلعة المفاجئ وتفادي بيع قطعة عبر الإنترنت غير متواجدة فعلياً في رفوف المحل بشارع الصومام.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« سلعة محلك كاملة في جدول واحد منظم. كي تهبط سلعة لأقل من 3 بوايط، يشعل تنبيه برتقالي باش تتفكر تعاود تكوموندي عند الفورنيسور وماطيحش روطار مع الزبائن. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 08 : CRÉATION / MODIFICATION DE PIÈCE
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-8">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 08</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Ajout & Édition Pièce • محرك إضافة وتعديل القطع والتوافق</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/product/new</span>
+                    <a href="http://localhost:5173/admin/product/new" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">➕ Fiche Technique & Moteur de Compatibilité Multi-Véhicules</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Formulaire technique complet pour injecter une nouvelle pièce dans le catalogue avec liaison intelligente à plusieurs véhicules Ford.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Champs OEM & Motorcraft :</strong> Saisie de la référence originale Ford (ex. <code>1807044</code>, <code>EB3C-18045-A</code>).</li>
+                            <li><strong>Compatibilité Multi-Modèles :</strong> Cochez d'un coup plusieurs véhicules partageant la même pièce (ex. Focus 3 + C-Max).</li>
+                            <li><strong>Saisie Bilingue Naturelle :</strong> Désignation et conseils techniques en Français et en Arabe.</li>
+                            <li><strong>Gestion des Marques :</strong> Motorcraft OEM d'origine, FoMoCo, Bosch, Valeo, Febi Bilstein, etc.</li>
+                            <li><strong>Prix & Marge :</strong> Prix d'achat fournisseur confidentiel et prix de vente public en Dinars.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Permet de créer des fiches pièces parfaites en 2 minutes. La compatibilité multiple évite d'avoir à créer la même référence plusieurs fois.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Quand un nouveau carton de pièces arrive au magasin, vous tapez la référence Motorcraft, vous cochez les modèles Ford compatibles, vous mettez votre prix en dinars et vous enregistrez. La pièce est instantanément visible pour tous les clients d'Algérie. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">➕ البطاقة التقنية ومحرك التوافق مع سيارات فورد المتعددة</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>استمارة إدخال وتعديل قطع الغيار المزودة بنظام ربط ذكي يربط القطعة الواحدة بعدة سيارات فورد في نفس الوقت.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>مراجع المصنّع الأصلية :</strong> إدخال كود OEM Motorcraft و FoMoCo بدقة تامة.</li>
+                            <li><strong>التوافق المتعدد بنقرة زر :</strong> تحديد كافة السيارات المشتركة في نفس القطعة (مثل فحمات فرامل تناسب Focus و C-Max معاً).</li>
+                            <li><strong>بيانات ثنائية اللغة :</strong> اسم القطعة وتفاصيل التركيب بالفرنسية والعربية.</li>
+                            <li><strong>تحديد العلامة التجارية :</strong> Motorcraft أصلية، Bosch، Valeo، أو قطع معادلة.</li>
+                            <li><strong>إدارة الأسعار والهوامش :</strong> سعر الشراء السري وسعر البيع المعلن بالدينار.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">إدخال السلعة الجديدة في دقيقتين دون تكرار. ربط القطعة بعدة موديلات يوفر وقتاً هائلاً ويضاعف فرص العثور عليها في الكتالوج.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« كي تدخلك سلعة جديدة، تعمر ريفرونس موتركرافت، تكوشي السيارات لي تركب عليها، تحط السومة بالدينار وتسجل. تظهر القطعة في ثواني لكل أصحاب سيارات فورد في الجزائر كاملة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 09 : TARIFS & LIVRAISON 58 WILAYAS
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-9">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 09</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Tarifs 58 Wilayas (Yalidine) • شبكة أسعار التوصيل الوطنية</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/shipping</span>
+                    <a href="http://localhost:5173/admin/shipping" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">🚚 Contrôle Tarifaire des Livraisons & Délais d'Acheminement</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Matrice logistique maîtresse pour configurer les frais d'expédition perçus par Yalidine Express pour chacune des 58 Wilayas.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Double Tarif par Wilaya :</strong> Fixez librement le prix pour la <strong>Livraison à Domicile</strong> et la <strong>Livraison Stopdesk (Bureau)</strong>.</li>
+                            <li><strong>Délais d'Expédition Configurables :</strong> Affichage transparent des délais (24h pour le Centre, 48h pour l'Est/Ouest, 72h pour le Sud).</li>
+                            <li><strong>Seuil de Franco de Port :</strong> Définissez le montant d'achat (ex. 35 000 DA) déclenchant la gratuité des frais de port.</li>
+                            <li><strong>Interrupteur On/Off par Wilaya :</strong> Activez ou suspendez la livraison dans une province en un clic en cas d'imprévu.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Protection des marges nettes. Quand le transporteur met à jour sa grille tarifaire, Krimo l'applique en 30 secondes sans rien payer à un développeur.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« La livraison vers Alger, Oran ou Ouargla n'a pas le même coût. Ici, vous avez la main totale sur les 58 wilayas. Si Yalidine augmente ou baisse un tarif, vous modifiez le chiffre et la caisse du site se met à jour immédiatement. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🚚 التحكم في أسعار الشحن وآجال التوصيل عبر 58 ولاية</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>اللوحة اللوجستية المركزية لضبط أسعار ومصاريف الشحن المعتمدة مع شركة ياليدين اكسبريس في كامل التراب الوطني.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>تسعير مزدوج لكل ولاية :</strong> تحديد سعر منفصل للتوصيل إلى <strong>باب المنزل</strong> وسعر مخفض للاستلام من <strong>مكتب ياليدين</strong>.</li>
+                            <li><strong>ضبط مدة التوصيل :</strong> إظهار المدة المتوقعة للزبون بوضوح (24 ساعة للوسط، 48 ساعة للشرق والغرب، 72 ساعة للجنوب).</li>
+                            <li><strong>ميزة الشحن المجاني :</strong> تحديد قيمة المشتريات الترويجية (مثلاً 35,000 دج) التي يصبح معها التوصيل مجانياً.</li>
+                            <li><strong>زر تفعيل وتوقيف الشحن :</strong> إمكانية توقيف أو تفعيل الشحن لأي ولاية بنقرة واحدة عند الحاجة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">حماية الأرباح واستقلالية تامة. كلما عدلت شركة التوصيل أسعارها، يعدلها كريمو بنفسه في 30 ثانية دون الاعتماد على أي شخص.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« سومة ليفريزون للجزائر ماشي كيما وهران ولا ورقلة. هنا تتحكم في كامل الـ 58 ولاية. نهار ياليدين يزيدو ولا ينقصو في تسعيرتهم، تبدلها هنا في دقيقة والسيت يتأقلم أوتوماتيك. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 10 : MESSAGERIE & CONTACT COMPTOIR
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-10">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 10</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Messagerie & Comptoir Soummam • بريد المحل والردود المباشرة</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/inbox</span>
+                    <a href="http://localhost:5173/admin/inbox" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📬 Boîte de Réception des Demandes & Relation Client</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Centre de messagerie regroupant les sollicitations formulées sur la page contact (recherche de pièce rare, demande de devis au comptoir Soummam).</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Fiche Contact Structurée :</strong> Nom du client, numéro de téléphone algérien, email, wilaya et question posée.</li>
+                            <li><strong>Réponse WhatsApp en 1 Clic :</strong> Ouvre directement une conversation WhatsApp pré-adressée au client.</li>
+                            <li><strong>Appel Téléphonique Direct :</strong> Déclenchement de l'appel depuis mobile ou tablette.</li>
+                            <li><strong>Marquage Lu / Non Lu :</strong> Suivi des messages traités pour qu'aucune demande ne reste sans suite.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Réactivité commerciale maximale. Dans la pièce auto, le client contacte plusieurs magasins : celui qui répond le premier par WhatsApp emporte la vente.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Un client cherche une crémaillère ou des injecteurs pour son Transit : son message atterrit ici. En cliquant sur le logo WhatsApp, vous lui répondez directement sur son téléphone. Vente conclue avant que vos concurrents n'aient le temps d'ouvrir leurs emails. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📬 بريد استفسارات الزبائن والتواصل المباشر</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>صندوق الرسائل الواردة الذي يجمع كافة استفسارات الزبائن حول توفر القطع النادرة أو مواعيد الاستلام من متجر الصومام.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>ملف استفسار منظم :</strong> اسم الزبون، رقم الهاتف، البريد الإلكتروني، الولاية، ونص السؤال.</li>
+                            <li><strong>رد سريع عبر واتساب بنقرة واحدة :</strong> فتح المحادثة مباشرة مع الزبون دون الحاجة لتسجيل الرقم في الهاتف.</li>
+                            <li><strong>اتصال هاتفي مباشر :</strong> إمكانية الاتصال الفوري بالزبون من الهاتف أو التابلت.</li>
+                            <li><strong>شارة الرسائل الجديدة :</strong> عداد يوضح عدد الرسائل التي تنتظر الرد لضمان عدم إهمال أي زبون.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">السرعة في التجارة تصنع الفارق. المشتري يسأل عدة محلات، والمحل الذي يسبق بالرد عبر واتساب هو من يبيع القطعة.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« زبون يسقسي على حبة كريمايير ولا ليزانجكتور لترانزيت، الرسالة تجيك هنا. كليك وحدة على واتساب تجاوبه بالسومة وتوفر القطعة، تربح الزبون قبل ما يروح لواحد آخر. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 11 : CATÉGORIES PIÈCES
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-11">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 11</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Catégories & Rayons de Pièces • تنظيم أقسام قطع الغيار</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/categories</span>
+                    <a href="http://localhost:5173/admin/categories" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📂 Gestion de l'Arborescence & Organisation des Rayons</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Pilotage des catégories techniques pour structurer le catalogue par sous-systèmes mécaniques automobiles.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Rayons Pré-paramétrés :</strong> Freinage, Filtration, Distribution & Courroies, Suspension & Direction, Moteur, Refroidissement, Éclairage.</li>
+                            <li><strong>Création Express de Nouvelles Catégories :</strong> Ajoutez des rayons spécifiques (ex. <em>Accessoires Ranger</em> ou <em>Outillage Spécial Ford</em>).</li>
+                            <li><strong>Synchronisation Immédiate :</strong> Tout ajout met instantanément à jour les menus déroulants et filtres de la boutique client.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Garde le magasin parfaitement classé à mesure que le catalogue grandit vers plusieurs centaines de références.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Comme dans votre magasin physique où chaque étagère a sa spécialité, vous organisez ici vos rayons en ligne. Le client navigue facilement et trouve sa pièce en 3 clics. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📂 تنظيم الأقسام الميكانيكية ورفوف الكتالوج</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>التحكم في الأقسام والأنظمة الميكانيكية للسيارة لتنظيم الكتالوج وتسهيل وصول المشتري للقطع.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>أقسام جاهزة ومبرمجة :</strong> الفرامل، الفلاتر، حزام التوزيع، التعليق والتوجيه، المحرك، والتبريد.</li>
+                            <li><strong>إضافة أقسام جديدة بسهولة :</strong> إمكانية إنشاء رفوف جديدة في ثوانٍ (مثل: <em>إكسسوارات رينجر 4x4</em> أو <em>زيوت ومبردات</em>).</li>
+                            <li><strong>تزامن تلقائي :</strong> أي تعديل يظهر فوراً في قوائم التصفح بواجهة الموقع للزبائن.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">المحافظة على ترتيب المحل ووضوحه حتى مع إضافة مئات القطع الجديدة مستقبلاً.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« كيما في حانوتك كل إيطاجير مخصصة لسلعة معينة، هنا ترتب أقسامك الرقمية. الزبون يلقى القطعة لي يحوس عليها في 3 كليكات وبكل سهولة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 12 : MODÈLES FORD SUPPORTÉS
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-12">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 12</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Modèles Ford Supportés • أسطول سيارات فورد في الجزائر</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/carmodels</span>
+                    <a href="http://localhost:5173/admin/carmodels" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">🚗 Flotte des Véhicules Ford du Marché Algérien</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Contrôle de la liste des modèles Ford proposée aux automobilistes pour filtrer les pièces compatibles sur l'ensemble de la boutique.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Couverture Complète du Parc Roulant :</strong> Focus (1.6 TDCi / EcoBoost), Fiesta, Ranger (2.2 & 3.2 TDCi), Transit (V347/V363), Kuga, EcoSport, Mondeo, C-Max.</li>
+                            <li><strong>Ajout de Nouvelles Générations :</strong> Enregistrez les nouveaux modèles ou nouvelles motorisations dès leur apparition sur le marché national.</li>
+                            <li><strong>Mise à Jour Instantanée :</strong> Alimente automatiquement les barres de sélection de véhicules sur la page d'accueil et le catalogue.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Garantit que chaque propriétaire de Ford trouve son véhicule exact, renforçant la spécialisation exclusive de Krimoford.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Toute la gamme Ford qui roule en Algérie est enregistrée ici. Vous pouvez ajouter un nouveau modèle en 10 secondes et votre site reste toujours à la pointe du marché automobile. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🚗 إدارة موديلات سيارات فورد المنتشرة في الجزائر</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>التحكم في قائمة سيارات فورد التي يختار منها الزبائن لتصفية قطع الغيار المناسبة لمركباتهم بدقة.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>تغطية أسطول فورد كاملاً :</strong> فوكس، فييستا، رينجر 4x4، ترانزيت النفعية، كوجا، إيكوسبورت، ومونديو.</li>
+                            <li><strong>إضافة موديلات ومحركات جديدة :</strong> تسجيل أي جيل أو محرك جديد (1.6 TDCi، 2.2 TDCi، EcoBoost) بسهولة.</li>
+                            <li><strong>تحديث فوري للقوائم :</strong> يغذي قوائم الاختيار في واجهة المتجر والكتالوج بمجرد الحفظ.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">إشعار كل زبون بأن موقعه متخصص وحصري لسيارات فورد، وتجنيبه أي حيرة عند البحث عن قطع مركبته.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« كامل أنواع سيارات فورد لي تدور في الجزائر مسجلة هنا. وتقدر تزيد أي نوع جديد، والموقع يتأقلم أوتوماتيك مع متطلبات السوق. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 13 : STATISTIQUES & ANALYTICS
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-13">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 13</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Statistiques & Chiffre d'Affaires • إحصائيات المبيعات والأرباح</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/analytics</span>
+                    <a href="http://localhost:5173/admin/analytics" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">📈 Intelligence Commerciale & Analyse Financière</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>Tableau d'analyse financière et de pilotage stratégique pour suivre la progression du chiffre d'affaires et la rentabilité du magasin.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Graphique d'Évolution Mensuelle :</strong> Courbe dynamique des recettes en Dinars Algériens (DA).</li>
+                            <li><strong>Palmarès des 5 Pièces les Plus Vendues :</strong> Identification des articles phares (plaquettes Focus, filtres gasoil, kits courroie).</li>
+                            <li><strong>Répartition Géographique des Ventes :</strong> Pourcentage de commandes par wilaya (ex. Alger 35%, Oran 20%, Sétif 15%).</li>
+                            <li><strong>Taux de Croissance & Panier Moyen :</strong> Surveillance de la valeur moyenne dépensée par client.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Décisions d'achat éclairées. Krimo sait quelles pièces commandent le plus de rotation pour ne pas bloquer sa trésorerie dans du stock immobile.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Cette page vous donne la réalité en chiffres : vos meilleures ventes et les wilayas qui achètent le plus chez vous. Vous savez exactement quelles pièces recommander à l'avance chez vos importateurs. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">📈 التحليل المالي وتتبع المبيعات الشهرية بالأرقام</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>لوحة التوجيه المالي والتجاري لمتابعة نمو المداخيل، معرفة السلع الأكثر طلباً، وتحديد مسار تطور المحل.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>رسم بياني للمداخيل الشهرية :</strong> مخطط يوضح تطور العائدات المالية بالدينار الجزائري شهراً بشهر.</li>
+                            <li><strong>ترتيب أفضل 5 قطع مبيعاً :</strong> معرفة السلع الأكثر دوراناً (فحمات الفرامل، فلاتر المازوت، أحزمة التوزيع).</li>
+                            <li><strong>توزيع المبيعات حسب الولايات :</strong> نسبة الطلبيات القادمة من كل ولاية لتحديد المناطق الأكثر نشاطاً.</li>
+                            <li><strong>معدل سلة الشراء :</strong> مراقبة متوسط المبلغ الذي يصرفه كل زبون في المتجر.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">قرارات تموين ذكية ومدروسة. يستثمر كريمو أمواله في السلع سريعة البيع ويتجنب تجميد رأس ماله في قطع راكدة.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« هاد الصفحة تعطيك الحقيقة بالأرقام: واش هي القطع لي تمشي بزاف والولايات لي تشري من عندك. هكذا تعرف واش تشري عند الفورنيسور وتستثمر دراهمك في السلعة لي تتباع تم تم. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             ADMIN 14 : ACCÈS SÉCURISÉ & DÉMO RAPIDE
+             ======================================================== -->
+        <article class="page-card admin-card" data-section="admin" id="admin-page-14">
+            <div class="card-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="card-badge-num">ADM 14</span>
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a;">Accès Sécurisé & Démo Immédiate • بوابة الدخول الآمنة ووضع العرض</h3>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span class="route-pill">Route: /admin/login</span>
+                    <a href="http://localhost:5173/admin/login" target="_blank" rel="noopener" class="mode-btn" style="padding: 3px 8px; font-size: 0.75rem; background: #ea580c; border: none;">Tester en direct ↗</a>
+                </div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🇫🇷 Présentation en Français</div>
+                    <h2 class="page-name-title">🔐 Portail de Connexion Administrateur & Bouton Démo</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Expérience Administrateur :</h4>
+                        <p>La porte blindée protégeant les données commerciales, les fiches clients et les marges financières du magasin Krimoford.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ Fonctionnalités Clés de Gestion :</h4>
+                        <ul class="feature-list">
+                            <li><strong>Authentification Chiffrée :</strong> Sécurisation par email et mot de passe administrateur.</li>
+                            <li><strong>Bouton Démo Directe en 1 Clic :</strong> Bouton spécial permettant de se connecter instantanément lors d'une démonstration client sans taper d'identifiants.</li>
+                            <li><strong>Isolation des Droits :</strong> Seuls les gestionnaires ont accès à la caisse et aux coordonnées téléphoniques des clients.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 Valeur Ajoutée pour Krimo :</div>
+                        <div class="benefit-desc">Confidentialité totale des affaires. Krimo pilote son magasin depuis son téléphone, sa tablette ou son ordinateur en toute sécurité.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ Pitch à dire à Krimo :</div>
+                        <div class="pitch-text">« Votre commerce et vos chiffres sont protégés par mot de passe. Seul vous et vos proches collaborateurs avez accès à votre caisse. Vous pouvez vous connecter depuis chez vous ou depuis le comptoir en toute sérénité. »</div>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🇩🇿 الشرح بالعربية</div>
+                    <h2 class="page-name-title">🔐 بوابة الدخول الآمنة وزر العرض التوضيحي السريع</h2>
+
+                    <div class="info-box">
+                        <h4>🎯 دور الصفحة وتجربة مدير المتجر :</h4>
+                        <p>بوابة الحماية المشفرة التي تمنع أي شخص من الاطلاع على المداخيل المالية، أسرار الأسعار، وبيانات الزبائن.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚙️ الخصائص والميزات الإدارية :</h4>
+                        <ul class="feature-list">
+                            <li><strong>تسجيل دخول آمن ومشفر :</strong> حماية بكلمة سر وبريد إلكتروني خاص بمدير المتجر.</li>
+                            <li><strong>زر الدخول التجريبي بنقرة واحدة :</strong> زر عملي يسمح بالدخول الفوري لتقديم العرض التوضيحي لعمي كريمو دون كتابة كلمات سر.</li>
+                            <li><strong>عزل الصلاحيات :</strong> حماية سجل الطلبيات وأرقام هواتف الزبائن من التطفل.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💼 الفائدة لمتجر كريمو :</div>
+                        <div class="benefit-desc">سرية تامة لأسرار تجارته ومداخيل المحل. يستطيع تسيير متجره من هاتفه أو التابلت في أي وقت وبكل أمان.</div>
+                    </div>
+
+                    <div class="pitch-box">
+                        <div class="pitch-label">🗣️ حجة الإقناع (ماذا تقول لكريمو) :</div>
+                        <div class="pitch-text">« مداخيلك وأسرار سلعتك محمية بكلمة سر. ما كاش لي يقدر يشوف مبيعاتك إلا أنت، وتقدر تدخل للوحة التحكم من دارك ولا من حانوتك في أي وقت وبكل ثقة. »</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========================================================
+             BONUS FEATURES ACROSS THE SITE
+             ======================================================== -->
+        <section class="bonus-section">
+            <h2 class="bonus-title">🌟 3 Atouts Majeurs Intégrés Partout • 3 مميزات حصرية في كامل الموقع</h2>
+
+            <div class="bonus-grid">
+                <!-- Feature 1 -->
+                <div class="bonus-card">
+                    <h3><span>💬</span> Bouton Flottant WhatsApp • زر واتساب العائم</h3>
+                    <p class="fr-font" style="margin-bottom: 0.75rem;">
+                        Présent en bas à droite sur toutes les pages. En un tap, le client discute avec Krimo avec le lien de la pièce déjà pré-rempli. 80% des ventes se concluent ici !
+                    </p>
+                    <p class="ar-font" style="color: #93c5fd;">
+                        متواجد أسفل كل الصفحات. بنقرة واحدة، يتحدث الزبون مع كريمو مع اسم القطعة مكتوب تلقائياً. 80% من المبيعات في الجزائر تتم عبر واتساب !
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bonus-card">
+                    <h3><span>📱</span> Barre Mobile Inférieure • شريط الهاتف السفلي</h3>
+                    <p class="fr-font" style="margin-bottom: 0.75rem;">
+                        Sur smartphone, une barre tactile fixée au bas de l'écran permet de naviguer au pouce entre le Catalogue, les Packs, la Carte Grise et le Panier comme une véritable application mobile.
+                    </p>
+                    <p class="ar-font" style="color: #93c5fd;">
+                        على الهاتف الذكي، شريط مريح أسفل الشاشة للتنقل السريع بالإبهام بين الكتالوج، الباقات، تسعيرة البطاقة الرمادية والسلة تماماً مثل تطبيقات الهاتف.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bonus-card">
+                    <h3><span>🌐</span> Bilingue Naturel (FR / AR) • ثنائي اللغة فرنسي/عربي</h3>
+                    <p class="fr-font" style="margin-bottom: 0.75rem;">
+                        Le site bascule instantanément en Arabe avec inversion de direction (RTL) pour s'adapter à tous les profils de clients à Alger comme dans les autres wilayas.
+                    </p>
+                    <p class="ar-font" style="color: #93c5fd;">
+                        الموقع يتحول فوراً بين الفرنسية والعربية مع محاذاة تلقائية لليمين (RTL) ليناسب كل فئات الزبائن في كافة ربوع الجزائر.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Interactive Script to Switch Views -->
+    <script>
+        function setMode(mode) {
+            document.body.classList.remove('mode-both', 'mode-fr-only', 'mode-ar-only');
+            document.getElementById('btn-both').classList.remove('active');
+            document.getElementById('btn-fr').classList.remove('active');
+            document.getElementById('btn-ar').classList.remove('active');
+
+            if (mode === 'both') {
+                document.body.classList.add('mode-both');
+                document.getElementById('btn-both').classList.add('active');
+            } else if (mode === 'fr') {
+                document.body.classList.add('mode-fr-only');
+                document.getElementById('btn-fr').classList.add('active');
+            } else if (mode === 'ar') {
+                document.body.classList.add('mode-ar-only');
+                document.getElementById('btn-ar').classList.add('active');
+            }
+        }
+
+        function toggleSectionDropdown() {
+            const menu = document.getElementById('sectionDropdownMenu');
+            const trigger = document.getElementById('sectionDropdownTrigger');
+            if (menu && trigger) {
+                menu.classList.toggle('open');
+                trigger.classList.toggle('open');
+            }
+        }
+
+        function selectSection(filter, icon, label) {
+            const labelElem = document.getElementById('selectedSectionLabel');
+            const iconElem = document.getElementById('selectedSectionIcon');
+            if (labelElem) labelElem.textContent = label;
+            if (iconElem) iconElem.textContent = icon;
+
+            document.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
+            const activeOpt = document.getElementById('opt-' + filter);
+            if (activeOpt) activeOpt.classList.add('active');
+
+            document.body.classList.remove('filter-all', 'filter-client-only', 'filter-admin-only');
+            if (filter === 'all') {
+                document.body.classList.add('filter-all');
+            } else if (filter === 'client') {
+                document.body.classList.add('filter-client-only');
+            } else if (filter === 'admin') {
+                document.body.classList.add('filter-admin-only');
+            }
+
+            const menu = document.getElementById('sectionDropdownMenu');
+            const trigger = document.getElementById('sectionDropdownTrigger');
+            if (menu) menu.classList.remove('open');
+            if (trigger) trigger.classList.remove('open');
+        }
+
+        window.addEventListener('click', function(e) {
+            const container = document.getElementById('sectionDropdownContainer');
+            if (container && !container.contains(e.target)) {
+                const menu = document.getElementById('sectionDropdownMenu');
+                const trigger = document.getElementById('sectionDropdownTrigger');
+                if (menu) menu.classList.remove('open');
+                if (trigger) trigger.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabinet d'Avocat Maître SLIMANI Noureddine • LPMS System & Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            legal: {
+              50: '#f4f6f8',
+              100: '#e6ebf0',
+              200: '#ccd8e2',
+              300: '#a3bccd',
+              400: '#739bb5',
+              500: '#4f7d9e',
+              600: '#3d6380',
+              700: '#335068',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#080d19'
+            },
+            gold: {
+              300: '#fde047',
+              400: '#e5b869',
+              500: '#c59b27',
+              600: '#9e7b1a',
+              700: '#785b0d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; font-size: 11pt; }
+      .page-break { page-break-before: always; }
+      .print-shadow-none { box-shadow: none !important; border: 1px solid #ddd !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    .glass-nav {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fef08a 0%, #e5b869 50%, #c59b27 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen selection:bg-amber-500/30 selection:text-amber-200">
+
+  <div class="bg-slate-900 border-b border-slate-800 text-xs py-2 px-4 font-mono no-print">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-slate-400">
+      <div class="flex items-center space-x-3">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5 animate-pulse"></span>
+          Barreau d'Alger • Cabinet SLIMANI
+        </span>
+        <span class="hidden sm:inline text-slate-600">|</span>
+        <span>REF SYSTEM: <strong class="text-slate-200">LPMS-SLIMANI-2026-V2.0</strong></span>
+        <span class="hidden md:inline text-slate-600">|</span>
+        <span class="hidden md:inline">DATE: <span class="text-slate-300">8 Octobre 2026</span></span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-emerald-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Confiance Numérique ISO 27001 & eIDAS
+        </span>
+        <button onclick="window.print()" class="text-slate-300 hover:text-amber-400 transition-colors flex items-center gap-1 cursor-pointer">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>Imprimer Dossier</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <header class="sticky top-0 z-40 glass-nav border-b border-slate-800 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Cabinet Logo & Title -->
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 flex items-center justify-center shadow-lg shadow-amber-500/20 text-slate-950 font-black text-2xl font-serif border border-amber-300/40">
+            ⚖
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white font-serif flex items-center gap-2">
+                Cabinet d'Avocat Maître SLIMANI Noureddine
+              </h1>
+            </div>
+            <p class="text-xs text-amber-400/90 font-mono tracking-wide">Avocat à la Cour • Barreau d'Alger • Système LPMS Intégré</p>
+          </div>
+        </div>
+
+        <!-- Right Quick Controls -->
+        <div class="flex items-center space-x-3">
+          <!-- Global Search -->
+          <div class="relative hidden xl:block w-64">
+            <input 
+              type="text" 
+              id="globalSearchInput" 
+              oninput="handleGlobalSearch(this.value)"
+              placeholder="Rechercher (ex: OCR, eIDAS, Bates, Conflit)..."
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg py-1.5 pl-8 pr-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+            >
+            <svg class="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+
+          <!-- AI Assistant Modal Trigger Button -->
+          <button onclick="toggleAiModal()" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-xs transition-all flex items-center gap-1.5 shadow-lg shadow-amber-500/20 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <span>Assistant IA Juridique</span>
+          </button>
+
+          <!-- Appointment Trigger Button -->
+          <a href="#consultation-portal" class="hidden sm:flex px-3 py-1.5 rounded-lg border border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-medium text-xs transition-all items-center gap-1">
+            📅 Consultation
+          </a>
+
+          <!-- Mobile Nav Toggle -->
+          <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="mobileNavDrawer" class="hidden lg:hidden fixed inset-0 z-50 bg-slate-950/95 p-6 backdrop-blur-md overflow-y-auto">
+    <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+      <div class="font-bold text-lg text-white">Cabinet Maître SLIMANI & LPMS</div>
+      <button onclick="toggleMobileNav()" class="text-slate-400 hover:text-white p-2 text-xl">✕</button>
+    </div>
+    <nav class="space-y-2 text-sm font-medium text-slate-300">
+      <a href="#cabinet-identity" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900 text-amber-400">🏛️ Présentation du Cabinet SLIMANI</a>
+      <a href="#summary" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">1. Contexte & LPMS Automation</a>
+      <a href="#architecture" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">2. Architecture Microservices & Kernel</a>
+      <a href="#security" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">3. Murs Éthiques & Sécurité Zero-Trust</a>
+      <a href="#crm-erp" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">4. CRM, UTBMS LEDES & Comptabilité CARPA</a>
+      <a href="#dms-hardware" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">5. GED, Scanners TWAIN & Bates Stamp</a>
+      <a href="#ai-assistant" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">6. IA Juridique & Confidentialité ZDR</a>
+      <a href="#signatures" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">7. Signatures eIDAS & Sceau Numérique</a>
+      <a href="#mobile" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">8. Application Mobile iOS/Android</a>
+      <a href="#nfr" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">9. Exigences Non-Fonctionnelles & SLA</a>
+      <a href="#roadmap" onclick="toggleMobileNav()" class="block p-2.5 rounded hover:bg-slate-900">10. Déploiement & Recette Cabinet</a>
+      <a href="#consultation-portal" onclick="toggleMobileNav()" class="block p-2.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 mt-4">📅 Demande de Consultation / Prise de Contact</a>
+    </nav>
+  </div>
+
+  <section class="relative overflow-hidden border-b border-slate-800 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 pt-10 pb-16">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(217,119,6,0.15),transparent_50%)]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+        
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-4">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            BARREAU D'ALGER • EXPERTISE JURIDIQUE & DIGITALISATION DE POINTE
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-serif leading-tight">
+            Cabinet d'Avocat <span class="gold-gradient-text">Maître SLIMANI Noureddine</span>
+          </h1>
+          <p class="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed font-light">
+            Conseil, représentation contentieuse et gestion numérique des affaires juridiques. Intégration globale de la plateforme <strong>LPMS (Legal Practice Management System)</strong> assurant une rigueur procédurale absolue, le secret professionnel renforcé et l'automatisation des opérations d'avocat.
+          </p>
+
+          <div class="mt-6 flex flex-wrap gap-3 text-xs font-mono">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-3">
+              <span class="text-slate-500 block">AVOCAT TITULAIRE</span>
+              <span class="text-amber-400 font-bold">Me SLIMANI Noureddine</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-3">
+              <span class="text-slate-500 block">JURIDICTION / BARREAU</span>
+              <span class="text-white font-semibold">Cour d'Alger & Tribunaux Nationaux</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-3">
+              <span class="text-slate-500 block">PLATEFORME APPLICATIVE</span>
+              <span class="text-emerald-400 font-semibold">LPMS SRS-2026 v2.0 (Souveraine)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cabinet Stats & Key Areas Widget -->
+        <div class="lg:w-96 bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div class="text-xs font-mono text-amber-400 uppercase tracking-widest mb-3 flex items-center justify-between">
+            <span>Pôles d'Expertise du Cabinet</span>
+            <span class="text-emerald-400">Barreau d'Alger</span>
+          </div>
+
+          <ul class="space-y-3 text-xs text-slate-300 font-medium">
+            <li class="flex items-center gap-2.5 bg-slate-950/60 p-2 rounded border border-slate-800">
+              <span class="text-amber-400">⚖️</span>
+              <span>Droit des Affaires, Sociétés & Commercial</span>
+            </li>
+            <li class="flex items-center gap-2.5 bg-slate-950/60 p-2 rounded border border-slate-800">
+              <span class="text-amber-400">🏢</span>
+              <span>Contentieux Civil, Commercial & Foncier</span>
+            </li>
+            <li class="flex items-center gap-2.5 bg-slate-950/60 p-2 rounded border border-slate-800">
+              <span class="text-amber-400">📄</span>
+              <span>Rédaction Contractuelle & Audit de Conformité</span>
+            </li>
+            <li class="flex items-center gap-2.5 bg-slate-950/60 p-2 rounded border border-slate-800">
+              <span class="text-amber-400">🤝</span>
+              <span>Arbitrage & Règlement Alternatif des Conflits</span>
+            </li>
+          </ul>
+
+          <div class="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-400">Secrétariat & Prise de RDV :</span>
+            <span class="text-amber-300 font-bold">Disponible en Ligne</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Sticky Sidebar Navigation (Desktop) -->
+      <aside class="hidden lg:block lg:col-span-3 no-print">
+        <div class="sticky top-28 space-y-4">
+          
+          <div class="bg-slate-900/70 border border-slate-800 rounded-xl p-4 backdrop-blur-sm">
+            <div class="text-xs font-mono uppercase tracking-wider text-amber-400 mb-3 font-semibold flex items-center gap-2">
+              <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+              Navigation du Cahier LPMS
+            </div>
+            <nav class="space-y-1 text-xs font-medium">
+              <a href="#cabinet-identity" class="nav-link block px-2.5 py-1.5 rounded-lg text-amber-300 hover:bg-amber-500/10 transition-colors">🏛️ Cabinet SLIMANI Noureddine</a>
+              <a href="#summary" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">1. Contexte & Objectifs</a>
+              <a href="#architecture" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">2. Architecture & Microservices</a>
+              <a href="#security" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">3. Murs Éthiques & Zero-Trust</a>
+              <a href="#crm-erp" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">4. CRM, UTBMS & Comptabilité</a>
+              <a href="#dms-hardware" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">5. GED, Scanners TWAIN & Bates</a>
+              <a href="#ai-assistant" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">6. IA Juridique & ZDR Privé</a>
+              <a href="#signatures" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">7. Signatures eIDAS & Sceaux</a>
+              <a href="#mobile" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">8. App Mobile & Sync Offline</a>
+              <a href="#nfr" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">9. Exigences Non-Fonctionnelles</a>
+              <a href="#roadmap" class="nav-link block px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 transition-colors">10. Déploiement & Recette</a>
+              <a href="#consultation-portal" class="nav-link block px-2.5 py-1.5 rounded-lg text-amber-400 hover:bg-amber-500/20 border border-amber-500/30 transition-colors font-bold mt-2">📅 Prise de RDV Client</a>
+            </nav>
+          </div>
+
+          <!-- Quick Interactive Tools Box -->
+          <div class="bg-gradient-to-br from-slate-900 to-amber-950/40 border border-amber-500/30 rounded-xl p-4 shadow-lg">
+            <div class="text-xs font-semibold text-amber-300 mb-2 flex items-center gap-1.5">
+              <span>⚡ Démos & Simulateurs Temps Réel</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mb-3">Accès direct aux modules de test du cahier des charges :</p>
+            <div class="space-y-1.5 text-xs">
+              <button onclick="scrollToAndTrigger('demo-conflicts')" class="w-full text-left px-2.5 py-1.5 rounded bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 transition-colors font-mono">
+                🔍 Moteur Conflits d'Intérêts
+              </button>
+              <button onclick="scrollToAndTrigger('demo-stopwatch')" class="w-full text-left px-2.5 py-1.5 rounded bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 transition-colors font-mono">
+                ⏱️ Chronomètre LEDES / UTBMS
+              </button>
+              <button onclick="scrollToAndTrigger('demo-bates')" class="w-full text-left px-2.5 py-1.5 rounded bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 transition-colors font-mono">
+                🏷️ Numérotation Bates PDF
+              </button>
+              <button onclick="scrollToAndTrigger('demo-ai-redact')" class="w-full text-left px-2.5 py-1.5 rounded bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 transition-colors font-mono">
+                🛡️ Caviardage Automatique IA
+              </button>
+              <button onclick="scrollToAndTrigger('demo-signature')" class="w-full text-left px-2.5 py-1.5 rounded bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-200 transition-colors font-mono">
+                ✍️ Vérificateur eIDAS QES
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <div class="lg:col-span-9 space-y-12">
+
+        <!-- Section 0: Cabinet Presentation & Integration -->
+        <section id="cabinet-identity" class="bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-amber-950/20 border border-amber-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-sm relative">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Présentation Institutionnelle</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">Cabinet d'Avocat Maître SLIMANI Noureddine</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">Barreau d'Alger</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300 mb-6">
+            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+              <h3 class="font-bold text-amber-400 text-sm mb-2 font-serif">🏛️ Rigueur & Éthique</h3>
+              <p class="leading-relaxed">Inscrit au Barreau d'Alger, le Cabinet Maître SLIMANI garantit une indépendance totale, le respect strict du secret professionnel et une défense rigoureuse des intérêts de ses mandants.</p>
+            </div>
+            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+              <h3 class="font-bold text-amber-400 text-sm mb-2 font-serif">💼 Droit des Affaires & Contentieux</h3>
+              <p class="leading-relaxed">Accompagnement stratégique des entreprises, des investisseurs et des particuliers dans la négociation, le contentieux commercial, la protection d'actifs et les litiges fonciers.</p>
+            </div>
+            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800">
+              <h3 class="font-bold text-amber-400 text-sm mb-2 font-serif">💻 Transformation Digitale LPMS</h3>
+              <p class="leading-relaxed">Déploiement du système LPMS (Legal Practice Management System) pour la gestion dématérialisée des pièces, le suivi en temps réel des dossiers et la sécurité Zero-Trust.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 1: Executive Summary -->
+        <section id="summary" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 1</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">1. Contexte, Sommaire Exécutif & Objectifs LPMS</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">SRS-LPMS-SEC-01</span>
+          </div>
+
+          <div class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
+            <p>
+              Le secteur juridique moderne exige la maîtrise simultanée de la complexité procédurale, du respect strict des délais légaux, du chiffrement des échanges et de la réactivité vis-à-vis des clients. Pour le <strong>Cabinet Maître SLIMANI Noureddine</strong>, la mise en œuvre du système <strong>LPMS (Legal Practice Management & Automation System)</strong> permet de fusionner la gestion de cabinet, l'archivage sécurisé des pièces et l'automatisation juridique au sein d'une infrastructure hautement disponible et souveraine.
+            </p>
+          </div>
+
+          <!-- 6 Pillars Cards Grid -->
+          <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400">🏢</div>
+                <div>
+                  <h3 class="font-semibold text-white text-sm">Consolidation Opérationnelle</h3>
+                  <p class="text-xs text-slate-400 mt-1">Unification du CRM, des dossiers (matters), du chronométrage d'audiences, de la facturation et des échanges sécurisés clients.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">🛡️</div>
+                <div>
+                  <h3 class="font-semibold text-white text-sm">Sécurité Inviolable & Secret</h3>
+                  <p class="text-xs text-slate-400 mt-1">Architecture Zero-Trust, chiffrement militaire AES-256-GCM, murailles éthiques strictes et masquage des données sensibles (PII).</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-cyan-500/10 text-cyan-400">🖨️</div>
+                <div>
+                  <h3 class="font-semibold text-white text-sm">Périphériques & Numérisation TWAIN</h3>
+                  <p class="text-xs text-slate-400 mt-1">Pont matériel WebSocket direct reliant les scanners haute vitesse du cabinet, conversion OCR automatique et numérotation Bates vectorielle.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-purple-500/10 text-purple-400">🤖</div>
+                <div>
+                  <h3 class="font-semibold text-white text-sm">Intelligence IA Privée (ZDR)</h3>
+                  <p class="text-xs text-slate-400 mt-1">Moteur de rédaction de conclusions, analyse de contrats et synthèse jurisprudentielle à conservation de données nulle (Zero Data Retention).</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">✍️</div>
+                <div>
+                  <h3 class="font-semibold text-white text-sm">Confiance Numérique & eIDAS</h3>
+                  <p class="text-xs text-slate-400 mt-1">Horodatage qualifié, signatures électroniques avancées/qualifiées (SES/AES/QES) et sceau d'entreprise pour l'authenticité des actes.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 hover:border-amber-500/40 transition-colors">
+              <div class="flex items-start space-x-3">
+                <div class="p-2 rounded-lg bg-rose-500/10 text-rose-400">📱</div>
+                <div>
+                  <h3 class="font-semibold text-white text-sm">Mobilité Native & Mode Hors-Ligne</h3>
+                  <p class="text-xs text-slate-400 mt-1">Applications pour smartphones et tablettes permettant la consultation des pièces au tribunal avec synchronisation chiffrée bidirectionnelle.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Architecture -->
+        <section id="architecture" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 2</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">2. Architecture Système & Microservices</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">PostgreSQL RLS • Go/Rust</span>
+          </div>
+
+          <!-- Interactive Architecture Table -->
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900 text-slate-400 font-mono uppercase text-[10px] border-b border-slate-800">
+                <tr>
+                  <th class="p-3">Composant Système</th>
+                  <th class="p-3">Technologies Clés</th>
+                  <th class="p-3">Rôles & Spécifications Opérationnelles</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800 font-normal">
+                <tr class="hover:bg-slate-900/50">
+                  <td class="p-3 font-semibold text-amber-400 whitespace-nowrap">Interface Cabinet & Client</td>
+                  <td class="p-3 text-slate-200">React 18 SPA, Tailwind CSS, Native iOS & Android App</td>
+                  <td class="p-3 text-slate-400">Portail hautement réactif pour l'avocat et espace confidentiel sécurisé pour le suivi des procédures par les clients.</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50">
+                  <td class="p-3 font-semibold text-amber-400 whitespace-nowrap">Passerelle API (Gateway)</td>
+                  <td class="p-3 text-slate-200">Envoy / NGINX Ingress, OIDC OAuth2, Rate Limiting RateKit</td>
+                  <td class="p-3 text-slate-400">Terminaison TLS 1.3, authentification forte FIDO2, pare-feu applicatif WAF et gestion des quotas.</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50">
+                  <td class="p-3 font-semibold text-amber-400 whitespace-nowrap">Core Microservices</td>
+                  <td class="p-3 text-slate-200">Services indépendants Go / Rust, Protocole gRPC</td>
+                  <td class="p-3 text-slate-400">Modules métiers : Conflits d'intérêts, Registre des Audiences, Facturation UTBMS, Horodatage, IA Caviardage.</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50">
+                  <td class="p-3 font-semibold text-amber-400 whitespace-nowrap">Base de Données Souveraine</td>
+                  <td class="p-3 text-slate-200">PostgreSQL 16 Cluster + Patroni, Row-Level Security (RLS)</td>
+                  <td class="p-3 text-slate-400">Maintien de l'intégrité transactionnelle ACID, traçabilité immuable des événements et isolation étanche des données.</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50">
+                  <td class="p-3 font-semibold text-amber-400 whitespace-nowrap">Stockage Objets GED</td>
+                  <td class="p-3 text-slate-200">MinIO Enterprise Cluster / Ceph S3 (Chiffrement KMS)</td>
+                  <td class="p-3 text-slate-400">Archivage pérenne des PDF/A scannés, bordereaux de pièces et enveloppes de signature avec politique WORM.</td>
+                </tr>
+                <tr class="hover:bg-slate-900/50">
+                  <td class="p-3 font-semibold text-amber-400 whitespace-nowrap">Daemon Matériel local</td>
+                  <td class="p-3 text-slate-200">Compagnon OS Local (WebSocket wss://127.0.0.1:44388 over mTLS)</td>
+                  <td class="p-3 text-slate-400">Pilote la numérisation matérielle TWAIN/WIA en direct et gère le spooler d'impression du cabinet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="security" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 3</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">3. Sécurité Zero-Trust & Murailles Éthiques</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">AES-256-GCM • FIPS 140-2</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono mb-6">
+            <div class="p-3 bg-slate-900/80 border border-slate-800 rounded-lg">
+              <div class="text-slate-500">CHIFFREMENT EN TRANSIT & REPOS</div>
+              <div class="text-emerald-400 font-semibold mt-1">TLS 1.3 / AES-256-GCM Envelope</div>
+              <div class="text-[11px] text-slate-400 mt-1 font-sans">Clefs cryptographiques individuelles par dossier avec rotation automatique KMS.</div>
+            </div>
+            <div class="p-3 bg-slate-900/80 border border-slate-800 rounded-lg">
+              <div class="text-slate-500">AUTHENTIFICATION BIOMÉTRIQUE</div>
+              <div class="text-amber-400 font-semibold mt-1">FIDO2 WebAuthn & Passkeys</div>
+              <div class="text-[11px] text-slate-400 mt-1 font-sans">Protection contre le phishing par clés physiques YubiKey et biométrie matérielle.</div>
+            </div>
+          </div>
+
+          <!-- Interactive Ethical Wall Simulator -->
+          <div id="demo-conflicts" class="mt-6 bg-slate-950 border border-amber-500/30 rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
+                <h3 class="text-sm font-bold text-white font-mono uppercase">Simulateur Interactif : Détection de Conflits & Murailles Éthiques</h3>
+              </div>
+              <span class="text-[11px] bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded font-mono">Regles Deontologiques Avocats</span>
+            </div>
+
+            <p class="text-xs text-slate-300 mb-4">
+              Testez le moteur de contrôle d'éthique de la plateforme LPMS. Il empêche immédiatement toute promiscuité de données si un collaborateur a représenté la partie adverse dans un dossier antérieur.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4 text-xs font-mono">
+              <div>
+                <label class="block text-slate-400 mb-1">Intervenant Cabinet :</label>
+                <select id="simEthicalLawyer" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-amber-500">
+                  <option value="Me SLIMANI Noureddine (Avocat Titulaire)">Me SLIMANI Noureddine (Avocat Titulaire)</option>
+                  <option value="Maître Julie V. (Avocate Collaboratrice)">Maître Julie V. (Collaboratrice M&A)</option>
+                  <option value="Maître Thomas B. (Consultant Contentieux)">Maître Thomas B. (Contentieux)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-400 mb-1">Partie / Dossier Cible :</label>
+                <select id="simEthicalMatter" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-amber-500">
+                  <option value="Dossier #2026-089 (Société Sonatrach c/ BTP SARL)">#2026-089 (Société Sonatrach c/ BTP SARL)</option>
+                  <option value="Dossier #2026-112 (Arbitrage Commercial International)">#2026-112 (Arbitrage Commercial)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-400 mb-1">Lancer le Test :</label>
+                <button onclick="applyEthicalWallSimulation()" class="w-full py-2 px-3 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>Vérifier la Muraille</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="simEthicalResult" class="p-3 bg-slate-900/90 border border-slate-800 rounded-lg text-xs font-mono text-slate-400">
+              <span class="text-slate-500">// Moteur de conformité en attente. Sélectionnez un collaborateur et un dossier pour générer le rapport.</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="crm-erp" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 4</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">4. CRM Légal, Chronométrage UTBMS & Comptabilité CARPA</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">LEDES 1998B Standard</span>
+          </div>
+
+          <!-- Interactive Timekeeping & UTBMS Billing Demo -->
+          <div id="demo-stopwatch" class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></span>
+                Chronomètre de Facturation UTBMS & Générateur LEDES en Direct
+              </h3>
+              <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Modèle Cabinet SLIMANI</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center bg-slate-900/80 p-4 rounded-lg border border-slate-800">
+              <div class="text-center sm:text-left">
+                <span class="text-[10px] text-slate-500 block uppercase font-mono">Temps d'Audience / Travail</span>
+                <span id="timerDisplay" class="text-2xl font-mono font-bold text-amber-400">00:18:45</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-500 block uppercase font-mono">Code d'Activité UTBMS</span>
+                <select id="utbmsCodeSelect" class="w-full bg-slate-950 border border-slate-700 text-xs rounded p-1.5 text-slate-200 mt-1">
+                  <option value="A103 - Draft/revise conclusions">A103 - Rédaction de Conclusions</option>
+                  <option value="A102 - Legal Research">A102 - Recherche Juridique & Textes</option>
+                  <option value="A105 - Client Consultation">A105 - Entretien & Rendez-vous Client</option>
+                  <option value="A106 - Court appearance">A106 - Plaidoirie & Audience Tribunal</option>
+                </select>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-500 block uppercase font-mono">Taux Horaire Cabinet (DZD/€)</span>
+                <input id="hourlyRateInput" type="number" value="15000" class="w-full bg-slate-950 border border-slate-700 text-xs rounded p-1.5 text-slate-200 mt-1" oninput="updateBillAmount()">
+              </div>
+              <div class="flex flex-col gap-2">
+                <button id="timerToggleBtn" onclick="toggleTimer()" class="w-full py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs transition-colors cursor-pointer">
+                  Pause
+                </button>
+                <button onclick="recordTimeEntry()" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded text-xs transition-colors cursor-pointer">
+                  Consigner la Ligne
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-3 flex flex-wrap items-center justify-between text-xs text-slate-400 font-mono gap-2">
+              <span>Montant H.T. calculé : <strong id="calculatedFee" class="text-emerald-400 font-bold">4 687.50 DZD</strong></span>
+              <span id="timekeeperFeedback" class="text-amber-400 text-[11px]"></span>
+            </div>
+          </div>
+        </section>
+
+        <section id="dms-hardware" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 5</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">5. GED, Numérisation TWAIN & Tamponnage Bates Vectoriel</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">ISO 19005 PDF/A-1b</span>
+          </div>
+
+          <!-- Interactive Bates Stamping Tool -->
+          <div id="demo-bates" class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
+                <span class="text-amber-400 font-serif">🏷️</span>
+                Simulateur de Tamponnage Numérique Bates (Pièces Judiciaires Cabinet)
+              </h3>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-cyan-400 font-mono">Vector Overlay Engine</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 text-xs font-mono">
+              <div>
+                <label class="text-slate-400 block mb-1">Préfixe de la Pièce</label>
+                <input id="batesPrefix" type="text" value="PIECE-SLIMANI-" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-slate-200" oninput="renderBatesPreview()">
+              </div>
+              <div>
+                <label class="text-slate-400 block mb-1">Séquence Numérique</label>
+                <input id="batesStart" type="number" value="202601" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-slate-200" oninput="renderBatesPreview()">
+              </div>
+              <div>
+                <label class="text-slate-400 block mb-1">Emplacement de l'Empreinte</label>
+                <select id="batesPosition" class="w-full bg-slate-900 border border-slate-700 rounded p-1.5 text-slate-200" onchange="renderBatesPreview()">
+                  <option value="bottom-right">Bas à Droite (Bottom-Right)</option>
+                  <option value="top-right">Haut à Droite (Top-Right)</option>
+                  <option value="bottom-left">Bas à Gauche (Bottom-Left)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Virtual Document Preview -->
+            <div class="relative bg-amber-50 text-slate-900 p-6 rounded-lg shadow-inner h-52 flex flex-col justify-between overflow-hidden border border-amber-200">
+              <div class="flex justify-between items-start border-b border-amber-200/80 pb-2">
+                <div>
+                  <h5 class="text-xs font-bold uppercase tracking-wider text-slate-900 font-serif">COUR D'ALGER • CHAMBRE COMMERCIALE</h5>
+                  <p class="text-[10px] text-slate-600 font-mono">Bordereau de pièces communiquées - Dossier N° 00482/26</p>
+                </div>
+                <div id="batesBadgeTop" class="hidden text-xs font-mono font-bold bg-amber-200 text-amber-950 border border-amber-500 px-2 py-0.5 rounded shadow-sm"></div>
+              </div>
+
+              <div class="text-[11px] text-slate-700 font-serif leading-relaxed italic space-y-1">
+                <p>« Conclusions en réponse présentées pour Maître SLIMANI Noureddine au nom et pour le compte de la partie demanderesse... »</p>
+                <p>« Qu'il plaise à la Cour d'ordonner l'homologation du rapport d'expertise foncière et de condamner la partie adverse aux dépens. »</p>
+              </div>
+
+              <div class="flex justify-between items-end border-t border-amber-200/80 pt-2 text-[10px] text-slate-500 font-mono">
+                <span>Certifié conforme par Cabinet SLIMANI • Page 1/14</span>
+                <div id="batesBadgeBottom" class="text-xs font-mono font-bold bg-amber-200 text-amber-950 border border-amber-500 px-2 py-0.5 rounded shadow-sm">PIECE-SLIMANI-202601</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ai-assistant" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 6</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">6. IA Juridique, Anonymisation (PII) & ZDR Privé</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">Zero Data Retention</span>
+          </div>
+
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            Le moteur IA intégré permet la rédaction automatisée de synthèses juridiques tout en appliquant une règle stricte de caviardage anonymisant les données personnelles (noms, montants, numéros de comptes) avant tout traitement par le LLM.
+          </p>
+
+          <!-- Interactive AI Redaction Demo -->
+          <div id="demo-ai-redact" class="bg-slate-950 border border-amber-500/30 rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
+                <span>🛡️</span>
+                Simulateur de Caviardage Automatisé IA (Masquage PII)
+              </h3>
+              <span class="text-xs font-mono text-amber-400">Conformité RGPD & Secret Avocat</span>
+            </div>
+
+            <div class="space-y-3 text-xs font-mono">
+              <div>
+                <label class="text-slate-400 block mb-1">Texte Juridique Brut (Actes / Témoignages) :</label>
+                <textarea id="rawLegalText" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-amber-500 focus:outline-none">Maître SLIMANI Noureddine a rencontré Monsieur Karim BENALI, né le 12/04/1978, résidant au 14 Rue Didouche Mourad, Alger. Un virement de 4,500,000 DZD a été effectué depuis le compte CPA N° 004000123456 en faveur de la société SARL BATI-ALGER.</textarea>
+              </div>
+
+              <div class="flex justify-end">
+                <button onclick="processAiRedaction()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded transition-colors flex items-center gap-2 cursor-pointer">
+                  <span>✨ Anonymiser & Appliquer le Caviardage IA</span>
+                </button>
+              </div>
+
+              <div>
+                <label class="text-slate-400 block mb-1">Texte Anonymisé Transmis au Moteur IA (ZDR) :</label>
+                <div id="redactedResultText" class="p-3 bg-slate-900 border border-slate-800 rounded text-slate-300 min-h-[60px] whitespace-pre-wrap">
+                  Cliquez sur le bouton ci-dessus pour simuler le masquage automatique des entités identifiables.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="signatures" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 7</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">7. Signatures eIDAS & Sceau Électronique d'Entreprise</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">QES • PAdES-LTV</span>
+          </div>
+
+          <!-- Interactive eIDAS Verifier Demo -->
+          <div id="demo-signature" class="bg-slate-950 border border-slate-800 rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-bold text-white font-mono uppercase flex items-center gap-2">
+                <span>✍️</span>
+                Vérificateur d'Empreinte & Certificateur eIDAS (PAdES)
+              </h3>
+              <span class="text-xs font-mono text-emerald-400">Certificat Avocat Valide</span>
+            </div>
+
+            <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-lg text-xs font-mono space-y-3">
+              <div class="flex flex-wrap items-center justify-between border-b border-slate-800 pb-2">
+                <span class="text-slate-400">Signataire Habilité :</span>
+                <span class="text-amber-300 font-bold">Me SLIMANI Noureddine (Barreau d'Alger)</span>
+              </div>
+              <div class="flex flex-wrap items-center justify-between border-b border-slate-800 pb-2">
+                <span class="text-slate-400">Niveau de Signature eIDAS :</span>
+                <span class="text-emerald-400 font-bold">QES (Signature Électronique Qualifiée)</span>
+              </div>
+              <div class="flex flex-wrap items-center justify-between border-b border-slate-800 pb-2">
+                <span class="text-slate-400">Algorithme Cryptographique :</span>
+                <span class="text-slate-200">RSA-4096 / SHA-512 + Timestamp LTV</span>
+              </div>
+              <div class="flex flex-wrap items-center justify-between">
+                <span class="text-slate-400">Empreinte SHA-256 du Document :</span>
+                <span class="text-slate-500 break-all">8f9b2e1a3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 8 & 9: Mobile & NFR SLA -->
+        <section id="mobile" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 8 & 9</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">8. Mobilité Client / Avocat & Exigences Non-Fonctionnelles (SLA)</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">SLA 99.95%</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+            <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-xl">
+              <div class="text-amber-400 font-bold mb-1">MODE OFFLINE SYNC</div>
+              <p class="text-slate-300 font-sans">Chiffrement de la base SQLite mobile locale. Synchronisation automatique des ajouts de pièces dès le retour de la connexion au tribunal.</p>
+            </div>
+            <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-xl">
+              <div class="text-emerald-400 font-bold mb-1">DISPONIBILITÉ SLA 99.95%</div>
+              <p class="text-slate-300 font-sans">Haute disponibilité multi-sites avec basculement automatique (Failover &lt; 30 secondes) et sauvegardes incrémentales toutes les 15 minutes.</p>
+            </div>
+            <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-xl">
+              <div class="text-cyan-400 font-bold mb-1">RTO &lt; 1H / RPO &lt; 15MIN</div>
+              <p class="text-slate-300 font-sans">Plan de Continuité d'Activité (PCA) garantissant une restauration quasi-immédiate de l'historique complet des dossiers juridiques.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 10: Roadmap & Planning -->
+        <section id="roadmap" class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Chapitre 10</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">10. Feuille de Route & Jalons de Déploiement Cabinet</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 font-mono">Planning 2026</span>
+          </div>
+
+          <div class="space-y-4 text-xs font-mono">
+            <div class="flex gap-4 items-start bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+              <span class="px-2 py-1 bg-amber-500/20 text-amber-300 rounded font-bold">Phase 1</span>
+              <div>
+                <h4 class="text-white font-bold">Déploiement Core Kernel LPMS & Murailles Éthiques</h4>
+                <p class="text-slate-400 font-sans mt-0.5">Mise en place du cluster PostgreSQL, chiffrement des bases et intégration du registre des clients du Cabinet SLIMANI.</p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-300 rounded font-bold">Phase 2</span>
+              <div>
+                <h4 class="text-white font-bold">Intégration Matérielle GED TWAIN & Bates Overlay Engine</h4>
+                <p class="text-slate-400 font-sans mt-0.5">Liaison des scanners du cabinet via WebSocket local et automatisation du tamponnage des numéros de pièces judiciaires.</p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+              <span class="px-2 py-1 bg-purple-500/20 text-purple-300 rounded font-bold">Phase 3</span>
+              <div>
+                <h4 class="text-white font-bold">Moteur IA Privé ZDR & Portal Client Interactif</h4>
+                <p class="text-slate-400 font-sans mt-0.5">Activation du module d'assistance à la rédaction de conclusions et déploiement du portail sécurisé de prise de rendez-vous client.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="consultation-portal" class="bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/40 rounded-2xl p-6 sm:p-8 backdrop-blur-md relative overflow-hidden shadow-2xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Service Clientèle & Prise de Contact</span>
+              <h2 class="text-2xl font-bold text-white font-serif mt-1">Espace de Demande de Consultation & Analyse de Dossier</h2>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">Cabinet SLIMANI</span>
+          </div>
+
+          <p class="text-xs text-slate-300 mb-6 leading-relaxed">
+            Vous souhaitez confier un dossier au Cabinet de Maître SLIMANI Noureddine ou solliciter une consultation juridique ? Remplissez le formulaire ci-dessous. Vos informations sont immédiatement chiffrées conformément aux normes du secret professionnel LPMS.
+          </p>
+
+          <form onsubmit="handleConsultationSubmit(event)" class="space-y-4 text-xs font-mono">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-slate-300 mb-1">Nom / Raison Sociale *</label>
+                <input type="text" id="clientName" required placeholder="ex: Société K-Invest / M. Amine L." class="w-full bg-slate-950 border border-slate-700 rounded p-2.5 text-slate-100 focus:border-amber-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1">Numéro de Téléphone *</label>
+                <input type="tel" id="clientPhone" required placeholder="ex: +213 550 00 00 00" class="w-full bg-slate-950 border border-slate-700 rounded p-2.5 text-slate-100 focus:border-amber-500 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-slate-300 mb-1">Adresse E-mail *</label>
+                <input type="email" id="clientEmail" required placeholder="ex: contact@entreprise.dz" class="w-full bg-slate-950 border border-slate-700 rounded p-2.5 text-slate-100 focus:border-amber-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-slate-300 mb-1">Domaine Juridique Concerné *</label>
+                <select id="legalDomain" class="w-full bg-slate-950 border border-slate-700 rounded p-2.5 text-slate-100 focus:border-amber-500 focus:outline-none">
+                  <option value="Droit Commercial & Sociétés">Droit Commercial & Sociétés</option>
+                  <option value="Contentieux Foncier & Immobilier">Contentieux Foncier & Immobilier</option>
+                  <option value="Droit des Contrats & Rédaction">Droit des Contrats & Rédaction</option>
+                  <option value="Arbitrage & Litiges d'Affaires">Arbitrage & Litiges d'Affaires</option>
+                  <option value="Autre Consultation Juridique">Autre Consultation Juridique</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-slate-300 mb-1">Résumé synthétique de votre demande / dossier *</label>
+              <textarea id="caseSummary" rows="3" required placeholder="Précisez brièvement les faits, la juridiction concernée ou l'enjeu juridique..." class="w-full bg-slate-950 border border-slate-700 rounded p-2.5 text-slate-100 focus:border-amber-500 focus:outline-none"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-2">
+              <span class="text-[11px] text-slate-400">🔒 Vos données sont protégées par le secret professionnel d'avocat.</span>
+              <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-amber-500/20 cursor-pointer flex items-center gap-2">
+                <span>Transmettre au Cabinet</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </form>
+
+          <div id="consultationFeedback" class="hidden mt-4 p-3 bg-emerald-500/20 border border-emerald-500/40 rounded-lg text-emerald-300 text-xs font-mono">
+            ✅ Votre demande a été enregistrée avec succès dans le système du Cabinet Maître SLIMANI. Un secrétariat prendra contact avec vous rapidement.
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-slate-900 border-t border-slate-800 py-10 mt-16 text-xs text-slate-400 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-bold font-serif">
+          ⚖
+        </div>
+        <div>
+          <p class="text-white font-bold font-serif">Cabinet d'Avocat Maître SLIMANI Noureddine</p>
+          <p class="text-[11px] text-slate-500">Barreau d'Alger • Système LPMS Automation & Protection Juridique</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6 text-[11px] font-mono">
+        <span>Conformité LPMS v2.0</span>
+        <span>•</span>
+        <span>Chiffrement AES-256</span>
+        <span>•</span>
+        <span>Norme eIDAS QES</span>
+      </div>
+
+      <div class="text-[11px] text-slate-500">
+        © 2026 Cabinet SLIMANI. Tous droits réservés.
+      </div>
+    </div>
+  </footer>
+
+  <div id="aiModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col h-[600px] max-h-[90vh]">
+      
+      <!-- Modal Header -->
+      <div class="bg-slate-950 p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-bold">
+            🤖
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white font-serif">Assistant IA Juridique Privé (LPMS Engine)</h3>
+            <p class="text-[10px] text-amber-400 font-mono">Cabinet Maître SLIMANI • Confidentialité ZDR Totale</p>
+          </div>
+        </div>
+        <button onclick="toggleAiModal()" class="text-slate-400 hover:text-white p-1 text-lg">✕</button>
+      </div>
+
+      <!-- Chat Stream -->
+      <div id="aiChatStream" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs font-mono bg-slate-950/50">
+        <div class="bg-slate-800/80 border border-slate-700 p-3 rounded-lg text-slate-200">
+          <span class="text-amber-400 font-bold block mb-1">🤖 Assistant LPMS Cabinet SLIMANI :</span>
+          Bonjour. Je suis l'assistant IA privé du Cabinet Maître SLIMANI Noureddine. Posez-moi vos questions sur les fonctionnalités du cahier des charges LPMS, la législation d'affaires, la gestion de dossiers ou les procédures.
+        </div>
+      </div>
+
+      <!-- Modal Input -->
+      <div class="p-3 bg-slate-950 border-t border-slate-800 flex gap-2">
+        <input 
+          type="text" 
+          id="aiQueryInput" 
+          placeholder="Ex: Comment le système LPMS garantit-il le secret professionnel des pièces ?" 
+          onkeydown="if(event.key === 'Enter') sendAiQuery()"
+          class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500"
+        >
+        <button onclick="sendAiQuery()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition-colors cursor-pointer">
+          Envoyer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. TIMERS & UTBMS BILLING ENGINE
+    // ==========================================
+    let timerInterval = null;
+    let timerSeconds = 1125; // Default starts at 18m 45s
+    let isTimerRunning = false;
+
+    function updateTimerDisplay() {
+      const hrs = String(Math.floor(timerSeconds / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((timerSeconds % 3600) / 60)).padStart(2, '0');
+      const secs = String(timerSeconds % 60).padStart(2, '0');
+      document.getElementById('timerDisplay').innerText = `${hrs}:${mins}:${secs}`;
+      updateBillAmount();
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timerToggleBtn');
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        btn.innerText = "Démarrer";
+        btn.className = "w-full py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded text-xs transition-colors cursor-pointer";
+      } else {
+        isTimerRunning = true;
+        btn.innerText = "Pause";
+        btn.className = "w-full py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs transition-colors cursor-pointer";
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          updateTimerDisplay();
+        }, 1000);
+      }
+    }
+
+    function updateBillAmount() {
+      const rate = parseFloat(document.getElementById('hourlyRateInput').value) || 0;
+      const hours = timerSeconds / 3600;
+      const total = hours * rate;
+      document.getElementById('calculatedFee').innerText = total.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " DZD";
+    }
+
+    function recordTimeEntry() {
+      const code = document.getElementById('utbmsCodeSelect').value;
+      const feedback = document.getElementById('timekeeperFeedback');
+      feedback.innerText = `✓ Ligne consignée dans le journal LEDES : ${code}`;
+      setTimeout(() => { feedback.innerText = ''; }, 4000);
+    }
+
+    // ==========================================
+    // 2. ETHICAL WALL & CONFLICT DETECTOR
+    // ==========================================
+    function applyEthicalWallSimulation() {
+      const lawyer = document.getElementById('simEthicalLawyer').value;
+      const matter = document.getElementById('simEthicalMatter').value;
+      const resultDiv = document.getElementById('simEthicalResult');
+
+      if (lawyer.includes("Julie V.")) {
+        resultDiv.className = "p-3 bg-rose-950/80 border border-rose-500/50 rounded-lg text-xs font-mono text-rose-200 animate-pulse";
+        resultDiv.innerHTML = `
+          <div class="font-bold">⚠️ ALERTE CONFLIT D'INTÉRÊTS DÉTECTÉE (LPMS Ethics Engine)</div>
+          <div class="mt-1">L'intervenante <strong>${lawyer}</strong> a représenté la partie adverse dans un contentieux antécédent.</div>
+          <div class="mt-1 text-amber-300">➜ Érection immédiate de la Muraille Éthique : Accès aux pièces, au moteur de recherche et au dossier ${matter} VEROUILLÉ.</div>
+        `;
+      } else {
+        resultDiv.className = "p-3 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-xs font-mono text-emerald-200";
+        resultDiv.innerHTML = `
+          <div class="font-bold">✅ CONTRÔLE DÉONTOLOGIQUE VALIDÉ</div>
+          <div class="mt-1">Aucun conflit d'intérêts direct ou indirect trouvé pour <strong>${lawyer}</strong> sur le dossier ${matter}.</div>
+          <div class="mt-1 text-slate-300">Certificat de dépistage N° ETH-2026-9921 scellé et consigné.</div>
+        `;
+      }
+    }
+
+    // ==========================================
+    // 3. BATES STAMPING SIMULATOR
+    // ==========================================
+    function renderBatesPreview() {
+      const prefix = document.getElementById('batesPrefix').value || "PIECE-";
+      const startNum = document.getElementById('batesStart').value || "1";
+      const pos = document.getElementById('batesPosition').value;
+      const topBadge = document.getElementById('batesBadgeTop');
+      const bottomBadge = document.getElementById('batesBadgeBottom');
+
+      const paddedNum = String(startNum).padStart(6, '0');
+      const fullBates = `${prefix}${paddedNum}`;
+
+      if (pos === 'top-right') {
+        topBadge.classList.remove('hidden');
+        topBadge.innerText = fullBates;
+        bottomBadge.classList.add('hidden');
+      } else {
+        topBadge.classList.add('hidden');
+        bottomBadge.classList.remove('hidden');
+        bottomBadge.innerText = fullBates;
+      }
+    }
+
+    // ==========================================
+    // 4. AI LEGAL REDACTION (PII)
+    // ==========================================
+    function processAiRedaction() {
+      const raw = document.getElementById('rawLegalText').value;
+      
+      // Simple regex based redaction for PII demo
+      let redacted = raw
+        .replace(/Monsieur\s+[A-Z\s]+/gi, "[PERSONNE_PHYSIQUE_ANONYMISÉE]")
+        .replace(/\b\d{2}\/\d{2}\/\d{4}\b/g, "[DATE_NAISSANCE_MASQUÉE]")
+        .replace(/\d+\s+Rue\s+[^,]+,\s*[A-Z]+/gi, "[ADRESSE_CANDIDATE_REDACTED]")
+        .replace(/\d{1,3}(,\d{3})*\s*DZD/gi, "[MONTANT_TRANSACTION_CONFIDENTIEL]")
+        .replace(/CPA N°\s*\d+/gi, "[COMPTE_BANCAIRE_ANONYME]");
+
+      document.getElementById('redactedResultText').innerText = redacted;
+    }
+
+    // ==========================================
+    // 5. CONSULTATION FORM SUBMISSION
+    // ==========================================
+    function handleConsultationSubmit(event) {
+      event.preventDefault();
+      const feedback = document.getElementById('consultationFeedback');
+      feedback.classList.remove('hidden');
+      event.target.reset();
+      setTimeout(() => {
+        feedback.classList.add('hidden');
+      }, 6000);
+    }
+
+    // ==========================================
+    // 6. GLOBAL SEARCH & SCROLL HELPERS
+    // ==========================================
+    function handleGlobalSearch(query) {
+      if (!query.trim()) return;
+      const term = query.toLowerCase();
+      if (term.includes("bates")) {
+        scrollToAndTrigger('demo-bates');
+      } else if (term.includes("conflit") || term.includes("ethic")) {
+        scrollToAndTrigger('demo-conflicts');
+      } else if (term.includes("utbms") || term.includes("time") || term.includes("factur")) {
+        scrollToAndTrigger('demo-stopwatch');
+      } else if (term.includes("redact") || term.includes("caviard")) {
+        scrollToAndTrigger('demo-ai-redact');
+      } else if (term.includes("signat") || term.includes("eidas")) {
+        scrollToAndTrigger('demo-signature');
+      }
+    }
+
+    function scrollToAndTrigger(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('ring-2', 'ring-amber-500');
+        setTimeout(() => el.classList.remove('ring-2', 'ring-amber-500'), 2500);
+      }
+    }
+
+    function toggleMobileNav() {
+      const drawer = document.getElementById('mobileNavDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    // ==========================================
+    // 7. GEMINI AI LEGAL ASSISTANT WIDGET
+    // ==========================================
+    function toggleAiModal() {
+      const modal = document.getElementById('aiModal');
+      modal.classList.toggle('hidden');
+    }
+
+    async function sendAiQuery() {
+      const input = document.getElementById('aiQueryInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatStream = document.getElementById('aiChatStream');
+      
+      // Append User message
+      const userMsgDiv = document.createElement('div');
+      userMsgDiv.className = "bg-amber-500/10 border border-amber-500/30 p-3 rounded-lg text-amber-200 text-right";
+      userMsgDiv.innerHTML = `<span class="font-bold text-amber-400 block mb-1">👤 Requérent :</span>${escapeHtml(text)}`;
+      chatStream.appendChild(userMsgDiv);
+
+      input.value = '';
+      chatStream.scrollTop = chatStream.scrollHeight;
+
+      // Loading Placeholder
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = "bg-slate-800/80 border border-slate-700 p-3 rounded-lg text-slate-400 flex items-center gap-2";
+      loadingDiv.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span> Analyse juridique & système en cours...`;
+      chatStream.appendChild(loadingDiv);
+      chatStream.scrollTop = chatStream.scrollHeight;
+
+      // Try calling Gemini API via non-streaming gemini-3-flash-preview endpoint
+      try {
+        const apiKey = ""; // Canvas runtime environment injected
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+        const systemPrompt = "Vous êtes l'assistant IA juridique privé du Cabinet d'Avocat Maître SLIMANI Noureddine (Barreau d'Alger). Vous répondez avec professionnalisme, rigueur juridique, et précision technique sur le système LPMS (cahier des charges, secret professionnel, procédures, TWAIN, eIDAS, UTBMS, Murailles éthiques).";
+
+        const payload = {
+          contents: [{ parts: [{ text: text }] }],
+          systemInstruction: { parts: [{ text: systemPrompt }] }
+        };
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        chatStream.removeChild(loadingDiv);
+
+        let aiAnswer = "";
+        if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+          aiAnswer = data.candidates[0].content.parts[0].text;
+        } else {
+          // Fallback response if API key is unpopulated in standalone run
+          aiAnswer = getFallbackLegalAiResponse(text);
+        }
+
+        const aiMsgDiv = document.createElement('div');
+        aiMsgDiv.className = "bg-slate-800/90 border border-slate-700 p-3 rounded-lg text-slate-200";
+        aiMsgDiv.innerHTML = `<span class="text-amber-400 font-bold block mb-1">🤖 Assistant LPMS Cabinet SLIMANI :</span>${escapeHtml(aiAnswer)}`;
+        chatStream.appendChild(aiMsgDiv);
+
+      } catch (err) {
+        chatStream.removeChild(loadingDiv);
+        const aiMsgDiv = document.createElement('div');
+        aiMsgDiv.className = "bg-slate-800/90 border border-slate-700 p-3 rounded-lg text-slate-200";
+        aiMsgDiv.innerHTML = `<span class="text-amber-400 font-bold block mb-1">🤖 Assistant LPMS Cabinet SLIMANI :</span>${escapeHtml(getFallbackLegalAiResponse(text))}`;
+        chatStream.appendChild(aiMsgDiv);
+      }
+
+      chatStream.scrollTop = chatStream.scrollHeight;
+    }
+
+    function getFallbackLegalAiResponse(query) {
+      const q = query.toLowerCase();
+      if (q.includes("bates") || q.includes("pièce")) {
+        return "Le module de tamponnage Bates insère automatiquement un identifiant vectoriel immuable (ex: PIECE-SLIMANI-202601) directement sur le calque supérieur du document scanné, garantissant sa traçabilité judiciaire devant les tribunaux.";
+      } else if (q.includes("secret") || q.includes("confidenti") || q.includes("secur")) {
+        return "Le Cabinet Maître SLIMANI Noureddine applique une sécurité Zero-Trust avec chiffrement AES-256 au repos et TLS 1.3 en transit. De plus, un masquage préalable (PII) est exécuté avant toute transmission d'analyse à l'IA privée.";
+      } else if (q.includes("factur") || q.includes("utbms") || q.includes("tarif")) {
+        return "La facturation du cabinet s'appuie sur le standard international UTBMS / LEDES 1998B, consignant au centième d'heure près les actes de rédaction, de recherche et de plaidoirie pour une transparence financière totale.";
+      } else {
+        return "Votre requête a été analysée par le système LPMS du Cabinet Maître SLIMANI Noureddine. Pour toute question spécifique relative à un dossier en cours ou à une procédure au Barreau d'Alger, vous pouvez soumettre votre demande directement sur le portail de consultation.";
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // Init state on window load
+    window.onload = function() {
+      renderBatesPreview();
+      updateTimerDisplay();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El-Mouhami Pro — Guide de Présentation & Spécifications (Bilingue FR / AR)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-void: #060610;
+            --bg-primary: #0b0d17;
+            --bg-surface: #121526;
+            --bg-elevated: #1a1d2e;
+            --bg-card: #161929;
+            --gold-300: #e8c77a;
+            --gold-400: #d4b06a;
+            --gold-500: #c5a059;
+            --gold-glow: rgba(197, 160, 89, 0.15);
+            --text-primary: #f0ede8;
+            --text-secondary: rgba(240, 237, 232, 0.80);
+            --text-muted: #94a3b8;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.14);
+            --border-gold: rgba(197, 160, 89, 0.38);
+            --emerald: #10b981;
+            --rose: #f43f5e;
+            --amber: #f59e0b;
+            --sky: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 5rem;
+        }
+
+        .ar-font {
+            font-family: 'Cairo', system-ui, sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .fr-font {
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Top Sticky Presentation Control Bar */
+        .presentation-bar {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            background: linear-gradient(135deg, #060610 0%, #121526 100%);
+            border-bottom: 1px solid var(--border-gold);
+            color: white;
+            padding: 0.85rem 1.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            display: flex;
+            justifyContent: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gold-300);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-logo-ar {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .brand-sub {
+            font-size: 0.72rem;
+            background: var(--gold-glow);
+            border: 1px solid var(--border-gold);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            color: var(--gold-300);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-medium);
+            color: var(--text-primary);
+            padding: 0.45rem 0.95rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            white-space: nowrap;
+        }
+
+        .mode-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: var(--gold-400);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+            color: #060610;
+            border-color: var(--gold-300);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+        }
+
+        .print-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.45rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            white-space: nowrap;
+        }
+
+        .print-btn:hover {
+            background: #059669;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Custom Section Dropdown */
+        .custom-dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-dropdown-trigger {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid var(--gold-500);
+            color: #ffffff;
+            padding: 0.45rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .custom-dropdown-trigger:hover,
+        .custom-dropdown-trigger.open {
+            background: rgba(197, 160, 89, 0.2);
+            border-color: var(--gold-300);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.35);
+        }
+
+        .dropdown-chevron {
+            font-size: 0.75rem;
+            color: var(--gold-400);
+            transition: transform 0.2s ease;
+        }
+
+        .custom-dropdown-trigger.open .dropdown-chevron {
+            transform: rotate(180deg);
+        }
+
+        .custom-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: #0e1122;
+            border: 1.5px solid var(--border-gold);
+            border-radius: 12px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8), 0 0 20px rgba(197, 160, 89, 0.2);
+            min-width: 340px;
+            max-height: 480px;
+            overflow-y: auto;
+            padding: 8px;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            backdrop-filter: blur(20px);
+        }
+
+        .custom-dropdown-menu.open {
+            display: flex;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 0.75rem 0.95rem;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-gold);
+            color: var(--gold-300);
+        }
+
+        .dropdown-item.active {
+            background: var(--gold-glow);
+            border-color: var(--gold-500);
+            color: #fff;
+        }
+
+        .item-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-icon {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .item-title-fr {
+            font-size: 0.88rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .item-title-ar {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: 'Cairo', sans-serif;
+            margin-top: 2px;
+        }
+
+        .dropdown-item.active .item-title-ar {
+            color: var(--gold-400);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: radial-gradient(circle at 50% 20%, rgba(197, 160, 89, 0.12) 0%, transparent 60%), linear-gradient(180deg, #060610 0%, #0d1020 100%);
+            color: white;
+            padding: 4rem 1.5rem 3.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-gold);
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--gold-300);
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title-ar {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            direction: rtl;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 900px;
+            margin: 0 auto 1.75rem auto;
+            line-height: 1.7;
+        }
+
+        .hero-chips {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .chip {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-gold);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--gold-300);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1380px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Section Divider Banners */
+        .section-divider-banner {
+            background: linear-gradient(135deg, #0b0d1b 0%, #15182e 100%);
+            border: 1.5px solid var(--border-gold);
+            border-radius: 20px;
+            color: white;
+            padding: 2.5rem;
+            margin: 4rem 0 2.5rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px var(--gold-glow);
+            position: relative;
+        }
+
+        .section-divider-badge {
+            display: inline-block;
+            background: var(--gold-500);
+            color: #060610;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-divider-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+            color: var(--gold-300);
+        }
+
+        .section-divider-title-ar {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            direction: rtl;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-divider-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Page Card Component */
+        .page-card {
+            background: var(--bg-surface);
+            border-radius: 20px;
+            border: 1.5px solid var(--border-subtle);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+            margin-bottom: 3rem;
+            overflow: hidden;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .page-card:hover {
+            border-color: var(--border-gold);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(197, 160, 89, 0.12);
+            transform: translateY(-3px);
+        }
+
+        .card-header {
+            background: var(--bg-elevated);
+            padding: 1.25rem 2rem;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-badge-num {
+            background: linear-gradient(135deg, var(--gold-500), var(--gold-400));
+            color: #060610;
+            font-weight: 900;
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .route-pill {
+            background: #060610;
+            color: var(--gold-300);
+            border: 1px solid var(--border-gold);
+            font-family: monospace;
+            font-size: 0.85rem;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* 2-Columns Bilingual Layout */
+        .card-content-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .side-fr {
+            padding: 2.25rem;
+            border-right: 1.5px solid var(--border-subtle);
+            background-color: var(--bg-surface);
+        }
+
+        .side-ar {
+            padding: 2.25rem;
+            background-color: #0e1122;
+        }
+
+        /* Mode Filters */
+        body.mode-fr-only .side-ar {
+            display: none !important;
+        }
+        body.mode-fr-only .side-fr {
+            border-right: none !important;
+        }
+        body.mode-fr-only .card-content-split {
+            grid-template-columns: 1fr !important;
+        }
+
+        body.mode-ar-only .side-fr {
+            display: none !important;
+        }
+        body.mode-ar-only .card-content-split {
+            grid-template-columns: 1fr !important;
+        }
+
+        /* Block Typography */
+        .section-tag {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--gold-400);
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .side-ar .section-tag {
+            color: var(--gold-300);
+        }
+
+        .page-name-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1.1rem;
+            line-height: 1.3;
+        }
+
+        .info-box {
+            margin-bottom: 1.35rem;
+        }
+
+        .info-box h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--gold-300);
+            margin-bottom: 0.45rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            padding: 0.4rem 0;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .fr-font .feature-list li {
+            padding-left: 1.5rem;
+        }
+
+        .fr-font .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--gold-400);
+            font-weight: 900;
+        }
+
+        .ar-font .feature-list li {
+            padding-right: 1.5rem;
+        }
+
+        .ar-font .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: var(--gold-400);
+            font-weight: 900;
+        }
+
+        /* Business Value & Legal Article Highlight Box */
+        .benefit-box {
+            background: var(--gold-glow);
+            border-left: 4px solid var(--gold-500);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            margin-top: 1.35rem;
+            margin-bottom: 1.35rem;
+        }
+
+        .side-ar .benefit-box {
+            border-left: none;
+            border-right: 4px solid var(--gold-500);
+            background: rgba(197, 160, 89, 0.12);
+        }
+
+        .benefit-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gold-300);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .benefit-desc {
+            font-size: 0.9rem;
+            color: #f1f5f9;
+            line-height: 1.55;
+        }
+
+        /* Tech Specification Pill Badges */
+        .tech-stack-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-medium);
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-family: monospace;
+            color: var(--gold-300);
+            font-weight: 600;
+        }
+
+        /* Legal Reference Pill */
+        .legal-pill {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 1024px) {
+            .card-content-split {
+                grid-template-columns: 1fr;
+            }
+            .side-fr {
+                border-right: none;
+                border-bottom: 1.5px solid var(--border-subtle);
+            }
+        }
+
+        @media print {
+            .presentation-bar {
+                display: none;
+            }
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+            .page-card {
+                border: 1px solid #ccc;
+                box-shadow: none;
+                page-break-inside: avoid;
+                margin-bottom: 2rem;
+            }
+            .card-content-split {
+                grid-template-columns: 1fr 1fr !important;
+            }
+            .side-fr, .side-ar {
+                background: white !important;
+                color: black !important;
+            }
+            .page-name-title, .info-box h4, .benefit-desc {
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY CONTROL BAR -->
+    <header class="presentation-bar">
+        <div class="brand-badge">
+            <div class="brand-logo">EL-MOUHAMI PRO <span class="brand-logo-ar">المحامي برو</span></div>
+            <span class="brand-sub">ERP Juridique v3.0</span>
+        </div>
+
+        <div class="controls-group">
+            <!-- Section Dropdown Selector -->
+            <div class="custom-dropdown-container">
+                <button class="custom-dropdown-trigger" id="dropdownTrigger" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span>📑 Aller à une section (الانتقال إلى قسم)</span>
+                    <span class="dropdown-chevron">▼</span>
+                </button>
+                <div class="custom-dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-item" onclick="scrollToElement('card-01')">
+                        <div class="item-main">
+                            <span class="item-icon">📊</span>
+                            <div>
+                                <div class="item-title-fr">01. Tableau de Bord Général</div>
+                                <div class="item-title-ar">لوحة التحكم الرئيسية والمؤشرات</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-02')">
+                        <div class="item-main">
+                            <span class="item-icon">📁</span>
+                            <div>
+                                <div class="item-title-fr">02. Registre des Affaires & Dossiers</div>
+                                <div class="item-title-ar">سجل القضايا والملفات القضائية</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-03')">
+                        <div class="item-main">
+                            <span class="item-icon">🖨️</span>
+                            <div>
+                                <div class="item-title-fr">03. Hub de Numérisation Epson ADF</div>
+                                <div class="item-title-ar">مركز المسح الضوئي وأرشفة الوثائق</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-04')">
+                        <div class="item-main">
+                            <span class="item-icon">📅</span>
+                            <div>
+                                <div class="item-title-fr">04. Agenda Judiciaire & Audiences</div>
+                                <div class="item-title-ar">جدول الجلسات والاستشارات القانونية</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-05')">
+                        <div class="item-main">
+                            <span class="item-icon">🧾</span>
+                            <div>
+                                <div class="item-title-fr">05. Suivi Financier & Quittance Arabe</div>
+                                <div class="item-title-ar">المتابعة المالية ووصل سداد الأتعاب</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-06')">
+                        <div class="item-main">
+                            <span class="item-icon">⚖️</span>
+                            <div>
+                                <div class="item-title-fr">06. Moteur Procédural CPCA</div>
+                                <div class="item-title-ar">حساب الآجال والمهل القانونية (CPCA)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-07')">
+                        <div class="item-main">
+                            <span class="item-icon">🧠</span>
+                            <div>
+                                <div class="item-title-fr">07. Assistant IA DZ Bimodal</div>
+                                <div class="item-title-ar">المساعد الذكي وتحرير العرائض</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-08')">
+                        <div class="item-main">
+                            <span class="item-icon">🛡️</span>
+                            <div>
+                                <div class="item-title-fr">08. Bouclier PII & Secret Professionnel</div>
+                                <div class="item-title-ar">حماية البيانات والسر المهني (القانون 18-07)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-09')">
+                        <div class="item-main">
+                            <span class="item-icon">🔄</span>
+                            <div>
+                                <div class="item-title-fr">09. Synchronisation Hors-Ligne FIFO</div>
+                                <div class="item-title-ar">محرك المزامنة التلقائية بدون إنترنت</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-item" onclick="scrollToElement('card-10')">
+                        <div class="item-main">
+                            <span class="item-icon">🏢</span>
+                            <div>
+                                <div class="item-title-fr">10. Architecture VPS Algérie Télécom</div>
+                                <div class="item-title-ar">البنية السيادية والاستضافة الوطنية</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language Display Mode Buttons -->
+            <button class="mode-btn active" id="btnDual" onclick="setMode('dual')">
+                <span>🌐 Vue Bilingue (FR / AR)</span>
+            </button>
+            <button class="mode-btn" id="btnFr" onclick="setMode('fr')">
+                <span>🇫🇷 Français</span>
+            </button>
+            <button class="mode-btn" id="btnAr" onclick="setMode('ar')">
+                <span>🇩🇿 العربية</span>
+            </button>
+
+            <!-- Print / PDF Button -->
+            <button class="print-btn" onclick="window.print()">
+                <span>🖨️ Imprimer / PDF</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+        <h1 class="hero-title">EL-MOUHAMI PRO — SPÉCIFICATIONS COMPLÈTES DU LOGICIEL</h1>
+        <h2 class="hero-title-ar">المحامي برو — الدليل المرجعي الشامل ومواصفات النظام المكتبي للمحاماة</h2>
+        <p class="hero-desc">
+            Système d'Information et ERP Métier de bureau pour cabinets d'avocats agréés près la Cour Suprême et le Conseil d'État.
+            Conçu pour l'indépendance logicielle, la conformité intégrale à la Loi 18-07 relative à la protection des données personnelles, 
+            le respect absolu du Secret Professionnel (Loi 13-07) et la maîtrise du Code de Procédure Civile et Administrative (CPCA).
+        </p>
+        <div class="hero-chips">
+            <span class="chip">🖥️ Electron 44 + React 19 + TypeScript</span>
+            <span class="chip">⚖️ Conformité Loi n° 18-07 & Loi n° 13-07</span>
+            <span class="chip">📜 Moteur Procédural CPCA (Arts. 304, 327, 336, 354, 405)</span>
+            <span class="chip">🖨️ Pilote ADF Epson DS-530 II / Canon WIA</span>
+            <span class="chip">🔒 Anonymisation PII 100% In-Memory</span>
+            <span class="chip">🇩🇿 Hébergement Souverain VPS Algérie Télécom</span>
+        </div>
+    </section>
+
+    <!-- MAIN PRESENTATION CONTENT -->
+    <main class="container">
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 01: TABLEAU DE BORD GÉNÉRAL (OVERVIEW BENTO GRID)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-01">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 01</span>
+                    <span class="card-header-title">Tableau de Bord & Cockpit Décisionnel</span>
+                </div>
+                <div class="route-pill">Route: /dashboard • Composant: AdminOverviewModule.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">📊 Vue d'ensemble opérationnelle</div>
+                    <h3 class="page-name-title">Cockpit Général du Cabinet d'Avocat</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Fournir à l'avocat et à ses collaborateurs une vision synthétique instantanée de l'activité du cabinet dès l'ouverture du logiciel : dossiers actifs, audiences imminentes, flux financiers globaux et alertes de déchéance procédurale.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Fonctionnalités Clés & Expérience Utilisateur</h4>
+                        <ul class="feature-list">
+                            <li><strong>Bandeau d'Urgences Procédurales :</strong> Détection automatique des affaires sous tension (mémoire de réponse sous 48h, plaidoirie le lendemain, pièces en attente).</li>
+                            <li><strong>Bento Grid Métrique Interactive :</strong> Compteurs animés (NumberTicker) du volume d'affaires en cours, des audiences du mois et du taux de recouvrement financier.</li>
+                            <li><strong>Prochaine Audience Prioritaire :</strong> Affichage de l'affaire la plus urgente avec lien direct vers le dossier de plaidoirie.</li>
+                            <li><strong>Accès Rapide aux Actions Systèmes :</strong> Raccourcis 1-clic pour lancer la numérisation scanner, émettre une quittance ou calculer un délai légal.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Valeur Ajoutée pour l'Avocat</div>
+                        <p class="benefit-desc">
+                            Zéro perte de temps à la première heure : l'avocat visualise en 5 secondes les urgences du jour sans avoir à fouiller dans des piles de dossiers papier.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">React 19</span>
+                        <span class="tech-pill">Framer Motion</span>
+                        <span class="tech-pill">Zustand Store</span>
+                        <span class="tech-pill">Particles Effect</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">📊 لوحة التحكم والقيادة اليومية</div>
+                    <h3 class="page-name-title">مركز القيادة ومتابعة أنشطة المكتب</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            توفير رؤية بانورامية وفورية للأستاذ المحامي ومساعديه فور تشغيل النظام : القضايا المفتوحة، الجلسات العاجلة، التدفقات المالية الشاملة، والتنبيهات الحساسة الخاصة بالآجال القضائية.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ الخصائص التشغيلية والتقنية</h4>
+                        <ul class="feature-list">
+                            <li><strong>شريط الطوارئ الإجرائية :</strong> رصد فوري للملفات ذات الطابع العاجل (مذكرة جواب مطلوبة خلال 48 ساعة، جلسة مرافعة غداً، انتظار وثائق تكميلية).</li>
+                            <li><strong>شبكة المؤشرات الذكية (Bento Grid) :</strong> عدادات حركية لحجم القضايا المتداولة، جلسات الشهر، ونسبة تحصيل الأتعاب المتفق عليها.</li>
+                            <li><strong>بطاقة الجلسة الأقرب زمنياً :</strong> عرض مباشر لتفاصيل الجلسة القادمة مع وصول فوري لملف المرافعة والمستندات.</li>
+                            <li><strong>أزرار التدخل السريع :</strong> إطلاق الماسح الضوئي، إصدار وصل سداد، أو حساب مهلة قانونية بنقرة واحدة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 القيمة المضافة لمكتب المحاماة</div>
+                        <p class="benefit-desc">
+                            التحكم الكامل في وتيرة العمل اليومي وتفادي أي سقوط للحق الإجرائي، مع الاستغناء التام عن التفتيش اليدوي في الملفات الورقية المعقدة.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">⚖️ حماية الحقوق الإجرائية</span>
+                        <span class="tech-pill">تصميم Quiet Luxury</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 02: REGISTRE DES AFFAIRES & DOSSIERS (CASE REGISTRY)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-02">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 02</span>
+                    <span class="card-header-title">Registre & Cycle de Vie des Dossiers Judiciaires</span>
+                </div>
+                <div class="route-pill">Route: /documents • Composant: AdminDossiersModule.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">📁 Gestion Électronique des Affaires</div>
+                    <h3 class="page-name-title">Cycle de Vie & Traçabilité des Dossiers</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Gérer l'intégralité du cycle judiciaire d'une affaire : de l'enrôlement initial jusqu'à l'obtention de la grosse et l'exécution, avec un classement rigoureux par juridiction et par chambre spécialisée.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Fonctionnalités Clés & Expérience Utilisateur</h4>
+                        <ul class="feature-list">
+                            <li><strong>Classification par Chambres Judiciaires :</strong> Chambre Foncière (العقاري), Commerciale (التجاري), Civile (المدني), Statut Personnel / Famille (شؤون الأسرة), Pénale (الجزائي).</li>
+                            <li><strong>Cartographie des Juridictions Algériennes :</strong> Tribunal de Sidi M'Hamed, Cour d'Alger (Ruisseau), Tribunal de Bab El Oued, Bir Khadem, Cour Suprême et Conseil d'État.</li>
+                            <li><strong>Statuts Procéduraux Réels :</strong> Enrôlement, Instruction / Renvois, Expertise en cours, En attente Huissier, En délibéré, Grosse / Exécution, En cours de recours.</li>
+                            <li><strong>Détail d'Affaire Complet :</strong> Identité des parties (demandeur/défendeur), numéro de rôle greffe, avocat en charge, pièces jointes numérisées, convention financière.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Sécurité Juridique</div>
+                        <p class="benefit-desc">
+                            Chaque dossier conserve l'historique complet de ses audiences et pièces numérisées. La recherche globale permet de retrouver une affaire en 1 seconde par n° de rôle ou nom de partie.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">TypeScript Strict</span>
+                        <span class="tech-pill">Recherche Multi-critères</span>
+                        <span class="tech-pill">Badges Procéduraux</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">📁 الأرشيف الإلكتروني وإدارة القضايا</div>
+                    <h3 class="page-name-title">سجل الملفات ومسار الإجراءات القضائية</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            المتابعة الشاملة والدقيقة لكل قضية منذ قيد العريضة الافتتاحية وإيداعها بكتابة الضبط إلى غاية استلام النسخة التنفيذية (الصيغة التنفيذية) ومرحلة التنفيذ الجبري.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ الخصائص التشغيلية والتقنية</h4>
+                        <ul class="feature-list">
+                            <li><strong>التقسيم بحسب الغرف القضائية المتخصصة :</strong> القسم العقاري، القسم التجاري، القسم المدني، قسم شؤون الأسرة، والقسم الجزائي.</li>
+                            <li><strong>تغطية الجهات القضائية الجزائرية :</strong> محكمة سيدي امحمد، مجلس قضاء الجزائر (رويسو)، محكمة باب الوادي، محكمة بئر خادم، المحكمة العليا ومجلس الدولة.</li>
+                            <li><strong>الحالات الإجرائية الواقعية :</strong> قيد العريضة، التحقيق وتبادل المذكرات، خبرة قضائية جارية، في انتظار المحضر القضائي، في المداولة، صدور الحكم، والطعن.</li>
+                            <li><strong>بيانات الملف التفصيلية :</strong> صفة الأطراف (المدعي/المدعى عليه)، رقم الجدول، المستندات الممسوحة ضوئياً، واتفاقية الأتعاب.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 الضمانات المهنية</div>
+                        <p class="benefit-desc">
+                            حفظ منظم ومفهرس لجميع مذكرات الأطراف وتقارير الخبرة، مع إمكانية البحث الفوري باسم الموكل أو رقم الجدول باللغتين العربية والفرنسية.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">⚖️ فهرسة كتابة الضبط</span>
+                        <span class="tech-pill">بحث عربي متقدم</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 03: HUB DE NUMÉRISATION MATÉRIELLE ADF (EPSON / CANON)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-03">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 03</span>
+                    <span class="card-header-title">Hub Numérisation Scanner ADF & Indexation GED</span>
+                </div>
+                <div class="route-pill">Route: /epson_scan • Composant: AdminEpsonScanModule.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🖨️ Pont Matériel Direct Windows</div>
+                    <h3 class="page-name-title">Pilotage Scanner Epson WorkForce & Canon ADF</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Connecter directement le logiciel aux scanners de bureau du cabinet (Epson WorkForce DS-530 II, Canon DR-C225) sans passer par des utilitaires tiers lourds, pour numériser en masse les pièces de procédure et les verser dans le dossier.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Fonctionnalités Clés & Expérience Utilisateur</h4>
+                        <ul class="feature-list">
+                            <li><strong>Détection Matérielle en Temps Réel :</strong> Détection automatique des périphériques d'acquisition d'images via requêtes système WIA / CIM.</li>
+                            <li><strong>Moteur d'Exécution CLI Embarqué :</strong> Exécution de <code>naps2.console.exe</code> encapsulé dans le binaire pour un contrôle direct du matériel.</li>
+                            <li><strong>Traitement d'Image Avancé :</strong> Numérisation recto-verso automatique (ADF Duplex), redressement automatique des feuilles inclinées (Deskew) et OCR intégré.</li>
+                            <li><strong>Sortie PDF Sécurisée :</strong> Génération de PDF horodatés stockés dans le coffre-fort local <code>userData/scans/</code> et rattachés au n° de rôle greffe.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Révolution Productivité</div>
+                        <p class="benefit-desc">
+                            Une liasse de 50 pages remise par un client est numérisée, redressée, indexée et liée au dossier en moins de 45 secondes sans quitter l'ERP.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Electron IPC</span>
+                        <span class="tech-pill">naps2.console.exe</span>
+                        <span class="tech-pill">WIA / TWAIN</span>
+                        <span class="tech-pill">ADF Duplex</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🖨️ الربط المباشر مع أجهزة المسح الضوئي</div>
+                    <h3 class="page-name-title">مركز المسح الضوئي الاحترافي وأرشفة المستندات</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            التحكم المباشر في ماسحات المكتب الآلية (إبسون WorkForce DS-530 II وكانون DR-C225) لسحب حزم المستندات القضائية وأرشفتها مباشرة داخل ملف القضية دون برامج وسيطة.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ الخصائص التشغيلية والتقنية</h4>
+                        <ul class="feature-list">
+                            <li><strong>التعرف التلقائي على الأجهزة :</strong> كشف ماسحات WIA و TWAIN المتصلة بالجهاز عبر أوامر النظام في الوقت الحقيقي.</li>
+                            <li><strong>محرك NAPS2 المدمج :</strong> تشغيل أداة <code>naps2.console.exe</code> بأوامر برمجية منخفضة المستوى للتحكم الدقيق في دقة المسح (DPI).</li>
+                            <li><strong>المعالجة التلقائية للصور :</strong> المسح المزدوج للوجهين (Duplex)، التعديل التلقائي لميلان الصفحات (Deskew)، والتعرف الضوئي على النصوص (OCR).</li>
+                            <li><strong>الحفظ المؤمّن بصيغة PDF :</strong> إنتاج ملفات PDF رسمية مشفرة محلياً ومرتبطة برقم جدول القضية فور انتهاء المسح.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 توفير الوقت والجهد</div>
+                        <p class="benefit-desc">
+                            تحويل حزمة مستندات من 50 صفحة إلى ملف PDF رسمي مفهرس في ملف الموكل خلال أقل من 45 ثانية وبضغطة زر واحدة.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">📄 أرشفة إلكترونية فورية</span>
+                        <span class="tech-pill">بروتوكول WIA/TWAIN</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 04: AGENDA JUDICIAIRE & AUDIENCES (CALENDAR)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-04">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 04</span>
+                    <span class="card-header-title">Agenda Judiciaire & Suivi des Audiences</span>
+                </div>
+                <div class="route-pill">Route: /calendar • Composant: AdminRdvModule.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">📅 Calendrier des Audiences & Consultations</div>
+                    <h3 class="page-name-title">Planification des Séances de Tribunal & Rendez-vous</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Organiser le planning quotidien du cabinet en synchronisant les audiences devant les cours et tribunaux avec les rendez-vous de consultation physique au cabinet (Bir Khadem) ou en visioconférence.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Fonctionnalités Clés & Expérience Utilisateur</h4>
+                        <ul class="feature-list">
+                            <li><strong>Traçabilité des Motifs de Renvoi :</strong> Enregistrement précis de la raison du renvoi d'audience (réponse du défendeur, rapport d'expertise géomètre, production de pièces).</li>
+                            <li><strong>Identification des Salles & Chambres :</strong> Mention claire de la chambre d'audience (ex: <em>Section Foncière 1, Chambre Commerciale 2</em>).</li>
+                            <li><strong>Typologie des Créneaux :</strong> Distinction nette entre audience de plaidoirie, consultation client au cabinet, et visioconférence sécurisée.</li>
+                            <li><strong>Filtres Dynamiques :</strong> Tri instantané par statut (Confirmé, En attente, Terminé, Annulé) et recherche plein texte par client ou juridiction.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Sérénité Organisationnelle</div>
+                        <p class="benefit-desc">
+                            L'avocat prépare ses dossiers d'audience la veille avec la certitude qu'aucun renvoi ni motif d'audience n'a été omis.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Date-Fns</span>
+                        <span class="tech-pill">Filtres Dynamiques</span>
+                        <span class="tech-pill">Rappels Audiences</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">📅 أجندة الجلسات والمواعيد</div>
+                    <h3 class="page-name-title">جدول الجلسات القضائية والاستشارات القانونية</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            تنظيم جدول المواعيد اليومي للمكتب بالتنسيق بين جلسات المحاكم والمجالس القضائية، ومواعيد الاستشارات الحضورية بمقر المكتب (بئر خادم) أو عبر الاتصال المرئي.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ الخصائص التشغيلية والتقنية</h4>
+                        <ul class="feature-list">
+                            <li><strong>تدوين أسباب التأجيل (Renvoi) :</strong> تسجيل سبب تأجيل الجلسة بدقة (جواب الخصم، تقرير الخبير العقاري، إعادة استدعاء الأطراف).</li>
+                            <li><strong>تحديد الغرفة وقاعة الجلسة :</strong> الإشارة الواضحة للقسم المختص (مثال: <em>القسم العقاري 1، الغرفة التجارية 2</em>).</li>
+                            <li><strong>تصنيف المواعيد :</strong> التمييز الدقيق بين جلسة مرافعة بالمحكمة، استشارة بمقر المكتب، أو اجتماع عمل مرئي عن بعد.</li>
+                            <li><strong>الفلترة السريعة :</strong> تصفية الجلسات بحسب الحالة (مؤكدة، قيد الانتظار، منتهية، ملغاة) والبحث بالاسم أو رقم الهاتف.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 راحة البال والدقة المهنية</div>
+                        <p class="benefit-desc">
+                            تحضير ملفات الجلسات في اليوم السابق مع معرفة دقيقة ومسبقة للدفوع والطلبات الواجب تقديمها لكل جلسة دون ارتباك.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">🏛️ تنظيم الجلسات والمحاكم</span>
+                        <span class="tech-pill">أرشفة أسباب التأجيل</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 05: SUIVI FINANCIER & QUITTANCE ARABE (WASL SADAD)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-05">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 05</span>
+                    <span class="card-header-title">Suivi Financier & وصل سداد الأتعاب (Loi 13-07)</span>
+                </div>
+                <div class="route-pill">Route: /finances • Composant: AdminFinancesModule.tsx + ArabicQuittanceModal.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🧾 Comptabilité & Réglementation des Honoraires</div>
+                    <h3 class="page-name-title">Comptabilité du Cabinet & Reçu d'Honoraires Arabe</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Garantir la conformité financière du cabinet selon la <strong>Loi n° 13-07 (Article 23)</strong> organisant la profession d'avocat en Algérie. Suivi des conventions d'honoraires, des provisions versées et impression de la quittance officielle.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Fonctionnalités Clés & Expérience Utilisateur</h4>
+                        <ul class="feature-list">
+                            <li><strong>Émission du وصل سداد Officiel :</strong> Rendu au pixel près superposé sur le gabarit officiel <code>wasl.png</code> avec numéro de reçu séquentiel (ex: <em>2026/Q-4812</em>).</li>
+                            <li><strong>Édition Libre & Personnalisée :</strong> Modification en direct du client, du montant en dinars (DZD) et de l'objet des honoraires avec aperçu temps réel.</li>
+                            <li><strong>Tableau de Bord Analytique par Chambre :</strong> Répartition des recettes (Chambre Foncière 42%, Commerciale 28%, Civile 18%, Famille 12%).</li>
+                            <li><strong>Suivi des Impayés :</strong> Calcul automatique du taux de recouvrement global et du solde restant dû par chaque client.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Rigueur Fiscale & Déontologique</div>
+                        <p class="benefit-desc">
+                            Chaque versement donne lieu à un reçu numéroté conforme aux exigences du Bâtonnat. Protection totale de l'avocat en cas de contestation d'honoraires.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Loi n° 13-07 Art. 23</span>
+                        <span class="tech-pill">Calque Canvas wasl.png</span>
+                        <span class="tech-pill">Impression Haute Résolution</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🧾 المحاسبة القانونية ووصولات الأتعاب</div>
+                    <h3 class="page-name-title">المتابعة المالية وإصدار وصل سداد الأتعاب الرسمي</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            ضمان الشفافية والمطابقة التامة مع <strong>القانون رقم 13-07 (المادة 23)</strong> المنظم لمهنة المحاماة في الجزائر : تسجيل أتعاب المرافعة، تتبع التسبيقات، وطباعة وصل السداد الرسمي للموكلين.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ الخصائص التشغيلية والتقنية</h4>
+                        <ul class="feature-list">
+                            <li><strong>إصدار وصل سداد رسمي (وصل أتعاب) :</strong> طباعة مطابقة للمقاييس الرسمية فوق القالب المعتمد <code>wasl.png</code> مع ترقيم تسلسلي نظامي (مثال: <em>2026/Q-4812</em>).</li>
+                            <li><strong>تعديل البيانات الحرة في الوقت الحقيقي :</strong> إمكانية تحرير اسم الموكل، المبلغ بالدينار الجزائري، وموضوع الخدمة القانونية ومعاينة الوصل فوراً.</li>
+                            <li><strong>تحليلات الدخل بحسب التخصص :</strong> توزيع المداخيل حسب الغرف القضائية (القسم العقاري 42%، التجاري 28%، المدني 18%، شؤون الأسرة 12%).</li>
+                            <li><strong>متابعة المبالغ المتبقية للتحصيل :</strong> حساب نسبة التحصيل العامة والمبالغ المتبقية في ذمة كل موكل بشكل آلي ودقيق.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 الحماية القانونية والجبائية</div>
+                        <p class="benefit-desc">
+                            وثيقة سداد رسمية ومحمية قانونياً تحمي المحامي أمام مصالح الضرائب وتغلق أي باب للنزاع حول الأتعاب أمام منظمة المحامين.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">📜 القانون 13-07 المادة 23</span>
+                        <span class="tech-pill">قالب وصل رسمي معتمد</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 06: MOTEUR PROCÉDURAL CPCA & PROROGATION WEEK-END
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-06">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 06</span>
+                    <span class="card-header-title">Calculateur CPCA & Prorogation Automatique (Art. 405/406)</span>
+                </div>
+                <div class="route-pill">Route: /cpca • Composant: AdminCpcaModule.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">⚖️ Moteur Algorithmique Procédural</div>
+                    <h3 class="page-name-title">Calcul des Délais de Recours CPCA Algérien</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Sécuriser mathématiquement le calcul des délais de recours judiciaires sous le Code de Procédure Civile et Administrative (CPCA 08-09 / 22-13), en intégrant la règle fondamentale de prorogation du week-end algérien.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Règles Procédurales Intégrées</h4>
+                        <ul class="feature-list">
+                            <li><strong>Appel de Jugement Civil/Foncier (Art. 336 CPCA) :</strong> Délai strict de 30 jours à compter de la signification officielle à personne ou domicile.</li>
+                            <li><strong>Pourvoi en Cassation (Art. 354 CPCA) :</strong> Délai de 2 mois (60 jours) devant la Cour Suprême ou le Conseil d'État.</li>
+                            <li><strong>Opposition contre Jugement par Défaut (Art. 327 CPCA) :</strong> Délai de 10 jours francs après notification.</li>
+                            <li><strong>Appel d'Ordonnance de Référé (Art. 304 CPCA) :</strong> Délai urgentissime de 15 jours.</li>
+                            <li><strong>Prorogation Automatique (Articles 405 & 406 CPCA) :</strong> Si l'échéance tombe un Vendredi (repos légal) ou un Samedi, le délai est <em>prorogé de plein droit jusqu'au Dimanche matin</em>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Risque Zéro Déchéance</div>
+                        <p class="benefit-desc">
+                            Élimine à 100% le risque de forclusion ou de recours irrecevable pour cause d'erreur de calendrier ou de jour férié.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">CPCA 08-09 / 22-13</span>
+                        <span class="tech-pill">Articles 304, 327, 336, 354</span>
+                        <span class="tech-pill">Article 405 (Prorogation)</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">⚖️ المحرك الإجرائي للآجال القانونية</div>
+                    <h3 class="page-name-title">حساب مواعيد الطعن وقانون الإجراءات المدنية والإدارية</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            الحساب الرياضي الدقيق لآجال ومواعيد الطعن طبقاً لقانون الإجراءات المدنية والإدارية الجزائري (CPCA)، مع التطبيق الآلي لقاعدة امتداد الأجل عند مصادفة العطلة الرسمية.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ النصوص القانونية المطبقة برمجياً</h4>
+                        <ul class="feature-list">
+                            <li><strong>استئناف الأحكام الابتدائية (المادة 336 CPCA) :</strong> مهلة 30 يوماً تحسب من تاريخ التبليغ الرسمي للحكم لشخص المعني أو بموطنه الأصلي.</li>
+                            <li><strong>الطعن بالنقض أمام المحكمة العليا ومجلس الدولة (المادة 354 CPCA) :</strong> مهلة شهران (60 يوماً) من تاريخ تبليغ القرار المطعون فيه.</li>
+                            <li><strong>المعارضة في الأحكام الغيابية (المادة 327 CPCA) :</strong> مهلة 10 أيام ابتداءً من تاريخ التبليغ الرسمي للحكم الغيابي.</li>
+                            <li><strong>استئناف الأوامر الاستعجالية (المادة 304 CPCA) :</strong> مهلة استعجالية محددة بـ 15 يوماً.</li>
+                            <li><strong>قاعدة الامتداد القانوني (المادتان 405 و 406 CPCA) :</strong> إذا صادف اليوم الأخير عطلة رسمية (يومي الجمعة أو السبت)، <em>يمتد الأجل تلقائياً وبقوة القانون إلى أول يوم عمل (الأحد)</em>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 حماية الدعوى من السقوط</div>
+                        <p class="benefit-desc">
+                            انعدام تام لاحتمال رفض الطعن شكلاً لفوات الميعاد القانوني بسبب خطأ في حساب عطل نهاية الأسبوع أو التبليغات القضائية.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">📜 قانون الإجراءات المدنية والإدارية</span>
+                        <span class="tech-pill">المواد 304، 327، 336، 354، 405</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 07: ASSISTANT IA DZ BIMODAL (RÉDACTION VS ACTION)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-07">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 07</span>
+                    <span class="card-header-title">Assistant IA Juridique Bimodal (Écoute vs Action)</span>
+                </div>
+                <div class="route-pill">Route: /ai_assistant • Composants: ListenAndWriteMode.tsx + SearchAndActMode.tsx</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🧠 Intelligence Artificielle Spécialisée DZ</div>
+                    <h3 class="page-name-title">Assistant Juridique Bimodal Al-Mouhami Pro</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Accélérer la rédaction des requêtes et automatiser les actions répétitives du cabinet grâce à un modèle d'interaction bimodal adapté aux pratiques des juristes algériens.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Les 2 Modes Opérationnels</h4>
+                        <ul class="feature-list">
+                            <li><strong>Mode A : Écoute & Rédaction (ListenAndWriteMode) :</strong> Dictée vocale avec détection de silence (5s), structuration des prétentions juridiques, visualisation du raisonnement IA (ReasoningBox) et export direct en fichier Word <code>.doc</code> prêt pour le dépôt.</li>
+                            <li><strong>Mode B : Recherche & Action (SearchAndActMode) :</strong> Compréhension du langage naturel en Arabe et en Français. L'avocat dicte une intention (ex: <em>"Émettre une quittance de 50 000 DA pour Benali"</em>).</li>
+                            <li><strong>Sécurité des Actions par Niveaux de Risque :</strong>
+                                <br>• Risque Faible (navigation, recherche) : Exécution directe.
+                                <br>• Risque Moyen / Élevé (création RDV, quittance) : Modale de confirmation obligatoire avec paramètres modifiables.
+                            </li>
+                            <li><strong>Journal d'Audit Local :</strong> Traçabilité des 50 dernières actions exécutées par l'assistant.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Rédaction 10x Plus Rapide</div>
+                        <p class="benefit-desc">
+                            Une requête foncière ou une réponse d'appel est dictée à la voix, structurée avec ses visas légaux et téléchargée au format Word en moins de 2 minutes.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Whisper Audio</span>
+                        <span class="tech-pill">Catalogue d'Actions Typé</span>
+                        <span class="tech-pill">Export Word Natif</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🧠 الذكاء الاصطناعي التخصصي للقانون الجزائري</div>
+                    <h3 class="page-name-title">المساعد الذكي ثنائي النمط (التملية والتحرير / البحث والتنفيذ)</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            تسريع صياغة العرائض القضائية وتنفيذ مهام المكتب الروتينية عبر نظام ذكي ثنائي النمط يفهم المصطلحات القانونية باللغتين العربية والفرنسية.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ نمطا العمل التشغيليان</h4>
+                        <ul class="feature-list">
+                            <li><strong>النمط أ : الاستماع والتحرير (ListenAndWriteMode) :</strong> تفريغ صوتي فوري، تحليل الأسباب والوقائع، عرض خطوات التفكير القانوني، وتوليد عريضة قضائية رسمية بصيغة Word <code>.doc</code> جاهزة للطباعة والختم.</li>
+                            <li><strong>النمط ب : البحث والتنفيذ (SearchAndActMode) :</strong> فهم الأوامر باللغة الطبيعية (مثال: <em>"استخراج وصل سداد بمبلغ 50 ألف دينار للموكل بن علي"</em>).</li>
+                            <li><strong>تصنيف الأوامر بحسب درجة الحساسية :</strong>
+                                <br>• أوامر منخفضة الخطورة (البحث والانتقال) : تنفيذ فوري.
+                                <br>• أوامر متوسطة وعالية الخطورة (المواعيد والوصولات المالية) : نافذة تأكيد إلزامية مع إمكانية تعديل البيانات.
+                            </li>
+                            <li><strong>سجل التدقيق المحلي :</strong> أرشفة آخر 50 عملية منفذة بواسطة المساعد الذكي لضمان الرقابة التامة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 سرعة قياسية في صياغة العرائض</div>
+                        <p class="benefit-desc">
+                            إملاء وقائع الدعوى شفهياً واستخراج عريضة افتتاح دعوى كاملة بأسانيدها القانونية وبصيغة وورد رسمية خلال أقل من دقيقتين.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">✍️ صياغة العرائض الرسمية</span>
+                        <span class="tech-pill">معالجة الصوت العربي</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 08: BOUCLIER DE CONFIDENTIALITÉ & SECRET PROFESSIONNEL
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-08">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 08</span>
+                    <span class="card-header-title">Bouclier PII & Secret Professionnel (Loi n° 18-07)</span>
+                </div>
+                <div class="route-pill">Service: anonymizer.ts • Conformité: ANPDP & Code Pénal Art. 301</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🛡️ Souveraineté & Secret de l'Avocat</div>
+                    <h3 class="page-name-title">Anonymisation PII 100% In-Memory</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Garantir la conformité absolue à la <strong>Loi n° 18-07 relative à la protection des personnes physiques dans le traitement des données à caractère personnel</strong> et au <strong>Secret Professionnel de l'Avocat (Loi 13-07 & Art. 301 du Code Pénal)</strong>.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Algorithme de Censure Déterministe</h4>
+                        <ul class="feature-list">
+                            <li><strong>Détection des Identifiants Nationaux (NIN) :</strong> Masquage automatique du Numéro d'Identification National algérien (18 chiffres) $\rightarrow$ <code>[NIN_1]</code>.</li>
+                            <li><strong>Numéros de Téléphone DZ :</strong> Masquage des numéros mobiles (05, 06, 07) et fixes (021, 023, 031...) $\rightarrow$ <code>[TEL_1]</code>.</li>
+                            <li><strong>Rôles de Greffe & Dossiers :</strong> Masquage des références judiciaires (ex: 24/00412) $\rightarrow$ <code>[DOSSIER_1]</code>.</li>
+                            <li><strong>Noms des Parties Connues :</strong> Détection et masquage avec normalisation de l'alphabet arabe (sans diacritiques) $\rightarrow$ <code>[NOM_1]</code>.</li>
+                            <li><strong>Réhydratation Locale :</strong> Les données sensibles ne quittent jamais la mémoire vive (RAM) du PC. Le texte structuré est réhydraté en local sans qu'aucun serveur distant n'ait vu les identités réelles.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Blindage Juridique Vis-à-Vis de l'ANPDP</div>
+                        <p class="benefit-desc">
+                            Aucune fuite de données personnelles de justiciables vers l'étranger. L'avocat est 100% protégé des sanctions administratives et pénales de la Loi 18-07.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Loi 18-07 (ANPDP)</span>
+                        <span class="tech-pill">Code Pénal Art. 301</span>
+                        <span class="tech-pill">Regex DZ Optimisées</span>
+                        <span class="tech-pill">Zero-Knowledge Cloud</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🛡️ السيادة وحماية السر المهني للمحامي</div>
+                    <h3 class="page-name-title">نظام حجب البيانات الشخصية في الذاكرة المحلية (PII Shield)</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            الامتثال الصارم لأحكام <strong>القانون رقم 18-07 المتعلق بحماية الأشخاص الطبيعيين في مجال معالجة المعطيات ذات الطابع الشخصي</strong> و<strong>السر المهني للمحامي (القانون 13-07 والمادة 301 من قانون العقوبات)</strong>.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ خوارزمية الحجب والتشفير المحلي</h4>
+                        <ul class="feature-list">
+                            <li><strong>رقم التعريف الوطني (NIN) :</strong> الحجب التلقائي لرقم التعريف الوطني الجزائري المتكون من 18 رقماً $\rightarrow$ <code>[NIN_1]</code>.</li>
+                            <li><strong>أرقام الهواتف الجزائرية :</strong> رصد وحجب أرقام النقال (05، 06، 07) والثابت (021، 023، 031...) $\rightarrow$ <code>[TEL_1]</code>.</li>
+                            <li><strong>أرقام الجداول وملفات كتابة الضبط :</strong> حجب مراجع القضايا الحقيقية $\rightarrow$ <code>[DOSSIER_1]</code>.</li>
+                            <li><strong>أسماء الموكلين والخصوم :</strong> حجب الأسماء مع معالجة التشكيل ورسم الحروف العربية $\rightarrow$ <code>[NOM_1]</code>.</li>
+                            <li><strong>إعادة الدمج المحلي (Rehydration) :</strong> البيانات الحقيقية لا تغادر إطلاقاً ذاكرة الحاسوب (RAM)، وتُسترجع محلياً بعد انتهاء المعالجة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 الحصانة القانونية الكاملة أمام السلطة الوطنية (ANPDP)</div>
+                        <p class="benefit-desc">
+                            حظر مطلق لنقل أي معطيات حساسة للمواطنين الجزائريين خارج التراب الوطني، وحماية المحامي من المتابعات الجزائية والتأديبية.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">🔒 القانون 18-07 والسر المهني</span>
+                        <span class="tech-pill">معالجة محلية 100% في الذاكرة</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 09: SYNCHRONISATION HORS-LIGNE FIFO (OFFLINE ENGINE)
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-09">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 09</span>
+                    <span class="card-header-title">Moteur de Synchronisation Hors-Ligne FIFO (Local-First)</span>
+                </div>
+                <div class="route-pill">Service: syncEngine.ts • Gestion: Zustand Persistent Queue</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🔄 Continuité d'Activité Hors-Ligne</div>
+                    <h3 class="page-name-title">Moteur de Rejeu Chronologique & Disponibilité Sans Réseau</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Garantir que l'avocat et ses secrétaires peuvent continuer à créer des dossiers, modifier des statuts, émettre des quittances et enregistrer des scans même si la connexion internet est totalement coupée au cabinet ou au tribunal.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Mécanique de Synchronisation</h4>
+                        <ul class="feature-list">
+                            <li><strong>File d'Attente Séquentielle FIFO :</strong> Chaque mutation effectuée hors-ligne est enregistrée chronologiquement dans <code>syncQueue</code> (stockée en base locale).</li>
+                            <li><strong>Sonde Réseau Non-Bloquante :</strong> Vérification en tâche de fond de la connectivité réelle toutes les 10 secondes.</li>
+                            <li><strong>Rejeu Automatique Sans Conflit :</strong> Dès que le signal Internet est rétabli, le moteur dépile la file dans l'ordre exact et pousse les données vers Supabase.</li>
+                            <li><strong>Indicateur Visuel de Statut Réseau :</strong> Témoin lumineux (En ligne / Hors-ligne) et compteur d'actions en attente visibles dans la barre d'état.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Résistance aux Pannes de Réseau</div>
+                        <p class="benefit-desc">
+                            Une coupure de fibre ou de 4G n'interrompt jamais l'activité du cabinet. Aucune perte de données, aucune attente de chargement.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">FIFO Queue</span>
+                        <span class="tech-pill">Local-First</span>
+                        <span class="tech-pill">Auto-Reconnect Heartbeat</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🔄 استمرارية العمل دون انقطاع</div>
+                    <h3 class="page-name-title">محرك المزامنة التلقائية والعمل في وضع عدم الاتصال بالشبكة</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            ضمان استمرار المحامي وفريق المكتب في إنشاء الملفات وتعديل الحالات وتسجيل الوثائق حتى في حال انقطاع شبكة الإنترنت كلياً بمقر المكتب أو بالمحكمة.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ آلية المزامنة البرمجية</h4>
+                        <ul class="feature-list">
+                            <li><strong>طابور العمليات التسلسلي (FIFO) :</strong> تسجيل جميع التعديلات في قائمة انتظار محلية مرتبة زمنياً وبدقة عالية.</li>
+                            <li><strong>المستشعر الآلي لجودة الاتصال :</strong> فحص خفي لحالة الاتصال الحقيقية بالإنترنت كل 10 ثوانٍ دون تعطيل المستخدم.</li>
+                            <li><strong>المزامنة التلقائية فور عودة الشبكة :</strong> تفريغ العمليات المسجلة بالترتيب الزمني الصحيح نحو خادم سوبابيز بمجرد عودة الاتصال.</li>
+                            <li><strong>مؤشر الحالة الشبكية :</strong> إشعار بصري بحالة الاتصال (متصل / غير متصل) وعدد العمليات المخزنة محلياً.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 مناعة تامة ضد انقطاع الإنترنت</div>
+                        <p class="benefit-desc">
+                            انقطاع الإنترنت لا يشكل أي عائق أمام سير جلسات واستشارات المكتب، والبيانات تبقى محفوظة ومحمية 100%.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">📶 نظام Local-First المقاوم للأعطال</span>
+                        <span class="tech-pill">مزامنة تسلسلية FIFO</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════════
+             CARD 10: ARCHITECTURE SOUVERAINE VPS ALGÉRIE TÉLÉCOM
+        ══════════════════════════════════════════════════════════════════════ -->
+        <article class="page-card" id="card-10">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-badge-num">MODULE 10</span>
+                    <span class="card-header-title">Architecture Souveraine & Hébergement VPS Algérie Télécom</span>
+                </div>
+                <div class="route-pill">Infra: backend/ • Base: PostgreSQL / Supabase Self-Hosted</div>
+            </div>
+
+            <div class="card-content-split">
+                <!-- French Column -->
+                <div class="side-fr fr-font">
+                    <div class="section-tag">🏢 Infrastructure & Indépendance Nationale</div>
+                    <h3 class="page-name-title">Hébergement Local en Dinars (DZD) & Docker Déployé</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 Rôle & Objectif Métier</h4>
+                        <p>
+                            Éliminer les coûts récurrents en devises étrangères (EUR/USD) et assurer que l'infrastructure centrale du logiciel est physiquement hébergée sur le territoire national algérien pour une souveraineté numérique totale.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ Caractéristiques de l'Infrastructure</h4>
+                        <ul class="feature-list">
+                            <li><strong>PostgreSQL & Supabase Auto-Hébergé :</strong> Déploiement de la stack complète open-source via Docker Compose sur un VPS Algérie Télécom (ou datacenter local).</li>
+                            <li><strong>Zéro Abonnement Cloud Externe :</strong> Aucun frais payé à des fournisseurs étrangers (AWS, Google, Supabase Cloud). 100% gratuit et libre de droits.</li>
+                            <li><strong>Paiement Local en Dinars Algériens :</strong> Facturation de l'hébergement VPS directement en DZD auprès de l'opérateur public.</li>
+                            <li><strong>Sécurité d'Accès Étanche (RLS) :</strong> Politiques <em>Row Level Security</em> garantissant le cloisonnement mathématique étanche entre les différents cabinets.</li>
+                            <li><strong>Sauvegardes Automatiques Quotidiennes :</strong> Scripts de backup programmés (pg_dump) avec rotation sur stockage secondaire sécurisé.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 Modèle Économique & Indépendance</div>
+                        <p class="benefit-desc">
+                            Marges maximales pour l'éditeur du logiciel, coûts fixes maîtrisés en monnaie nationale, et conformité institutionnelle irréprochable vis-à-vis des institutions de l'État.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">PostgreSQL 16</span>
+                        <span class="tech-pill">Docker Compose</span>
+                        <span class="tech-pill">Row Level Security</span>
+                        <span class="tech-pill">Hébergement DZD</span>
+                    </div>
+                </div>
+
+                <!-- Arabic Column -->
+                <div class="side-ar ar-font">
+                    <div class="section-tag">🏢 البنية التحتية والسيادة الرقمية الوطنية</div>
+                    <h3 class="page-name-title">الاستضافة السيادية عبر خادم اتصالات الجزائر والدفع بالدينار</h3>
+                    
+                    <div class="info-box">
+                        <h4>🎯 الدور والهدف المهني</h4>
+                        <p>
+                            التخلص التام من التبعية للعملات الأجنبية (الأورو والدولار)، وضمان التوطين الفعلي لقاعدة البيانات والوثائق القضائية داخل مراكز البيانات الوطنية بالجزائر.
+                        </p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>⚡ المواصفات التقنية للبنية التحتية</h4>
+                        <ul class="feature-list">
+                            <li><strong>نظام سوبابيز المستقل (Self-Hosted Supabase) :</strong> تشغيل بيئة العمل المتكاملة بواسطة حاويات دوكر (Docker Compose) على خادم افتراضي محلي (VPS).</li>
+                            <li><strong>صفر اشتراكات سحابية خارجية :</strong> لا توجد أي مدفوعات لشركات أجنبية، والبرمجيات المستخدمة حرة ومفتوحة المصدر 100%.</li>
+                            <li><strong>الفواتير بالدينار الجزائري (DZD) :</strong> تسديد تكاليف السيرفر بالعملة الوطنية لدى المتعامل الوطني (اتصالات الجزائر).</li>
+                            <li><strong>العزل الأمني المطلق (Row Level Security) :</strong> حماية صارمة على مستوى قاعدة البيانات تضمن عدم إمكانية تداخل بيانات أي مكتب مع آخر.</li>
+                            <li><strong>النسخ الاحتياطي التلقائي (Daily Backups) :</strong> برمجة نسخ احتياطي يومي آلي لقواعد البيانات لضمان عدم ضياع أي ملف أو وثيقة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="benefit-box">
+                        <div class="benefit-title">💎 السيادة والأمان الاستراتيجي</div>
+                        <p class="benefit-desc">
+                            استقلالية رقمية تامة، هوامش ربح مرتفعة ومستقرة، ومطابقة كاملة للسياسات الوطنية لتوطين البيانات الحساسة داخل الوطن.
+                        </p>
+                    </div>
+
+                    <div class="tech-stack-row">
+                        <span class="legal-pill">🇩🇿 استضافة جزائرية 100%</span>
+                        <span class="tech-pill">دفع محلي بالدينار</span>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- SCRIPT FOR DUAL LANGUAGE TOGGLE & SMOOTH SCROLL -->
+    <script>
+        // Language Mode Switcher
+        function setMode(mode) {
+            document.body.classList.remove('mode-fr-only', 'mode-ar-only');
+            document.getElementById('btnDual').classList.remove('active');
+            document.getElementById('btnFr').classList.remove('active');
+            document.getElementById('btnAr').classList.remove('active');
+
+            if (mode === 'fr') {
+                document.body.classList.add('mode-fr-only');
+                document.getElementById('btnFr').classList.add('active');
+            } else if (mode === 'ar') {
+                document.body.classList.add('mode-ar-only');
+                document.getElementById('btnAr').classList.add('active');
+            } else {
+                document.getElementById('btnDual').classList.add('active');
+            }
+        }
+
+        // Custom Dropdown Open/Close
+        const trigger = document.getElementById('dropdownTrigger');
+        const menu = document.getElementById('dropdownMenu');
+
+        trigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = menu.classList.contains('open');
+            if (isOpen) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        });
+
+        function openDropdown() {
+            menu.classList.add('open');
+            trigger.classList.add('open');
+            trigger.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeDropdown() {
+            menu.classList.remove('open');
+            trigger.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        // Smooth Scroll to Element
+        function scrollToElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                closeDropdown();
+                const offset = 80;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = el.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

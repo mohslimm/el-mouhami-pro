@@ -1,80 +1,17 @@
 {
-  "name": "desktop",
+  "name": "el-mouhami-pro-monorepo",
   "private": true,
   "version": "1.0.0",
-  "main": "dist-electron/main.js",
+  "description": "El-Mouhami Pro — Suite Juridique Unifiée (Desktop, Mobile, Backend)",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build && npm run build:electron",
-    "build:electron": "tsc -p electron/tsconfig.json",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "app:dev": "npm run build:electron && concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "app:build": "npm run build && electron-builder"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.45.0",
-    "date-fns": "^3.6.0",
-    "framer-motion": "^11.18.2",
-    "lucide-react": "^0.441.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^6.22.0",
-    "zod": "^3.23.0",
-    "zustand": "^5.0.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "concurrently": "^10.0.4",
-    "electron": "^44.0.0",
-    "electron-builder": "^26.15.3",
-    "electron-devtools-installer": "^4.0.0",
-    "typescript": "^5.5.0",
-    "vite": "^8.2.2",
-    "wait-on": "^9.1.0"
-  },
-  "build": {
-    "appId": "dz.cabinet-slimani.desktop",
-    "productName": "Cabinet Slimani",
-    "directories": {
-      "output": "dist-app"
-    },
-    "files": [
-      "dist/**/*",
-      "dist-electron/**/*"
-    ],
-    "extraResources": [
-      {
-        "from": "extraResources",
-        "to": "extraResources",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ],
-    "win": {
-      "target": "nsis",
-      "icon": "public/icon.ico"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Cabinet Slimani",
-      "uninstallDisplayName": "Cabinet Slimani"
-    },
-    "mac": {
-      "target": "dmg",
-      "icon": "public/icon.icns"
-    }
-  },
-  "allowScripts": {
-    "electron@32.3.3": true,
-    "esbuild@0.21.5": true
+    "dev": "npm run --prefix apps/desktop app:dev",
+    "build": "npm run --prefix apps/desktop app:build",
+    "desktop:dev": "npm run --prefix apps/desktop app:dev",
+    "desktop:build": "npm run --prefix apps/desktop app:build",
+    "desktop:preview": "npm run --prefix apps/desktop preview"
   }
 }
