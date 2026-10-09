@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useMemo } from 'react'
 import {
   Printer,
   Sliders,
@@ -7,12 +7,16 @@ import {
   Scan,
   RefreshCw,
   AlertTriangle,
+  FolderArchive,
+  Layers,
+  ShieldCheck,
 } from 'lucide-react'
 import { useAdminStore, ScannedDocumentItem } from '@/stores/adminStore'
 import { FileTree, TreeViewElement } from '@/components/ui/magicui/file-tree'
 import { BorderBeam } from '@/components/ui/magicui/border-beam'
 import { Spotlight } from '@/components/ui/motion/spotlight'
 import { BlurFade } from '@/components/ui/magicui/blur-fade'
+import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect'
 
 
 
@@ -52,6 +56,39 @@ export const AdminEpsonScanModule = memo(() => {
       }).catch(() => { })
     }
   }, [])
+
+  const driverOptions: SelectOption[] = useMemo(() => [
+    { value: 'NAPS2_CLI', label: lang === 'ar' ? 'NAPS2 CLI (موصى به - أداء فائق)' : 'NAPS2 CLI (naps2.console.exe - Recommandé)', badge: 'CLI' },
+    { value: 'WIA_NATIVE', label: lang === 'ar' ? 'بروتوكول Windows WIA الأصلي' : 'Windows WIA Native Script', badge: 'WIA' },
+    { value: 'TWAIN_DIRECT', label: lang === 'ar' ? 'برنامج تشغيل إبسون Direct TWAIN v2.4' : 'Epson Direct TWAIN v2.4 Driver', badge: 'TWAIN' },
+  ], [lang])
+
+  const scannerOptions: SelectOption[] = useMemo(() => {
+    return availableScanners.map((scn) => ({
+      value: scn,
+      label: scn,
+      badge: scn.includes('DS-530') ? 'USB 3.0' : 'Scanner',
+    }))
+  }, [availableScanners])
+
+  const dossierOptions: SelectOption[] = useMemo(() => {
+    return dossiers.map((d) => ({
+      value: d.id,
+      label: `${d.reference} — ${lang === 'ar' && d.clientNameAr ? d.clientNameAr : d.clientName}`,
+      badge: d.chamber || 'FONCIER',
+    }))
+  }, [dossiers, lang])
+
+  const dpiOptions: SelectOption[] = useMemo(() => [
+    { value: '150', label: '150 DPI (حجم خفيف)', badge: 'Fast' },
+    { value: '300', label: '300 DPI (دقة قياسية موصى بها)', badge: 'Standard' },
+    { value: '600', label: '600 DPI (دقة فائقة للأختام)', badge: 'HD' },
+  ], [])
+
+  const sourceModeOptions: SelectOption[] = useMemo(() => [
+    { value: 'ADF Duplex', label: lang === 'ar' ? 'ADF Duplex (تغذية آلية للوجهين)' : 'ADF Duplex (Recto-Verso)' },
+    { value: 'ADF Simplex', label: lang === 'ar' ? 'ADF Simplex (تغذية آلية لوجه واحد)' : 'ADF Simplex (Recto seul)' },
+  ], [lang])
 
   const startScanProcess = async () => {
     if (isScanning) return
@@ -202,107 +239,137 @@ export const AdminEpsonScanModule = memo(() => {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Scanner Control Panel */}
         <BlurFade delay={0.1} className="lg:col-span-4">
-          <div className="flex flex-col gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-lg">
-            <h4 className="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2.5 font-serif text-base font-bold text-[var(--gold-400)]">
-              <Sliders size={18} />
+          <div className="flex flex-col gap-4 rounded-2xl border border-amber-500/25 bg-[#0E1120] p-5 shadow-xl shadow-black/80 backdrop-blur-xl">
+            <h4 className="flex items-center gap-2 border-b border-white/10 pb-3 font-serif text-base font-bold text-amber-300 m-0">
+              <Sliders size={18} className="text-amber-400" />
               {lang === 'ar' ? 'إعدادات الماسح والمحرك' : 'Configuration du Driver USB'}
             </h4>
 
             <div>
-              <label className="mb-1 block text-xs text-[var(--text-muted)]">
+              <label className="mb-1.5 block text-xs font-semibold text-stone-200">
                 {lang === 'ar' ? 'طريقة الربط بالمعدات' : "Mode d'intégration matériel"}
               </label>
-              <select
-                className="input w-full text-xs"
+              <CustomSelect
                 value={driverMode}
-                onChange={(e) => setDriverMode(e.target.value as any)}
-              >
-                <option value="NAPS2_CLI">
-                  {lang === 'ar' ? 'NAPS2 CLI (موصى به - naps2.console.exe)' : 'NAPS2 CLI (naps2.console.exe - Recommandé)'}
-                </option>
-                <option value="WIA_NATIVE">
-                  {lang === 'ar' ? 'سكربت Windows WIA الأصلي' : 'Windows WIA Native Script'}
-                </option>
-                <option value="TWAIN_DIRECT">
-                  {lang === 'ar' ? 'برنامج تشغيل إبسون Direct TWAIN v2.4' : 'Epson Direct TWAIN v2.4 Driver'}
-                </option>
-              </select>
+                onChange={(val) => setDriverMode(val as any)}
+                options={driverOptions}
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                className="w-full"
+              />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs text-[var(--text-muted)]">
+              <label className="mb-1.5 block text-xs font-semibold text-stone-200">
                 {lang === 'ar' ? 'الماسح الضوئي المكتشف' : 'Périphérique USB décelé'}
               </label>
-              <select
-                className="input w-full text-xs"
+              <CustomSelect
                 value={selectedScanner}
-                onChange={(e) => setSelectedScanner(e.target.value)}
-              >
-                {availableScanners.map((scn) => (
-                  <option key={scn} value={scn}>
-                    {scn}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => setSelectedScanner(val)}
+                options={scannerOptions}
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                className="w-full"
+              />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs text-[var(--text-muted)]">
+              <label className="mb-1.5 block text-xs font-semibold text-stone-200">
                 {lang === 'ar' ? 'الملف القضائي الهدف (رقم الجدول)' : 'Dossier de destination (N° Rôle)'}
               </label>
-              <select
-                className="input w-full text-xs"
+              <CustomSelect
                 value={targetCaseId}
-                onChange={(e) => setTargetCaseId(e.target.value)}
-              >
-                {dossiers.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.reference} - {lang === 'ar' && d.clientNameAr ? d.clientNameAr : d.clientName}
-                  </option>
-                ))}
-              </select>
+                onChange={(val) => setTargetCaseId(val)}
+                options={dossierOptions}
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                className="w-full"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="mb-1 block text-[0.7rem] text-[var(--text-muted)]">
+                <label className="mb-1.5 block text-xs font-semibold text-stone-200">
                   {lang === 'ar' ? 'دقة المسح (DPI)' : 'Résolution (DPI)'}
                 </label>
-                <select className="input w-full text-xs" value={dpi} onChange={(e) => setDpi(e.target.value)}>
-                  <option value="150">150 DPI</option>
-                  <option value="300">300 DPI</option>
-                  <option value="600">600 DPI</option>
-                </select>
+                <CustomSelect
+                  value={dpi}
+                  onChange={(val) => setDpi(val)}
+                  options={dpiOptions}
+                  dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                  className="w-full"
+                />
               </div>
 
               <div>
-                <label className="mb-1 block text-[0.7rem] text-[var(--text-muted)]">
+                <label className="mb-1.5 block text-xs font-semibold text-stone-200">
                   {lang === 'ar' ? 'نمط التغذية' : 'Source Mode'}
                 </label>
-                <select className="input w-full text-xs" value={sourceMode} onChange={(e) => setSourceMode(e.target.value)}>
-                  <option value="ADF Duplex">ADF Duplex</option>
-                  <option value="ADF Simplex">ADF Simplex</option>
-                </select>
+                <CustomSelect
+                  value={sourceMode}
+                  onChange={(val) => setSourceMode(val)}
+                  options={sourceModeOptions}
+                  dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                  className="w-full"
+                />
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 border-t border-[var(--border-subtle)] pt-3">
-              <label className="flex items-center gap-2 text-xs text-[var(--text-primary)] cursor-pointer">
-                <input type="checkbox" checked={ocrActive} onChange={(e) => setOcrActive(e.target.checked)} />
-                <span>{lang === 'ar' ? 'تطبيق OCR للبحث في نص PDF' : 'OCR Recherche de texte PDF/A'}</span>
-              </label>
-              <label className="flex items-center gap-2 text-xs text-[var(--text-primary)] cursor-pointer">
-                <input type="checkbox" checked={deskewActive} onChange={(e) => setDeskewActive(e.target.checked)} />
-                <span>{lang === 'ar' ? 'تعديل انحراف الصفحات تلقائياً' : 'Redressement auto-deskew'}</span>
-              </label>
+            {/* Toggle Switches for OCR and Deskew */}
+            <div className="flex flex-col gap-2.5 border-t border-white/10 pt-3.5">
+              <div
+                onClick={() => setOcrActive(!ocrActive)}
+                className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-amber-500/30 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={15} className={ocrActive ? 'text-amber-400' : 'text-stone-500'} />
+                  <span className="text-xs font-medium text-stone-200">
+                    {lang === 'ar' ? 'تطبيق OCR للبحث في نص PDF' : 'OCR Recherche de texte PDF/A'}
+                  </span>
+                </div>
+                <div
+                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                    ocrActive ? 'bg-amber-500' : 'bg-white/20'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      ocrActive ? (lang === 'ar' ? '-translate-x-4' : 'translate-x-4') : 'translate-x-0'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              <div
+                onClick={() => setDeskewActive(!deskewActive)}
+                className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-amber-500/30 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-2">
+                  <Layers size={15} className={deskewActive ? 'text-amber-400' : 'text-stone-500'} />
+                  <span className="text-xs font-medium text-stone-200">
+                    {lang === 'ar' ? 'تعديل انحراف الصفحات تلقائياً' : 'Redressement auto-deskew'}
+                  </span>
+                </div>
+                <div
+                  className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                    deskewActive ? 'bg-amber-500' : 'bg-white/20'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      deskewActive ? (lang === 'ar' ? '-translate-x-4' : 'translate-x-4') : 'translate-x-0'
+                    }`}
+                  />
+                </div>
+              </div>
             </div>
 
             <button
               disabled={isScanning}
               onClick={startScanProcess}
               type="button"
-              className={`btn-primary mt-3 w-full py-3.5 px-4 text-xs sm:text-sm font-bold flex items-center justify-center gap-2.5 rounded-xl shadow-lg transition-all ${isScanning ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.01] active:scale-[0.99]'
-                }`}
+              className={`mt-2 w-full py-3.5 px-4 text-sm font-bold flex items-center justify-center gap-2.5 rounded-xl transition-all shadow-xl shadow-amber-500/20 ${
+                isScanning
+                  ? 'opacity-70 cursor-not-allowed bg-amber-500/50 text-stone-900'
+                  : 'cursor-pointer bg-gradient-to-r from-[#B8924A] via-[#C39B57] to-[#D4B57A] text-[#120E05] hover:brightness-110 active:scale-[0.98]'
+              }`}
             >
               <Scan size={18} className={isScanning ? 'animate-spin' : ''} />
               <span>
@@ -321,28 +388,28 @@ export const AdminEpsonScanModule = memo(() => {
         {/* Live Scanning Screen & History Vault */}
         <BlurFade delay={0.15} className="flex flex-col gap-6 lg:col-span-8">
           {/* Live Animation Box with BorderBeam */}
-          <div className="relative flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-[var(--border-gold)] bg-[var(--bg-elevated)] p-6 text-center shadow-xl overflow-hidden">
+          <div className="relative flex min-h-[240px] flex-col items-center justify-center rounded-2xl border border-amber-500/25 bg-[#0E1120] p-6 text-center shadow-xl shadow-black/80 overflow-hidden">
             <Spotlight size={220} fill="rgba(197, 160, 89, 0.18)" />
             {isScanning && <BorderBeam size={180} duration={4} colorFrom="#c5a059" colorTo="#e8c77a" />}
 
             {isScanning ? (
               <div className="flex w-full flex-col items-center gap-4">
-                <div className="relative flex h-24 w-44 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-gold)] bg-black/60 shadow-inner">
-                  <FileText size={48} className="text-[var(--gold-400)] opacity-40" />
-                  <div className="absolute left-0 right-0 h-1 bg-[var(--gold-400)] shadow-[0_0_12px_#c5a059] animate-pulse" />
+                <div className="relative flex h-24 w-44 items-center justify-center overflow-hidden rounded-xl border border-amber-500/40 bg-black/60 shadow-inner">
+                  <FileText size={48} className="text-amber-400 opacity-40" />
+                  <div className="absolute left-0 right-0 h-1 bg-amber-400 shadow-[0_0_12px_#c5a059] animate-pulse" />
                 </div>
-                <div className="font-mono text-sm font-semibold text-[var(--gold-400)]">{scanStatusText}</div>
-                <div className="h-2 w-4/5 overflow-hidden rounded-full bg-[var(--bg-surface)]">
-                  <div className="h-full bg-[var(--gold-500)] transition-all duration-300" style={{ width: `${scanProgress}%` }} />
+                <div className="font-mono text-sm font-semibold text-amber-300">{scanStatusText}</div>
+                <div className="h-2 w-4/5 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full bg-gradient-to-r from-[#C39B57] to-[#E8C77A] transition-all duration-300" style={{ width: `${scanProgress}%` }} />
                 </div>
-                <span className="text-xs text-[var(--text-muted)]">{scanProgress}% - naps2.console.exe</span>
+                <span className="text-xs text-stone-400 font-mono">{scanProgress}% - naps2.console.exe</span>
               </div>
             ) : scanError ? (
               <div className="flex flex-col items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border border-red-500/40 bg-red-500/15 text-red-400">
                   <AlertTriangle size={24} />
                 </div>
-                <h4 className="font-serif text-lg font-bold text-[var(--text-primary)]">
+                <h4 className="font-serif text-lg font-bold text-stone-100">
                   {lang === 'ar' ? 'فشل المسح الضوئي' : 'Échec de la numérisation'}
                 </h4>
                 <p className="max-w-md text-xs text-red-300">{scanError}</p>
@@ -353,19 +420,19 @@ export const AdminEpsonScanModule = memo(() => {
               </div>
             ) : lastScannedDoc ? (
               <div className="flex flex-col items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-green-500/40 bg-green-500/15 text-green-400">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/15 text-emerald-400">
                   <CheckCircle2 size={24} />
                 </div>
-                <h4 className="font-serif text-lg font-bold text-[var(--text-primary)]">
+                <h4 className="font-serif text-lg font-bold text-stone-100">
                   {lang === 'ar' ? 'تم مسح المستند بنجاح وحفظه بالأرشيف الرقمي!' : 'Document numérisé & archivé dans la GED !'}
                 </h4>
-                <p className="font-mono text-xs text-[var(--gold-400)]">
+                <p className="font-mono text-xs text-amber-300">
                   {lastScannedDoc.filename} ({lang === 'ar' ? 'رقم الجدول :' : 'Rôle N° :'} {lastScannedDoc.caseRoleNo})
                 </p>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2.5 mt-2">
                   {lastScannedDoc.filePath && (
                     <button
-                      className="btn-primary text-xs"
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#B8924A] via-[#C39B57] to-[#D4B57A] text-[#120E05] font-bold text-xs flex items-center gap-1.5 shadow-md hover:brightness-110 transition-all"
                       onClick={() => {
                         if (typeof globalThis.window !== 'undefined' && globalThis.window.electronAPI?.openPath && lastScannedDoc.filePath) {
                           globalThis.window.electronAPI.openPath(lastScannedDoc.filePath)
@@ -373,32 +440,76 @@ export const AdminEpsonScanModule = memo(() => {
                       }}
                     >
                       <FileText size={14} />
-                      {lang === 'ar' ? 'فتح في عارض PDF المستقل (Acrobat/Foxit)' : 'Ouvrir avec le lecteur PDF par défaut'}
+                      {lang === 'ar' ? 'فتح في عارض PDF (Acrobat/Foxit)' : 'Ouvrir avec le lecteur PDF par défaut'}
                     </button>
                   )}
-                  <button className="btn-outline text-xs" onClick={() => setLastScannedDoc(null)}>
+                  <button
+                    className="px-4 py-2 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all"
+                    onClick={() => setLastScannedDoc(null)}
+                  >
                     <RefreshCw size={14} />
                     {lang === 'ar' ? 'مسح وثيقة أخرى' : 'Numériser un autre document'}
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-2 text-[var(--text-muted)]">
-                <Printer size={46} className="text-[var(--border-gold)]" />
-                <p className="text-xs">
-                  {lang === 'ar'
-                    ? 'ضع الوثائق في الماسح الضوئي واضغط على "بدء المسح الضوئي المباشر".'
-                    : 'Placez les actes dans le bac ADF Epson/Canon et lancez le scan CLI.'}
-                </p>
+              <div className="flex flex-col items-center gap-3 py-4 text-center">
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 shadow-lg shadow-amber-500/10">
+                  <Printer size={32} />
+                  <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                  </span>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-sm font-bold text-stone-100 font-mono">
+                      {selectedScanner}
+                    </span>
+                    <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                      {lang === 'ar' ? 'جاهز للالتقاط' : 'Prêt'}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-stone-400 max-w-sm">
+                    {lang === 'ar'
+                      ? 'ضع المستندات والعرائض في وحدة التغذية (ADF) واضغط على "بدء المسح الضوئي المباشر".'
+                      : 'Placez les actes dans le bac ADF Epson et lancez le scan matériel.'}
+                  </p>
+                </div>
+
+                {/* Telemetry pill badges */}
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white/5 border border-white/10 text-stone-300">
+                    {dpi} DPI
+                  </span>
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono bg-white/5 border border-white/10 text-stone-300">
+                    {sourceMode}
+                  </span>
+                  <span className="px-2.5 py-1 rounded-lg text-xs font-mono bg-amber-500/15 border border-amber-500/30 text-amber-300">
+                    {driverMode}
+                  </span>
+                  {ocrActive && (
+                    <span className="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300">
+                      OCR PDF/A
+                    </span>
+                  )}
+                </div>
               </div>
             )}
           </div>
 
           {/* Interactive Document Tree & GED Explorer */}
-          <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-lg">
-            <h4 className="mb-3 font-serif text-base font-bold text-[var(--gold-400)]">
-              {lang === 'ar' ? 'شجرة أجهزة الأرشيف الرقمي (GED FileTree)' : 'Explorateur Arborescent GED (FileTree)'}
-            </h4>
+          <div className="rounded-2xl border border-amber-500/25 bg-[#0E1120] p-5 shadow-xl shadow-black/80">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+              <h4 className="flex items-center gap-2 font-serif text-base font-bold text-amber-300 m-0">
+                <FolderArchive size={18} className="text-amber-400" />
+                {lang === 'ar' ? 'شجرة أجهزة الأرشيف الرقمي (GED FileTree)' : 'Explorateur Arborescent GED (FileTree)'}
+              </h4>
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-white/5 border border-white/10 text-stone-300">
+                {scannedVault.length} {lang === 'ar' ? 'وثيقة مؤرشفة' : 'docs'}
+              </span>
+            </div>
 
             <FileTree elements={treeData} />
           </div>

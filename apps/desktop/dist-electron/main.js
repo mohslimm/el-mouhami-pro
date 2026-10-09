@@ -63,8 +63,8 @@ function checkNetworkConnectivity() {
 }
 function createWindow() {
     mainWindow = new electron_1.BrowserWindow({
-        width: 1920,
-        height: 1080,
+        width: 1440,
+        height: 900,
         minWidth: 1024,
         minHeight: 700,
         title: 'Cabinet Slimani',
@@ -73,26 +73,26 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            sandbox: true,
+            sandbox: false,
             webSecurity: true,
             preload: path.join(__dirname, 'preload.js'),
         },
         backgroundColor: '#060610', // --bg-void
-        show: false,
+        show: true,
     });
-    mainWindow.maximize();
-    mainWindow.setFullScreen(true);
     if (isDev) {
-        // En développement, on charge l'URL de dev de Vite
-        mainWindow.loadURL('http://localhost:5173');
+        mainWindow.loadURL('http://127.0.0.1:5173');
     }
     else {
-        // En production, on charge le fichier index.html généré
         mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
     }
-    mainWindow.once('ready-to-show', () => {
-        mainWindow?.maximize();
+    mainWindow.webContents.on('did-finish-load', () => {
+        console.log('[Electron] Interface chargée avec succès.');
         mainWindow?.show();
+        mainWindow?.focus();
+    });
+    mainWindow.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+        console.error(`[Electron] Échec chargement (${errorCode}) sur ${validatedURL}: ${errorDescription}`);
     });
     // S'assurer que les liens externes s'ouvrent dans le navigateur par défaut
     mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -104,15 +104,6 @@ function createWindow() {
     });
 }
 electron_1.app.whenReady().then(async () => {
-    if (isDev) {
-        try {
-            const { default: installExtension, REACT_DEVELOPER_TOOLS } = await Promise.resolve().then(() => __importStar(require('electron-devtools-installer')));
-            await installExtension(REACT_DEVELOPER_TOOLS, { loadExtensionOptions: { allowFileAccess: true } });
-        }
-        catch (err) {
-            console.log('Erreur de chargement des DevTools React:', err);
-        }
-    }
     electron_1.session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => {
         callback(true);
     });

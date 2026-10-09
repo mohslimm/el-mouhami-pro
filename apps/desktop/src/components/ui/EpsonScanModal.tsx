@@ -1,10 +1,32 @@
+// EpsonScanModal.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+// CABINET SLIMANI — AL-MOUHAMI PRO DESKTOP (QUIET LUXURY SPEC)
+// Modal Numérisation Directe Epson WorkForce DS-530 II (ADF Duplex USB 3.0)
+// Zéro contrôle natif • CustomSelect • BorderBeam • Indexation GED Réelle
+// ─────────────────────────────────────────────────────────────────────────────
+
 'use client'
 
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Scan, CheckCircle2, ShieldCheck, RefreshCw, X, Cpu, Lock } from 'lucide-react'
+import {
+  Scan,
+  CheckCircle2,
+  ShieldCheck,
+  RefreshCw,
+  X,
+  Cpu,
+  Lock,
+  Sparkles,
+  FolderOpen,
+  FileText,
+  Printer,
+} from 'lucide-react'
+import { useAdminStore } from '@/stores/adminStore'
+import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect'
+import { BorderBeam } from '@/components/ui/magicui/border-beam'
 
-interface EpsonScanModalProps {
+export interface EpsonScanModalProps {
   isOpen: boolean
   onClose: () => void
   dossierRef?: string
@@ -12,15 +34,25 @@ interface EpsonScanModalProps {
   isAr?: boolean
 }
 
-type ScanStage = 'idle' | 'connecting' | 'scanning' | 'ocr' | 'encrypting' | 'complete'
+export type ScanStage = 'idle' | 'connecting' | 'scanning' | 'ocr' | 'encrypting' | 'complete'
 
-export const EpsonScanModal = memo(({ isOpen, onClose, dossierRef = 'DOS-2026-084', clientName = 'Slimani / Sonatrach', isAr = false }: EpsonScanModalProps) => {
+export const EpsonScanModal = memo(({
+  isOpen,
+  onClose,
+  dossierRef = 'DOS-2026-084',
+  clientName = 'Slimani / Sonatrach',
+  isAr = false,
+}: EpsonScanModalProps) => {
+  const { dossiers, addScannedDoc } = useAdminStore()
+
+  const [selectedDossierId, setSelectedDossierId] = useState<string>('')
   const [stage, setStage] = useState<ScanStage>('idle')
   const [progress, setProgress] = useState(0)
   const [scannedText, setScannedText] = useState('')
-  const [resolution, setResolution] = useState<'300' | '600'>('300')
-  const [mode, setMode] = useState<'adf_duplex' | 'flatbed'>('adf_duplex')
+  const [resolution, setResolution] = useState<string>('300')
+  const [mode, setMode] = useState<string>('adf_duplex')
 
+  // Reset stage when modal opens/closes
   useEffect(() => {
     if (!isOpen) {
       setStage('idle')
@@ -29,6 +61,64 @@ export const EpsonScanModal = memo(({ isOpen, onClose, dossierRef = 'DOS-2026-08
     }
   }, [isOpen])
 
+  // Current active dossier details
+  const activeDossier = useMemo(() => {
+    if (selectedDossierId) {
+      return dossiers.find((d) => d.id === selectedDossierId) ?? null
+    }
+    return dossiers[0] ?? null
+  }, [dossiers, selectedDossierId])
+
+  const currentDossierRef = activeDossier ? activeDossier.reference : dossierRef
+  const currentClientName = activeDossier
+    ? (isAr && activeDossier.clientNameAr ? activeDossier.clientNameAr : activeDossier.clientName)
+    : clientName
+
+  // Select Options
+  const dossierOptions: SelectOption[] = useMemo(() => {
+    return dossiers.map((d) => ({
+      value: d.id,
+      label: `${d.reference} • ${isAr && d.clientNameAr ? d.clientNameAr : d.clientName} (${d.jurisdictionAr || d.jurisdiction})`,
+      badge: d.chamber,
+    }))
+  }, [dossiers, isAr])
+
+  const modeOptions: SelectOption[] = useMemo(() => {
+    return [
+      {
+        value: 'adf_duplex',
+        label: isAr ? 'سحب آلي مزدوج للوجهين (ADF Chargeur Duplex)' : 'ADF Chargeur Auto (Recto-Verso)',
+        badge: 'ADF 300',
+      },
+      {
+        value: 'flatbed',
+        label: isAr ? 'المسح المسطح عالي الدقة (Vitre Plate 600 DPI)' : 'Vitre Plate (Flatbed 600 DPI)',
+        badge: 'Vitre Plate',
+      },
+    ]
+  }, [isAr])
+
+  const resolutionOptions: SelectOption[] = useMemo(() => {
+    return [
+      {
+        value: '300',
+        label: isAr ? '300 DPI (موصى به للأرشفة والتعرف OCR)' : '300 DPI (Recommandé GED & OCR)',
+        badge: 'Recommandé',
+      },
+      {
+        value: '600',
+        label: isAr ? '600 DPI (دقة فائقة للوثائق القديمة)' : '600 DPI (Haute Définition Pièces Anciennes)',
+        badge: 'HD 600',
+      },
+      {
+        value: '200',
+        label: isAr ? '200 DPI (نمط سريع واقتصادي)' : '200 DPI (Mode Rapide & Économique)',
+        badge: '200 DPI',
+      },
+    ]
+  }, [isAr])
+
+  // Scan simulation pipeline
   const handleStartScan = () => {
     setStage('connecting')
     setProgress(15)
@@ -43,8 +133,8 @@ export const EpsonScanModal = memo(({ isOpen, onClose, dossierRef = 'DOS-2026-08
       setProgress(75)
       setScannedText(
         isAr
-          ? 'المملكة الجزائرية / عريضة افتتاح دعوى عقارية - محكمة بئر خادم\nالمدعي: شركي الطيب / المدعى عليه: شركة الإعمار\nالموضوع: المطالبة بتثبيت الملكية العقارية وإخلاء الأماكن...'
-          : 'REPUBLIQUE ALGERIENNE DEMOCRATIQUE ET POPULAIRE\nTribunal de Bir Khadem - Chambre Foncière\nRequête introductive d\'instance en matière immobilière.\nDemandeur: Cherki et Cie / Défendeur: Etablissement Public...'
+          ? `الجمهورية الجزائرية الديمقراطية الشعبية\nمجلس قضاء الجزائر — محكمة سيدي امحمد (القسم العقاري)\nعريضة افتتاح دعوى قضائية في مادة إثبات الملكية العقارية\nلفائدة: ${currentClientName}\nضد: شركة الإعمار والترقية العقارية ش.ذ.م.م\nالموضوع: المطالبة بتثبيت حق الملكية وإلزام المدعى عليها بالإخلاء وتسليم المفاتيح طبقاً لعقد الملكية المشهر رقم 412/2020.`
+          : `RÉPUBLIQUE ALGÉRIENNE DÉMOCRATIQUE ET POPULAIRE\nCour d'Alger — Tribunal de Sidi M'Hamed (Chambre Foncière)\nRequête introductive d'instance en matière de confirmation des droits réels immobiliers.\nDemandeur: ${currentClientName}\nDéfendeur: SARL Promotion Immobilière El-Djazair\nObjet: Confirmation de propriété et expulsion du défendeur suivant acte notarié n° 412/2020.`
       )
     }, 3200)
 
@@ -59,219 +149,266 @@ export const EpsonScanModal = memo(({ isOpen, onClose, dossierRef = 'DOS-2026-08
     }, 6000)
   }
 
+  // Save document to active case vault
+  const handleSaveToVault = () => {
+    const newDocId = `scan-${Date.now()}`
+    const fileName = `Piece_Scan_${currentDossierRef.replace(/\//g, '-')}_${Date.now().toString().slice(-4)}.pdf`
+
+    addScannedDoc({
+      id: newDocId,
+      timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
+      filename: fileName,
+      caseRoleNo: currentDossierRef,
+      clientName: currentClientName,
+      source: `Epson WorkForce DS-530 II (${mode === 'adf_duplex' ? 'ADF Duplex' : 'Flatbed'} ${resolution} DPI)`,
+      filePath: `userData/scans/${fileName}`,
+    })
+
+    onClose()
+  }
+
   if (!isOpen) return null
 
   return (
     <AnimatePresence>
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(6, 6, 16, 0.85)',
-          backdropFilter: 'blur(12px)',
-          padding: '1rem',
-        }}
-      >
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 overflow-y-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          initial={{ opacity: 0, scale: 0.95, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          style={{
-            width: '100%',
-            maxWidth: '680px',
-            background: 'var(--bg-surface)',
-            border: '1px solid var(--border-gold)',
-            borderRadius: '16px',
-            boxShadow: '0 24px 48px rgba(0,0,0,0.5), 0 0 32px var(--gold-glow)',
-            overflow: 'hidden',
-          }}
+          exit={{ opacity: 0, scale: 0.95, y: 16 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-full max-w-2xl rounded-2xl border border-amber-500/30 bg-[#121526]/95 shadow-2xl shadow-black/80 backdrop-blur-xl overflow-hidden flex flex-col my-auto"
         >
-          {/* Header */}
-          <div
-            style={{
-              padding: '1.25rem 1.5rem',
-              borderBottom: '1px solid var(--border-subtle)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              background: 'var(--bg-elevated)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '8px',
-                  background: 'var(--gold-glow)',
-                  border: '1px solid var(--border-gold)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--gold-400)',
-                }}
-              >
-                <Scan size={20} />
+          <BorderBeam size={160} duration={7} colorFrom="#C39B57" colorTo="#E8C77A" />
+
+          {/* ── HEADER ─────────────────────────────────────────────────── */}
+          <div className="flex items-center justify-between border-b border-white/10 px-6 py-4 bg-[#0f1222]/80">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0">
+                <Scan size={22} strokeWidth={2} />
               </div>
-              <div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.2rem', color: 'var(--text-primary)', margin: 0 }}>
-                  {isAr ? 'بروتوكول Numérisation Directe (Epson TWAIN/WIA)' : 'Numérisation Directe Epson Scan (ADF 300 DPI)'}
+              <div className="space-y-0.5">
+                <h3 className="font-serif text-base sm:text-lg font-bold text-white tracking-wide flex items-center gap-2">
+                  <span>
+                    {isAr
+                      ? 'المسح الضوئي المباشر — ماسح إبسون (ADF 300 DPI)'
+                      : 'Numérisation Directe Epson Scan (ADF 300 DPI)'}
+                  </span>
+                  <span className="text-[0.65rem] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-mono font-bold">
+                    TWAIN / USB 3.0
+                  </span>
                 </h3>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, fontFamily: "'JetBrains Mono', monospace" }}>
-                  AGENT LOCAL: ON-LINE (WebSocket ws://127.0.0.1:28164) &bull; {dossierRef}
+                <p className="text-[0.68rem] font-mono text-stone-400 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span dir="ltr">AGENT LOCAL: ON-LINE (WebSocket ws://127.0.0.1:28164)</span>
                 </p>
               </div>
             </div>
+
             <button
+              type="button"
               onClick={onClose}
-              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.25rem' }}
+              className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
-          {/* Body */}
-          <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            
-            {/* Context bar */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'rgba(255,255,255,0.02)', padding: '0.875rem', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
-              <div>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>{isAr ? 'الملف المستهدف' : 'Dossier Cible'}</span>
-                <strong style={{ fontSize: '0.9rem', color: 'var(--gold-400)' }}>{dossierRef} ({clientName})</strong>
+          {/* ── BODY ───────────────────────────────────────────────────── */}
+          <div className="p-5 sm:p-6 space-y-5">
+            {/* Context Summary Bar */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#0f1222]/90 border border-white/10 text-xs">
+              <div className="space-y-1">
+                <span className="text-[0.68rem] text-stone-400 uppercase tracking-wider block font-semibold flex items-center gap-1">
+                  <FolderOpen size={12} className="text-amber-400" />
+                  <span>{isAr ? 'القضية المستهدفة للأرشفة' : 'Dossier Cible'}</span>
+                </span>
+                <span className="font-mono text-amber-300 font-bold block truncate">
+                  {currentDossierRef} • {currentClientName}
+                </span>
               </div>
-              <div>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block' }}>{isAr ? 'الماسح الضوئي' : 'Scanner Connecté'}</span>
-                <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Epson WorkForce DS-530 II (USB 3.0)</strong>
+
+              <div className="space-y-1">
+                <span className="text-[0.68rem] text-stone-400 uppercase tracking-wider block font-semibold flex items-center gap-1">
+                  <Printer size={12} className="text-amber-400" />
+                  <span>{isAr ? 'الماسح الضوئي المتصل' : 'Scanner Connecté'}</span>
+                </span>
+                <span className="font-mono text-white font-bold block flex items-center gap-1.5 truncate">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  Epson WorkForce DS-530 II (USB 3.0)
+                </span>
               </div>
             </div>
 
-            {/* Config controls */}
+            {/* Target Case Selector (If multiple dossiers available) */}
+            {stage === 'idle' && dossiers.length > 0 && (
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-stone-300 block">
+                  {isAr ? 'تغيير الملف المستهدف لحفظ المستند (اختياري) :' : 'Sélectionner le dossier juridique :' }
+                </label>
+                <CustomSelect
+                  value={selectedDossierId || (dossiers[0]?.id ?? '')}
+                  onChange={(val) => setSelectedDossierId(val)}
+                  options={dossierOptions}
+                  dir={isAr ? 'rtl' : 'ltr'}
+                  align="auto"
+                  className="w-full"
+                  buttonClassName="py-2 text-xs"
+                />
+              </div>
+            )}
+
+            {/* Config Controls with CustomSelect (0 native select) */}
             {stage === 'idle' && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.375rem' }}>Mode Alimentation</label>
-                  <select
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-stone-300 block">
+                    {isAr ? 'طريقة السحب والتغذية (Alimentation) *' : 'Mode d’Alimentation Scanner *'}
+                  </label>
+                  <CustomSelect
                     value={mode}
-                    onChange={(e) => setMode(e.target.value as any)}
-                    className="input"
-                    style={{ width: '100%', fontSize: '0.85rem' }}
-                  >
-                    <option value="adf_duplex">ADF Chargeur Auto (Recto-Verso)</option>
-                    <option value="flatbed">Vitre Plate (Flatbed 600 DPI)</option>
-                  </select>
+                    onChange={(val) => setMode(val)}
+                    options={modeOptions}
+                    dir={isAr ? 'rtl' : 'ltr'}
+                    align="auto"
+                    className="w-full"
+                    buttonClassName="py-2.5 text-xs sm:text-sm font-medium"
+                  />
                 </div>
-                <div>
-                  <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.375rem' }}>Résolution Numérisation</label>
-                  <select
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-stone-300 block">
+                    {isAr ? 'دقة المسح الضوئي (Résolution DPI) *' : 'Résolution de Numérisation *'}
+                  </label>
+                  <CustomSelect
                     value={resolution}
-                    onChange={(e) => setResolution(e.target.value as any)}
-                    className="input"
-                    style={{ width: '100%', fontSize: '0.85rem' }}
-                  >
-                    <option value="300">300 DPI (Recommandé GED & OCR)</option>
-                    <option value="600">600 DPI (Haute Définition Pièces Anciennes)</option>
-                  </select>
+                    onChange={(val) => setResolution(val)}
+                    options={resolutionOptions}
+                    dir={isAr ? 'rtl' : 'ltr'}
+                    align="auto"
+                    className="w-full"
+                    buttonClassName="py-2.5 text-xs sm:text-sm font-medium"
+                  />
                 </div>
               </div>
             )}
 
-            {/* Active scan simulation area */}
+            {/* ── ACTIVE SCAN PIPELINE SIMULATION & VISUALS ── */}
             {stage !== 'idle' && (
-              <div style={{ background: 'var(--bg-elevated)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border-subtle)' }}>
-                {/* Progress bar */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.375rem', color: 'var(--text-muted)' }}>
-                    <span>
-                      {stage === 'connecting' && '⚡ Initialisation du pilote Epson TWAIN/WIA...'}
-                      {stage === 'scanning' && '📄 Acquisition matérielle ADF 300 DPI en cours (Auto-deskew)...'}
-                      {stage === 'ocr' && '🧠 Traitement OCR Bilingue (Moteur Arabe/Français)...'}
-                      {stage === 'encrypting' && '🔒 Chiffrement de la pièce (AES-256) & Indexation GED...'}
-                      {stage === 'complete' && 'Numérisation & Classement GED terminés avec succès ✓'}
+              <div className="rounded-2xl bg-[#0f1222]/95 border border-white/10 p-5 space-y-4 shadow-inner">
+                {/* Progress bar & Stage status */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs text-stone-300">
+                    <span className="font-semibold text-amber-300 flex items-center gap-2">
+                      <Sparkles size={14} className="animate-spin text-amber-400" />
+                      <span>
+                        {stage === 'connecting' && (isAr ? '⚡ تهيئة محرك إبسون TWAIN/WIA USB 3.0...' : '⚡ Initialisation du pilote Epson TWAIN/WIA...')}
+                        {stage === 'scanning' && (isAr ? `📄 سحب المستندات عبر وحدة ADF بدقة ${resolution} DPI (تصحيح الميل)...` : `📄 Acquisition ADF ${resolution} DPI en cours (Auto-deskew)...`)}
+                        {stage === 'ocr' && (isAr ? '🧠 معالجة التعرف الضوئي على الحروف ثنائي اللغة (OCR)...' : '🧠 Traitement OCR Bilingue (Moteur Arabe/Français)...')}
+                        {stage === 'encrypting' && (isAr ? '🔒 تشفير الوثيقة (AES-256) والربط بالأرشيف الرقمي...' : '🔒 Chiffrement de la pièce (AES-256) & Indexation GED...')}
+                        {stage === 'complete' && (isAr ? '✓ اكتمل المسح الضوئي ومعالجة النص بنجاح' : '✓ Numérisation & Traitement OCR terminés avec succès')}
+                      </span>
                     </span>
-                    <strong style={{ color: 'var(--gold-400)' }}>{progress}%</strong>
+                    <strong className="font-mono text-amber-400 font-bold">{progress}%</strong>
                   </div>
-                  <div style={{ height: '6px', width: '100%', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden' }}>
+
+                  <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                     <motion.div
                       animate={{ width: `${progress}%` }}
                       transition={{ duration: 0.5 }}
-                      style={{ height: '100%', background: 'linear-gradient(90deg, #b8924a, #e8c77a)' }}
+                      className="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 rounded-full"
                     />
                   </div>
                 </div>
 
-                {/* Laser beam animation during scan */}
+                {/* Laser scan beam animation during hardware capture */}
                 {stage === 'scanning' && (
-                  <div style={{ position: 'relative', height: '80px', background: '#0a0a14', borderRadius: '6px', overflow: 'hidden', border: '1px dashed var(--border-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="relative h-20 bg-[#060610] rounded-xl overflow-hidden border border-dashed border-amber-500/40 flex items-center justify-center shadow-inner">
                     <motion.div
                       animate={{ top: ['0%', '100%', '0%'] }}
                       transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }}
-                      style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: '#22c55e', boxShadow: '0 0 10px #22c55e' }}
+                      className="absolute left-0 right-0 h-0.5 bg-emerald-400 shadow-[0_0_12px_#34d399]"
                     />
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', zIndex: 1 }}>Acquisition du document physique via chargeur Epson...</span>
+                    <span className="text-xs text-stone-400 z-10 font-mono">
+                      {isAr
+                        ? 'سحب أوراق الدعوى عبر وحدة التغذية الآلية لإبسون (ADF)...'
+                        : 'Acquisition matérielle des pièces via le chargeur Epson...'}
+                    </span>
                   </div>
                 )}
 
                 {/* Scanned OCR text preview */}
                 {(stage === 'ocr' || stage === 'encrypting' || stage === 'complete') && (
-                  <div style={{ background: '#060610', padding: '1rem', borderRadius: '6px', border: '1px solid var(--border-subtle)', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.78rem', color: '#a0ecb1', maxHeight: '120px', overflowY: 'auto' }}>
-                    <div style={{ color: 'var(--gold-400)', fontSize: '0.7rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>[TEXTE EXTRAIT PAR OCR - ARABE & FRANÇAIS]</div>
-                    <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{scannedText}</pre>
+                  <div className="rounded-xl bg-[#060610] p-4 border border-white/10 font-mono text-xs text-emerald-300 max-h-36 overflow-y-auto space-y-1.5 shadow-inner leading-relaxed">
+                    <div className="text-amber-400 text-[0.68rem] font-bold uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-white/10">
+                      <FileText size={12} />
+                      <span>{isAr ? '[النص المستخرج عبر محرك OCR - عربي / فرنسي]' : '[TEXTE EXTRAIT PAR OCR - ARABE & FRANÇAIS]'}</span>
+                    </div>
+                    <pre className="whitespace-pre-wrap font-sans text-xs leading-relaxed text-stone-200">
+                      {scannedText}
+                    </pre>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Status indicators */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                <Cpu size={14} style={{ color: 'var(--gold-500)' }} />
-                <span>Auto-Deskew: ON</span>
+            {/* Hardware & Security Telemetry Badges */}
+            <div className="grid grid-cols-3 gap-2.5 pt-1 text-[0.72rem] text-stone-400">
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-[#0f1222] border border-white/5">
+                <Cpu size={14} className="text-amber-400 shrink-0" />
+                <span className="truncate">Auto-Deskew: ON</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                <Lock size={14} style={{ color: 'var(--gold-500)' }} />
-                <span>Chiffrement: AES-256</span>
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-[#0f1222] border border-white/5">
+                <Lock size={14} className="text-amber-400 shrink-0" />
+                <span className="truncate">Chiffrement: AES-256</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-                <ShieldCheck size={14} style={{ color: 'var(--gold-500)' }} />
-                <span>MinIO GED: Prêt</span>
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-[#0f1222] border border-white/5">
+                <ShieldCheck size={14} className="text-emerald-400 shrink-0" />
+                <span className="truncate">MinIO GED: Prêt</span>
               </div>
             </div>
-
           </div>
 
-          {/* Footer actions */}
-          <div
-            style={{
-              padding: '1rem 1.5rem',
-              borderTop: '1px solid var(--border-subtle)',
-              background: 'var(--bg-elevated)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <button className="btn-outline" onClick={onClose} style={{ fontSize: '0.85rem' }}>
+          {/* ── FOOTER ACTIONS ─────────────────────────────────────────── */}
+          <div className="flex items-center justify-between border-t border-white/10 px-6 py-4 bg-[#0f1222]/80">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-[#141829] border border-white/10 text-stone-300 hover:text-white hover:border-white/20 transition-all cursor-pointer"
+            >
               {isAr ? 'إلغاء' : 'Annuler'}
             </button>
 
             {stage === 'idle' ? (
-              <button className="btn-primary" onClick={handleStartScan} style={{ fontSize: '0.85rem' }}>
+              <button
+                type="button"
+                onClick={handleStartScan}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200
+                  bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-stone-950
+                  hover:shadow-lg hover:shadow-amber-500/25 hover:brightness-105 active:scale-95 cursor-pointer shadow-md"
+              >
                 <Scan size={16} />
-                {isAr ? 'بدء المسح الضوئي (Epson)' : 'Lancer la numérisation (Epson)'}
+                <span>{isAr ? 'بدء المسح الضوئي (Epson DS-530)' : 'Lancer la numérisation (Epson)'}</span>
               </button>
             ) : stage === 'complete' ? (
-              <button className="btn-primary" onClick={onClose} style={{ fontSize: '0.85rem', background: '#22c55e', color: '#fff' }}>
+              <button
+                type="button"
+                onClick={handleSaveToVault}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200
+                  bg-gradient-to-r from-emerald-500 to-emerald-600 text-stone-950
+                  hover:shadow-lg hover:shadow-emerald-500/25 hover:brightness-105 active:scale-95 cursor-pointer shadow-md"
+              >
                 <CheckCircle2 size={16} />
-                {isAr ? 'تأكيد الحفظ في الأرشيف الرقمي' : 'Valider & Classer dans la GED'}
+                <span>{isAr ? 'تأكيد الحفظ في الأرشيف الرقمي (GED)' : 'Valider & Classer dans la GED'}</span>
               </button>
             ) : (
-              <button className="btn-primary" disabled style={{ fontSize: '0.85rem', opacity: 0.7 }}>
-                <RefreshCw size={16} style={{ animation: 'spin 1s linear infinite' }} />
-                Traitement en cours...
+              <button
+                type="button"
+                disabled
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-amber-300 opacity-80 cursor-wait"
+              >
+                <RefreshCw size={15} className="animate-spin text-amber-400" />
+                <span>{isAr ? 'جاري المسح والمعالجة...' : 'Traitement en cours...'}</span>
               </button>
             )}
           </div>

@@ -4,13 +4,30 @@
 // MODE A — ÉCOUTE & RÉDACTION (Dictée vocale, intégration de trames et export Word)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { memo, useState, useRef } from 'react'
+'use client'
+
+import { memo, useState, useRef, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Mic, Upload, Sparkles, FileText, Download, AlertTriangle } from 'lucide-react'
+import {
+  Mic,
+  Upload,
+  Sparkles,
+  FileText,
+  Download,
+  AlertTriangle,
+  User,
+  Scale,
+  Building2,
+  FileCheck2,
+  FolderOpen,
+  Copy,
+  Check,
+} from 'lucide-react'
 import { useAdminStore, CaseChamber, AiGeneratedPetition } from '@/stores/adminStore'
 import { DictationButton } from '@/components/ui/DictationButton'
 import { ReasoningBox, ReasoningStep } from '@/components/ui/ai/ReasoningBox'
 import { generateWordDocument } from '@/services/documentGenerator'
+import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect'
 
 export interface CustomTemplate {
   id: string
@@ -20,7 +37,8 @@ export interface CustomTemplate {
 }
 
 export const ListenAndWriteMode = memo(() => {
-  const { lang, addGeneratedPetition, isOnline } = useAdminStore()
+  const { lang, addGeneratedPetition, isOnline, dossiers } = useAdminStore()
+  const isAr = lang === 'ar'
 
   // Trame & Custom Templates
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -33,6 +51,10 @@ export const ListenAndWriteMode = memo(() => {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('foncier')
   const [importedNotification, setImportedNotification] = useState<string | null>(null)
 
+  // Dossier Quick-Link & Copy States
+  const [selectedDossierId, setSelectedDossierId] = useState<string>('')
+  const [isCopied, setIsCopied] = useState(false)
+
   // Editable Form Fields
   const [clientName, setClientName] = useState('')
   const [defendantName, setDefendantName] = useState('')
@@ -42,6 +64,76 @@ export const ListenAndWriteMode = memo(() => {
   const [legalBasis, setLegalBasis] = useState('')
   const [lastGeneratedFile, setLastGeneratedFile] = useState<AiGeneratedPetition | null>(null)
   const [isProcessingAi, setIsProcessingAi] = useState(false)
+
+  const templateOptions: SelectOption[] = useMemo(() => {
+    return customTemplates.map((t) => ({
+      value: t.id,
+      label: t.name,
+      badge: t.chamber,
+    }))
+  }, [customTemplates])
+
+  const dossierOptions: SelectOption[] = useMemo(() => {
+    const list: SelectOption[] = [
+      {
+        value: '',
+        label: isAr ? '— كتابة حرة (دون ربط بقضية) —' : '— Saisie libre (Sans dossier) —',
+      },
+    ]
+    dossiers.forEach((d) => {
+      const cName = isAr && d.clientNameAr ? d.clientNameAr : d.clientName
+      const court = d.jurisdictionAr || d.jurisdiction
+      list.push({
+        value: d.id,
+        label: `${d.reference} • ${cName} (${court})`,
+        badge: d.chamber,
+      })
+    })
+    return list
+  }, [dossiers, isAr])
+
+  const handleDossierSelect = (dossierId: string) => {
+    setSelectedDossierId(dossierId)
+    if (!dossierId) return
+    const d = dossiers.find((x) => x.id === dossierId)
+    if (!d) return
+    setClientName(isAr && d.clientNameAr ? d.clientNameAr : d.clientName)
+    setDefendantName(d.adversaryName || '')
+    setJurisdiction(d.jurisdictionAr || d.jurisdiction)
+    if (d.chamber) {
+      setChamber(d.chamber)
+      const matchedTpl = customTemplates.find((t) => t.chamber === d.chamber)
+      if (matchedTpl) setSelectedTemplateId(matchedTpl.id)
+    }
+  }
+
+  const handleCopyPetition = async () => {
+    const text = `
+الجمهورية الجزائرية الديمقراطية الشعبية
+مجلس قضاء الجزائر — ${jurisdiction}
+
+عريضة افتتاح دعوى قضائية
+لفائدة: ${clientName || '[الموكل]'}
+ضد: ${defendantName || '[الخصم]'}
+
+— أولاً: الوقائع والتسلسل الزمني —
+${factsSummary || '[الوقائع المعروضة]'}
+
+— ثانياً: الأسانيد والتأصيل القانوني —
+${legalBasis || '[الأسانيد القانونية]'}
+
+— بناءً عليه، يلتمس العارض: —
+الحكم وفق ما تم بيانه في الطلبات أعلاه مع تحميل المدعى عليه المصاريف القضائية.
+`.trim()
+
+    try {
+      await navigator.clipboard.writeText(text)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2500)
+    } catch {
+      // Fallback
+    }
+  }
 
   const [reasoningSteps] = useState<ReasoningStep[]>([
     { id: '1', title: '1. تفريغ الصوت والتحليل الشفهي (Whisper Speech-to-Text)', detail: 'معالجة المصطلحات القانونية باللغتين العربية والفرنسية', status: 'completed' },
@@ -83,7 +175,7 @@ export const ListenAndWriteMode = memo(() => {
 
     setCustomTemplates((prev) => [newTemplate, ...prev])
     setSelectedTemplateId(newTemplate.id)
-    setImportedNotification(lang === 'ar' ? `تم استيراد النموذج "${file.name}" بنجاح!` : `Modèle "${file.name}" importé !`)
+    setImportedNotification(isAr ? `تم استيراد النموذج "${file.name}" بنجاح!` : `Modèle "${file.name}" importé !`)
     setTimeout(() => setImportedNotification(null), 4000)
     e.target.value = ''
   }
@@ -96,7 +188,7 @@ export const ListenAndWriteMode = memo(() => {
         <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 flex items-center gap-3 text-amber-300 text-xs">
           <AlertTriangle size={18} className="shrink-0 text-amber-400" />
           <span>
-            {lang === 'ar'
+            {isAr
               ? 'تنبيه: الجهاز يعمل حالياً بدون اتصال بشبكة الإنترنت. يتم تطبيق النموذج المحلي المباشر.'
               : 'Mode déconnecté : Génération locale autonome appliquée via les modèles embarqués.'}
           </span>
@@ -106,42 +198,43 @@ export const ListenAndWriteMode = memo(() => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (5 Cols) — Dictation & Template Controls */}
         <div className="lg:col-span-5 flex flex-col gap-5">
-          <div className="rounded-2xl border border-[var(--border-subtle)] hover:border-[var(--border-gold)] bg-[var(--bg-surface)] p-5 shadow-[var(--shadow-card)] space-y-4">
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-              <h4 className="font-serif text-base font-bold text-[var(--gold-400)] flex items-center gap-2">
-                <Mic size={18} />
-                {lang === 'ar' ? 'مسجل الصوت والتملية الفورية' : 'Dictée Vocale Directe'}
+          <div className="rounded-2xl border border-white/10 hover:border-amber-500/30 bg-[#121526]/90 p-5 shadow-xl shadow-black/40 backdrop-blur-md space-y-4 transition-all">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h4 className="font-serif text-base font-bold text-white flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+                  <Mic size={16} />
+                </span>
+                <span>{isAr ? 'مسجل الصوت والتملية الفورية' : 'Dictée Vocale Directe'}</span>
               </h4>
 
               <button
-                className="btn-outline text-xs px-3 py-1.5 flex items-center gap-1.5"
+                type="button"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#141829] border border-white/10 text-stone-200 hover:border-amber-500/40 hover:text-white transition-all cursor-pointer shadow-sm"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <Upload size={14} />
-                <span>{lang === 'ar' ? 'استيراد نموذج' : 'Importer Word'}</span>
+                <Upload size={13} className="text-amber-400" />
+                <span>{isAr ? 'استيراد نموذج' : 'Importer Word'}</span>
               </button>
             </div>
 
+            {/* Template Selector with CustomSelect */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                {lang === 'ar' ? 'اختر النموذج القضائي للتملية عليه' : 'Modèle de destination'}
+              <label className="text-xs font-semibold text-stone-300 block">
+                {isAr ? 'اختر النموذج القضائي للتملية عليه' : 'Modèle de destination'}
               </label>
-              <select
-                className="input w-full text-xs sm:text-sm font-medium py-2"
+              <CustomSelect
                 value={selectedTemplateId}
-                onChange={(e) => {
-                  const val = e.target.value
+                onChange={(val) => {
                   setSelectedTemplateId(val)
                   const t = customTemplates.find((x) => x.id === val)
                   if (t) setChamber(t.chamber)
                 }}
-              >
-                {customTemplates.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
+                options={templateOptions}
+                dir={isAr ? 'rtl' : 'ltr'}
+                align={isAr ? 'right' : 'left'}
+                className="w-full"
+                buttonClassName="py-2 text-xs sm:text-sm"
+              />
             </div>
 
             {importedNotification && (
@@ -152,6 +245,7 @@ export const ListenAndWriteMode = memo(() => {
 
             {/* Dictation Shared Engine */}
             <DictationButton
+              embedded={true}
               petitionType={selectedTemplateId === 'famille' ? 'divorce' : selectedTemplateId === 'commercial' ? 'commercial' : selectedTemplateId === 'civil' ? 'penal' : 'foncier'}
               knownParties={[
                 { name: clientName, role: 'client' },
@@ -185,7 +279,7 @@ export const ListenAndWriteMode = memo(() => {
 
                 if (isFallback) {
                   setImportedNotification(
-                    lang === 'ar'
+                    isAr
                       ? '⚠️ تنبيه: تم تطبيق نموذج عام لتوقف خادم الذكاء الاصطناعي'
                       : '⚠️ Attention: Modèle générique appliqué (Serveur IA hors-ligne)'
                   )
@@ -203,90 +297,195 @@ export const ListenAndWriteMode = memo(() => {
 
         {/* Right Column (7 Cols) — Form Content Editor & Word Export */}
         <div className="lg:col-span-7 flex flex-col gap-5">
-          <div className="rounded-2xl border border-[var(--border-subtle)] hover:border-[var(--border-gold)] bg-[var(--bg-surface)] p-5 sm:p-6 shadow-[var(--shadow-card)] space-y-4">
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
-              <h4 className="font-serif text-lg font-bold text-[var(--gold-400)]">
-                {lang === 'ar' ? 'محتوى العريضة المستخرجة (معاينة وتعديل)' : 'Aperçu & Édition de la Pétition'}
+          <div className="rounded-2xl border border-white/10 hover:border-amber-500/30 bg-[#121526]/90 p-5 sm:p-6 shadow-xl shadow-black/40 backdrop-blur-md space-y-4 transition-all">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h4 className="font-serif text-lg font-bold text-white flex items-center gap-2">
+                <FileCheck2 size={18} className="text-amber-400" />
+                <span>{isAr ? 'محتوى العريضة المستخرجة (معاينة وتعديل)' : 'Aperçu & Édition de la Pétition'}</span>
               </h4>
-              <button
-                className="btn-primary text-xs py-2 px-3.5 flex items-center gap-2"
-                onClick={() => {
-                  setIsProcessingAi(true)
-                  const currentTemplate = customTemplates.find((t) => t.id === selectedTemplateId)
-                  const newPetition: AiGeneratedPetition = {
-                    id: `pet-${Date.now()}`,
-                    title: currentTemplate ? currentTemplate.name : 'عريضة رسمية بالذكاء الاصطناعي',
-                    templateType: selectedTemplateId,
-                    clientName,
-                    defendantName,
-                    chamber,
-                    jurisdiction,
-                    facts: factsSummary,
-                    legalDemands: legalBasis,
-                    wordFileUrl: '#',
-                    createdAt: new Date().toISOString().split('T')[0] ?? '2026-08-27',
-                  }
-                  addGeneratedPetition(newPetition)
-                  setLastGeneratedFile(newPetition)
-                  setTimeout(() => setIsProcessingAi(false), 600)
-                }}
-              >
-                <Sparkles size={14} />
-                <span>{lang === 'ar' ? 'تأكيد وتوثيق العريضة' : 'Valider & Structurer'}</span>
-              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopyPetition}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-[#141829] border border-white/10 text-stone-200 hover:border-amber-500/40 hover:text-white transition-all cursor-pointer shadow-sm"
+                  title={isAr ? 'نسخ نص العريضة' : 'Copier le texte'}
+                >
+                  {isCopied ? (
+                    <>
+                      <Check size={13} className="text-emerald-400" />
+                      <span className="text-emerald-400 font-bold">{isAr ? 'تم النسخ!' : 'Copié !'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={13} className="text-amber-400" />
+                      <span>{isAr ? 'نسخ النص' : 'Copier'}</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200
+                    bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-stone-950
+                    hover:shadow-lg hover:shadow-amber-500/25 hover:brightness-105 active:scale-95 cursor-pointer shadow-md"
+                  onClick={() => {
+                    setIsProcessingAi(true)
+                    const currentTemplate = customTemplates.find((t) => t.id === selectedTemplateId)
+                    const newPetition: AiGeneratedPetition = {
+                      id: `pet-${Date.now()}`,
+                      title: currentTemplate ? currentTemplate.name : 'عريضة رسمية بالذكاء الاصطناعي',
+                      templateType: selectedTemplateId,
+                      clientName,
+                      defendantName,
+                      chamber,
+                      jurisdiction,
+                      facts: factsSummary,
+                      legalDemands: legalBasis,
+                      wordFileUrl: '#',
+                      createdAt: new Date().toISOString().split('T')[0] ?? '2026-08-27',
+                    }
+                    addGeneratedPetition(newPetition)
+                    setLastGeneratedFile(newPetition)
+                    setTimeout(() => setIsProcessingAi(false), 600)
+                  }}
+                >
+                  <Sparkles size={14} />
+                  <span>{isAr ? 'تأكيد وتوثيق العريضة' : 'Valider & Structurer'}</span>
+                </button>
+              </div>
             </div>
 
+            {/* Quick Dossier Auto-Fill Selector */}
+            <div className="rounded-xl border border-amber-500/20 bg-[#0f1222]/80 p-3 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-semibold text-amber-400">
+                <span className="flex items-center gap-1.5">
+                  <FolderOpen size={14} />
+                  <span>{isAr ? 'ربط بقضية جارية (استيراد فوري لبيانات الموكل والخصم والغرفة)' : 'Lier à un dossier existant (Auto-remplissage)'}</span>
+                </span>
+                {selectedDossierId && (
+                  <button
+                    type="button"
+                    onClick={() => handleDossierSelect('')}
+                    className="text-[0.68rem] text-stone-400 hover:text-stone-200 underline cursor-pointer"
+                  >
+                    {isAr ? 'إلغاء الربط' : 'Délier'}
+                  </button>
+                )}
+              </div>
+              <CustomSelect
+                value={selectedDossierId}
+                onChange={handleDossierSelect}
+                options={dossierOptions}
+                dir={isAr ? 'rtl' : 'ltr'}
+                align="auto"
+                className="w-full"
+                buttonClassName="py-2 text-xs"
+              />
+            </div>
+
+            {/* Parties Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                  {lang === 'ar' ? 'الموكل (الطالب)' : 'Client (Demandeur)'}
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-stone-300 flex items-center gap-1.5">
+                  <User size={13} className="text-amber-400" />
+                  <span>{isAr ? 'الموكل (الطالب) *' : 'Client (Demandeur) *'}</span>
                 </label>
-                <input className="input w-full text-xs sm:text-sm py-2" value={clientName} onChange={(e) => setClientName(e.target.value)} />
+                <input
+                  type="text"
+                  placeholder={isAr ? 'اسم ولقب الموكل أو الشركة' : 'Nom du client'}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141829] border border-white/10 text-white text-xs sm:text-sm placeholder:text-stone-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                />
               </div>
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                  {lang === 'ar' ? 'الخصم (المدعى عليه)' : 'Adversaire (Défendeur)'}
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-stone-300 flex items-center gap-1.5">
+                  <Scale size={13} className="text-amber-400" />
+                  <span>{isAr ? 'الخصم (المدعى عليه) *' : 'Adversaire (Défendeur) *'}</span>
                 </label>
-                <input className="input w-full text-xs sm:text-sm py-2" value={defendantName} onChange={(e) => setDefendantName(e.target.value)} />
+                <input
+                  type="text"
+                  placeholder={isAr ? 'اسم الطرف الخصم' : 'Nom de l\'adversaire'}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#141829] border border-white/10 text-white text-xs sm:text-sm placeholder:text-stone-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30"
+                  value={defendantName}
+                  onChange={(e) => setDefendantName(e.target.value)}
+                />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                {lang === 'ar' ? 'الجهة القضائية والجهة المختصة' : 'Juridiction Competente'}
+            {/* Jurisdiction Field */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-stone-300 flex items-center gap-1.5">
+                <Building2 size={13} className="text-amber-400" />
+                <span>{isAr ? 'الجهة القضائية والغرفة المختصة *' : 'Juridiction Compétente *'}</span>
               </label>
-              <input className="input w-full text-xs sm:text-sm py-2" value={jurisdiction} onChange={(e) => setJurisdiction(e.target.value)} />
+              <input
+                type="text"
+                placeholder="محكمة سيدي امحمد - القسم العقاري"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#141829] border border-white/10 text-white text-xs sm:text-sm placeholder:text-stone-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30"
+                value={jurisdiction}
+                onChange={(e) => setJurisdiction(e.target.value)}
+              />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                {lang === 'ar' ? 'وقائع الدعوى (الوقائع)' : 'Faits & Chronologie'}
+            {/* Facts Field */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-stone-300 block">
+                {isAr ? 'وقائع الدعوى (الوقائع والتسلسل الزمني)' : 'Faits & Chronologie'}
               </label>
-              <textarea className="input w-full min-h-[95px] text-xs sm:text-sm py-2" value={factsSummary} onChange={(e) => setFactsSummary(e.target.value)} />
+              <textarea
+                rows={3}
+                placeholder={isAr ? 'حيث إنه بتاريخ... قام العارض بـ...' : 'Exposé des faits...'}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#141829] border border-white/10 text-white text-xs sm:text-sm placeholder:text-stone-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30 resize-none leading-relaxed"
+                value={factsSummary}
+                onChange={(e) => setFactsSummary(e.target.value)}
+              />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                {lang === 'ar' ? 'الطلبات والأسس القانونية (عن التأسيس)' : 'Demandes & Arguments Juridiques'}
+            {/* Legal Demands */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-stone-300 block">
+                {isAr ? 'الطلبات والأسس القانونية (عن التأسيس)' : 'Demandes & Arguments Juridiques'}
               </label>
-              <textarea className="input w-full min-h-[95px] text-xs sm:text-sm py-2" value={legalBasis} onChange={(e) => setLegalBasis(e.target.value)} />
+              <textarea
+                rows={3}
+                placeholder={isAr ? 'تأسيساً على أحكام المادة... يلتمس العارض القضاء بـ...' : 'Moyens et prétentions...'}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-[#141829] border border-white/10 text-white text-xs sm:text-sm placeholder:text-stone-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30 resize-none leading-relaxed"
+                value={legalBasis}
+                onChange={(e) => setLegalBasis(e.target.value)}
+              />
             </div>
 
+            {/* Download Word Document Card */}
             {lastGeneratedFile && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-[var(--border-gold)] bg-[var(--gold-glow)] p-4 flex flex-wrap items-center justify-between gap-3">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent p-4 flex flex-wrap items-center justify-between gap-3 shadow-lg"
+              >
                 <div className="flex items-center gap-3">
-                  <FileText size={24} className="text-[var(--gold-400)] shrink-0" />
+                  <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400">
+                    <FileText size={22} />
+                  </div>
                   <div>
-                    <h5 className="text-sm font-bold text-white font-serif">{lastGeneratedFile.title}</h5>
-                    <span className="text-xs text-[var(--text-muted)]">{lastGeneratedFile.clientName} ({lastGeneratedFile.chamber})</span>
+                    <h5 className="text-sm font-bold text-white font-serif tracking-wide">{lastGeneratedFile.title}</h5>
+                    <span className="text-xs text-stone-400">
+                      {lastGeneratedFile.clientName} ({lastGeneratedFile.chamber})
+                    </span>
                   </div>
                 </div>
+
                 <button
-                  className="btn-primary text-xs py-2 px-3.5 flex items-center gap-2"
+                  type="button"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200
+                    bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-stone-950
+                    hover:shadow-lg hover:shadow-amber-500/25 hover:brightness-105 active:scale-95 cursor-pointer shadow-md"
                   onClick={() => exportPetitionToWordDocument(lastGeneratedFile)}
                 >
-                  <Download size={14} />
-                  <span>{lang === 'ar' ? 'تحميل ملف Word (.doc)' : 'Télécharger Word (.doc)'}</span>
+                  <Download size={14} strokeWidth={2.5} />
+                  <span>{isAr ? 'تحميل ملف Word (.doc)' : 'Télécharger Word (.doc)'}</span>
                 </button>
               </motion.div>
             )}

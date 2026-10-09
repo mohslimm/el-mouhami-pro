@@ -6,7 +6,7 @@
 
 import { memo, useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mic, MicOff, ShieldCheck, FileCheck, AlertCircle, RefreshCw, Globe, Lock, Sparkles, Volume2, Info } from 'lucide-react'
+import { Mic, MicOff, ShieldCheck, FileCheck, AlertCircle, RefreshCw, Globe, Lock, Sparkles, Volume2 } from 'lucide-react'
 import { maskSensitiveData, unmaskData, AnonymizationMapping, KnownParty } from '@/services/anonymizer'
 import { sendMaskedTextToCloudProxy, StructuredPetition } from '@/services/petitionApi'
 import { generateWordDocument, PetitionDocumentData } from '@/services/documentGenerator'
@@ -17,6 +17,7 @@ interface DictationButtonProps {
   petitionType?: 'divorce' | 'foncier' | 'commercial' | 'penal' | 'administratif'
   knownParties?: KnownParty[]
   onComplete?: (hydratedPetition: StructuredPetition, isFallback?: boolean) => void
+  embedded?: boolean
 }
 
 // Preset legal phrases for quick 1-click dictation insertion
@@ -44,7 +45,7 @@ const QUICK_LEGAL_PRESETS = [
   },
 ]
 
-export const DictationButton = memo(({ petitionType = 'divorce', knownParties = [], onComplete }: DictationButtonProps) => {
+export const DictationButton = memo(({ petitionType = 'divorce', knownParties = [], onComplete, embedded = false }: DictationButtonProps) => {
   const [status, setStatus] = useState<DictationState>('idle')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [committedText, setCommittedText] = useState<string>('')
@@ -348,44 +349,53 @@ export const DictationButton = memo(({ petitionType = 'divorce', knownParties = 
   const fullDisplay = (committedText ? committedText.trim() + ' ' : '') + interimText.trim()
 
   return (
-    <div className="flex flex-col gap-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--border-gold)] transition-all p-5 shadow-[var(--shadow-card)] w-full">
+    <div className={`flex flex-col gap-4 w-full ${embedded ? 'pt-1' : 'rounded-2xl bg-[#121526]/90 border border-white/10 hover:border-amber-500/30 p-5 shadow-xl transition-all'}`}>
       {/* Header & Language Control Bar */}
-      <div className="flex items-center justify-between flex-wrap gap-3 border-b border-[var(--border-subtle)] pb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[var(--gold-glow)] border border-[var(--border-gold)] flex items-center justify-center text-[var(--gold-400)]">
-            <Mic size={20} />
+      <div className="flex items-center justify-between flex-wrap gap-3 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+            <Mic size={16} />
           </div>
           <div>
-            <h3 className="font-serif text-base font-bold text-white tracking-wide">
-              {lang === 'ar-DZ' ? 'محرر العرائض بالإملاء الصوتي المحلي (STT Offline)' : 'Dictée Vocale STT Locale & Structuration'}
-            </h3>
-            <span className="text-[0.7rem] text-[var(--text-muted)] flex items-center gap-1 mt-0.5">
-              <Lock size={12} className="text-emerald-400" />
-              {lang === 'ar-DZ' ? 'معالجة محلية 100% • تشفير PII قبل أي نقل' : 'Traitement 100% local • Cryptage PII sur l’appareil'}
+            <h4 className="font-serif text-sm font-bold text-white tracking-wide">
+              {lang === 'ar-DZ' ? 'محرك الإملاء الصوتي المحلي (STT Offline)' : 'Moteur STT Local & Sécurisé'}
+            </h4>
+            <span className="text-[0.68rem] text-stone-400 flex items-center gap-1">
+              <Lock size={11} className="text-emerald-400" />
+              {lang === 'ar-DZ' ? 'معالجة محلية 100% • تشفير PII قبل أي نقل' : 'Traitement 100% local • Cryptage PII'}
             </span>
           </div>
         </div>
 
-        {/* Language Selector & Info Tooltip */}
+        {/* Language Selector */}
         <div className="flex items-center gap-2">
-          <div className="relative group cursor-pointer">
-            <Info size={15} className="text-[var(--gold-400)] hover:text-white transition-colors" />
-            <div className="absolute right-0 top-6 hidden group-hover:block z-50 w-64 p-2.5 rounded-xl bg-[#0a0a14] border border-[var(--border-gold)] text-[0.68rem] text-[var(--text-primary)] shadow-2xl leading-relaxed">
-              {lang === 'ar-DZ'
-                ? 'محرك الصوت محلي بالكامل ولا يتطلب أي اتصال بالإنترنت. الصوت ينقل مشفراً محلياً في ذاكرة البرنامج.'
-                : 'Moteur STT 100% local sans dépendance cloud. L’enregistrement audio reste strictement sur l’ordinateur.'}
-            </div>
+          <Globe size={13} className="text-amber-400" />
+          <div className="flex items-center rounded-xl bg-[#0f1222] border border-white/10 p-0.5 text-xs shadow-inner">
+            <button
+              type="button"
+              disabled={status !== 'idle'}
+              onClick={() => setLang('ar-DZ')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                lang === 'ar-DZ'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-sm font-bold'
+                  : 'text-stone-400 hover:text-white'
+              }`}
+            >
+              العربية (ar-DZ)
+            </button>
+            <button
+              type="button"
+              disabled={status !== 'idle'}
+              onClick={() => setLang('fr-FR')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                lang === 'fr-FR'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 shadow-sm font-bold'
+                  : 'text-stone-400 hover:text-white'
+              }`}
+            >
+              Français (fr-FR)
+            </button>
           </div>
-          <Globe size={14} className="text-[var(--gold-400)]" />
-          <select
-            value={lang}
-            onChange={(e) => setLang(e.target.value as 'ar-DZ' | 'fr-FR')}
-            disabled={status !== 'idle'}
-            className="input text-xs py-1.5 px-3 rounded-lg cursor-pointer font-medium"
-          >
-            <option value="ar-DZ">العربية (Algeria ar-DZ)</option>
-            <option value="fr-FR">Français (fr-FR)</option>
-          </select>
         </div>
       </div>
 
@@ -396,20 +406,22 @@ export const DictationButton = memo(({ petitionType = 'divorce', knownParties = 
       )}
 
       {/* Main Interactive Container */}
-      <div className="relative rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-subtle)] p-6 text-center overflow-hidden">
+      <div className="relative rounded-2xl bg-[#0f1222]/90 border border-white/10 p-5 text-center overflow-hidden shadow-inner">
         <AnimatePresence mode="wait">
           {/* STATE 1: IDLE */}
           {status === 'idle' && (
             <motion.div key="idle" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
               <button
                 onClick={startListening}
-                className="btn-primary inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm font-semibold cursor-pointer shadow-lg shadow-[var(--gold-glow)]"
+                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold cursor-pointer transition-all duration-200
+                  bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-stone-950
+                  hover:shadow-lg hover:shadow-amber-500/30 hover:brightness-105 active:scale-95 shadow-md"
               >
-                <Mic size={18} />
+                <Mic size={17} strokeWidth={2.5} />
                 <span>{lang === 'ar-DZ' ? 'بدء الإملاء الصوتي المحلي (STT)' : 'Démarrer la Dictée Vocale Locale'}</span>
               </button>
 
-              <p className="text-xs text-[var(--text-muted)] max-w-md mx-auto leading-relaxed">
+              <p className="text-xs text-stone-400 max-w-md mx-auto leading-relaxed">
                 {lang === 'ar-DZ'
                   ? 'تكلم بوضوح في الميكروفون ليتم تفريغ الصوت محلياً على جهازك دون إرسال الصوت لأي خادم.'
                   : 'Parlez au microphone : votre voix est transcrite localement sur votre appareil.'}
@@ -417,7 +429,7 @@ export const DictationButton = memo(({ petitionType = 'divorce', knownParties = 
 
               {/* Quick Legal Presets */}
               <div className="pt-2">
-                <span className="text-[0.68rem] font-semibold uppercase text-[var(--gold-400)] block mb-2 tracking-wider">
+                <span className="text-[0.68rem] font-semibold uppercase text-amber-400 block mb-2 tracking-wider">
                   {lang === 'ar-DZ' ? 'أو اختر نموذج صياغة جاهز بنقرة واحدة :' : 'Ou insérez une trame juridique en 1 clic :'}
                 </span>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -429,9 +441,9 @@ export const DictationButton = memo(({ petitionType = 'divorce', knownParties = 
                         setInterimText('')
                         setStatus('listening')
                       }}
-                      className="btn-outline text-[0.72rem] py-1 px-2.5 rounded-lg border-white/10 hover:border-[var(--border-gold)] hover:text-[var(--gold-400)] transition-all"
+                      className="text-[0.72rem] py-1.5 px-3 rounded-xl bg-[#141829] border border-white/10 hover:border-amber-500/40 text-stone-300 hover:text-white transition-all cursor-pointer shadow-sm"
                     >
-                      <Sparkles size={12} className="inline me-1 text-[var(--gold-400)]" />
+                      <Sparkles size={12} className="inline me-1 text-amber-400" />
                       {lang === 'ar-DZ' ? preset.labelAr : preset.labelFr}
                     </button>
                   ))}

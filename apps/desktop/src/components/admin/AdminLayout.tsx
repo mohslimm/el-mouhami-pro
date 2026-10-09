@@ -260,28 +260,36 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
         {/* Bottom: Device Status + Identity */}
         <div className="p-3 space-y-3">
           {/* Quick Hardware Tools */}
-          <div className={`bg-gradient-to-b from-[var(--bg-elevated)] to-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl shadow-lg ${isSidebarCollapsed ? 'p-2' : 'p-3.5'}`}>
+          <div className={`bg-[#0f1222]/90 border border-white/10 rounded-2xl shadow-xl transition-all ${isSidebarCollapsed ? 'p-2' : 'p-3.5'}`}>
             {!isSidebarCollapsed && (
-              <h3 className="text-[var(--gold-500)] text-[0.68rem] font-bold mb-2.5 flex items-center gap-1.5 uppercase tracking-wider">
-                <Printer size={13} /> أجهزة الماسح والطابعة
+              <h3 className="text-amber-400 text-[0.68rem] font-bold mb-2.5 flex items-center gap-1.5 uppercase tracking-wider">
+                <Printer size={13} /> {lang === 'ar' ? 'أجهزة الماسح والطابعة' : 'Matériel Scanner & Impression'}
               </h3>
             )}
-            <div className={`flex flex-col gap-2 ${isSidebarCollapsed ? 'items-center' : ''}`}>
+            <div className={`flex flex-col gap-1.5 ${isSidebarCollapsed ? 'items-center' : ''}`}>
               <button
+                type="button"
                 onClick={() => setEpsonScanOpen(true)}
-                className="w-full flex items-center gap-2.5 text-[var(--text-muted)] hover:text-white p-2 rounded-lg hover:bg-white/5 transition-colors text-xs cursor-pointer"
+                title={lang === 'ar' ? 'ماسح إبسون Epson DS-530 II' : 'Scanner Epson WorkForce DS-530 II'}
+                className="w-full flex items-center gap-2.5 text-stone-300 hover:text-white p-2 rounded-xl hover:bg-amber-500/10 hover:border-amber-500/30 border border-transparent transition-all text-xs cursor-pointer group"
                 style={{ justifyContent: isSidebarCollapsed ? 'center' : 'flex-start' }}
               >
-                <Scan size={isSidebarCollapsed ? 18 : 15} className="text-[var(--text-muted)] group-hover:text-white shrink-0" />
-                {!isSidebarCollapsed && <span>ماسح إبسون DS-530</span>}
+                <div className="p-1 rounded-lg bg-white/5 group-hover:bg-amber-500/20 text-stone-300 group-hover:text-amber-400 transition-colors shrink-0">
+                  <Scan size={isSidebarCollapsed ? 18 : 15} />
+                </div>
+                {!isSidebarCollapsed && <span>{lang === 'ar' ? 'ماسح إبسون DS-530' : 'Epson DS-530 II'}</span>}
               </button>
               <button
+                type="button"
                 onClick={() => setQuittanceOpen(true)}
-                className="w-full flex items-center gap-2.5 text-[var(--text-muted)] hover:text-white p-2 rounded-lg hover:bg-white/5 transition-colors text-xs cursor-pointer"
+                title={lang === 'ar' ? 'إصدار وصل سداد رسمي' : 'Émettre Quittance Officielle'}
+                className="w-full flex items-center gap-2.5 text-stone-300 hover:text-white p-2 rounded-xl hover:bg-amber-500/10 hover:border-amber-500/30 border border-transparent transition-all text-xs cursor-pointer group"
                 style={{ justifyContent: isSidebarCollapsed ? 'center' : 'flex-start' }}
               >
-                <Printer size={isSidebarCollapsed ? 18 : 15} className="text-[var(--text-muted)] group-hover:text-white shrink-0" />
-                {!isSidebarCollapsed && <span>إصدار وصل سداد رسمي</span>}
+                <div className="p-1 rounded-lg bg-white/5 group-hover:bg-amber-500/20 text-stone-300 group-hover:text-amber-400 transition-colors shrink-0">
+                  <Printer size={isSidebarCollapsed ? 18 : 15} />
+                </div>
+                {!isSidebarCollapsed && <span>{lang === 'ar' ? 'إصدار وصل سداد رسمي' : 'Quittance d’honoraires'}</span>}
               </button>
             </div>
           </div>
@@ -344,13 +352,15 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
 
             {/* Search / Command Palette */}
             <button
+              type="button"
               onClick={() => setIsCmdKOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--bg-elevated)] border border-[var(--border-subtle)] hover:border-[var(--border-gold)] text-[var(--text-muted)] text-xs cursor-pointer transition-all shrink-0"
+              title={lang === 'ar' ? 'بحث شامل (Ctrl+K)' : 'Recherche Globale (Ctrl+K)'}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#121526] border border-white/10 hover:border-amber-500/40 text-stone-300 hover:text-white text-xs cursor-pointer transition-all shrink-0 shadow-sm"
             >
-              <Search size={14} className="text-[var(--gold-400)] shrink-0" />
-              <span className="hidden lg:inline whitespace-nowrap">{lang === 'ar' ? 'بحث...' : 'Rechercher...'}</span>
-              <span className="hidden sm:inline font-mono text-[0.65rem] bg-white/5 border border-[var(--border-subtle)] rounded px-1.5 py-0.5 text-[var(--gold-400)]">
-                ⌘K
+              <Search size={14} className="text-amber-400 shrink-0" />
+              <span className="hidden lg:inline whitespace-nowrap">{lang === 'ar' ? 'بحث شامل...' : 'Rechercher...'}</span>
+              <span className="hidden sm:inline font-mono text-[0.65rem] bg-amber-500/10 border border-amber-500/20 rounded px-1.5 py-0.5 text-amber-300 font-bold">
+                Ctrl+K
               </span>
             </button>
 
@@ -421,7 +431,7 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
 
       {/* ── MODALS ── */}
       <CommandPalette isOpen={isCmdKOpen} onClose={() => setIsCmdKOpen(false)} />
-      <EpsonScanModal isOpen={isEpsonScanOpen} onClose={() => setEpsonScanOpen(false)} />
+      <EpsonScanModal isOpen={isEpsonScanOpen} onClose={() => setEpsonScanOpen(false)} isAr={lang === 'ar'} />
       <ArabicQuittanceModal
         isOpen={isQuittanceOpen}
         onClose={() => setQuittanceOpen(false)}
