@@ -12,6 +12,14 @@
     "build": "npm run --prefix apps/desktop app:build",
     "desktop:dev": "npm run --prefix apps/desktop app:dev",
     "desktop:build": "npm run --prefix apps/desktop app:build",
-    "desktop:preview": "npm run --prefix apps/desktop preview"
+    "desktop:preview": "npm run --prefix apps/desktop preview",
+    "mobile:start": "npm run --prefix apps/mobile start",
+    "mobile:android": "npm run --prefix apps/mobile android",
+    "mobile:ios": "npm run --prefix apps/mobile ios",
+    "mobile:web": "npm run --prefix apps/mobile web",
+    "mobile:typecheck": "npm run --prefix apps/mobile typecheck",
+    "dashboard:dev": "npm run --prefix apps/dashboard dev",
+    "dashboard:build": "npm run --prefix apps/dashboard build",
+    "dashboard:preview": "npm run --prefix apps/dashboard preview"
   }
 }

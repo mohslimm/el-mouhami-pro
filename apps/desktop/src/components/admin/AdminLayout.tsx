@@ -24,6 +24,9 @@ import {
   Wifi,
   WifiOff,
   RefreshCw,
+  UsersRound,
+  BookUser,
+  KeyRound,
 } from 'lucide-react'
 
 import { useAdminStore, AdminTab } from '@/stores/adminStore'
@@ -38,6 +41,11 @@ import { AdminCpcaModule } from '@/components/admin/AdminCpcaModule'
 import { AdminEpsonScanModule } from '@/components/admin/AdminEpsonScanModule'
 import { AdminFinancesModule } from '@/components/admin/AdminFinancesModule'
 import { AdminAiModule } from '@/components/admin/AdminAiModule'
+import { AdminTeamModule } from '@/components/admin/AdminTeamModule'
+import { AdminContactsModule } from '@/components/admin/AdminContactsModule'
+import { LoginModal } from '@/components/auth/LoginModal'
+import { PaywallModal } from '@/components/licensing/PaywallModal'
+import { EnaabaModal } from '@/components/admin/EnaabaModal'
 
 // CONSTANTS
 const NAV_ITEMS: Array<{ id: AdminTab; labelFr: string; labelAr: string; icon: any }> = [
@@ -48,6 +56,8 @@ const NAV_ITEMS: Array<{ id: AdminTab; labelFr: string; labelAr: string; icon: a
   { id: 'finances', labelFr: 'Suivi Comptable', labelAr: 'الأتعاب والوصل', icon: Receipt },
   { id: 'ai_assistant', labelFr: 'Assistant IA DZ', labelAr: 'المساعد الذكي', icon: Brain },
   { id: 'cpca', labelFr: 'Calculateur CPCA', labelAr: 'حساب المواعيد', icon: Scale },
+  { id: 'contacts', labelFr: 'Annuaire & الإنابة', labelAr: 'دليل القضاء والإنابة', icon: BookUser },
+  { id: 'team', labelFr: 'Équipe & Postes', labelAr: 'فريق العمل والتراخيص', icon: UsersRound },
 ]
 
 const PAGE_TITLES: Record<AdminTab, { fr: string; ar: string }> = {
@@ -58,6 +68,8 @@ const PAGE_TITLES: Record<AdminTab, { fr: string; ar: string }> = {
   finances: { fr: 'Suivi Comptable', ar: 'سجل الأتعاب والوصل الرسمي' },
   ai_assistant: { fr: 'Assistant IA DZ', ar: 'المساعد الذكي للقانون الجزائري' },
   cpca: { fr: 'Calculateur CPCA', ar: 'حساب المواعيد والإجراءات' },
+  contacts: { fr: 'Annuaire Judiciaire & Énaaba Hub', ar: 'دليل الأسرة القضائية وتوليد الإنابات' },
+  team: { fr: 'Gestion de l’Équipe & Postes Réseau', ar: 'إدارة فريق المكتب وتوزيع المقاعد' },
 }
 
 const CONTENT_VARIANTS = {
@@ -89,6 +101,13 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
     isQuittanceOpen,
     setQuittanceOpen,
     selectedQuittanceData,
+    license,
+    isLoginModalOpen,
+    setLoginModalOpen,
+    isPaywallModalOpen,
+    setPaywallModalOpen,
+    isEnaabaModalOpen,
+    setEnaabaModalOpen,
   } = useAdminStore()
 
   // Sync Engine listener initialization
@@ -111,6 +130,8 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
       if (activeTab !== 'dossiers') setActiveTab('dossiers')
     } else if (location.pathname.includes('/cpca')) {
       if (activeTab !== 'cpca') setActiveTab('cpca')
+    } else if (location.pathname.includes('/contacts')) {
+      if (activeTab !== 'contacts') setActiveTab('contacts')
     }
   }, [location.pathname, activeTab, setActiveTab])
 
@@ -326,6 +347,35 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap justify-end shrink-0">
+            {/* SaaS License & Trial Badge */}
+            <button
+              type="button"
+              onClick={() => setPaywallModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/15 to-amber-600/10 border border-amber-500/35 hover:border-amber-400 text-amber-300 text-xs font-semibold cursor-pointer transition-all shrink-0 shadow-sm"
+              title={lang === 'ar' ? 'معلومات الاشتراك والترقية' : 'Abonnement & Renouvellement'}
+            >
+              <Sparkles size={13} className="text-amber-400" />
+              <span className="whitespace-nowrap">
+                {license.status === 'trial'
+                  ? lang === 'ar'
+                    ? `تجريبي: ${license.trialDaysRemaining} أيام`
+                    : `Essai: ${license.trialDaysRemaining}j restants`
+                  : lang === 'ar'
+                  ? `ترخيص ${license.plan.toUpperCase()} ✓`
+                  : `Licence ${license.plan.toUpperCase()} ✓`}
+              </span>
+            </button>
+
+            {/* Quick Key Entry Button */}
+            <button
+              type="button"
+              onClick={() => setLoginModalOpen(true)}
+              className="p-1.5 rounded-full bg-white/5 border border-white/10 hover:border-amber-500/40 text-stone-300 hover:text-amber-400 transition-all cursor-pointer shrink-0"
+              title={lang === 'ar' ? 'إدخال مفتاح ترخيص أو كود دعوة' : 'Saisir une clé / code invité'}
+            >
+              <KeyRound size={14} />
+            </button>
+
             {/* Network & Sync Queue Status — condensed, icon-only under xl */}
             {isSyncing ? (
               <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-medium" title={lang === 'ar' ? 'جاري مزامنة السحابة...' : 'Mise à jour Cloud...'}>
@@ -424,6 +474,8 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
               {activeTab === 'finances' && <AdminFinancesModule />}
               {activeTab === 'ai_assistant' && <AdminAiModule />}
               {activeTab === 'cpca' && <AdminCpcaModule />}
+              {activeTab === 'contacts' && <AdminContactsModule />}
+              {activeTab === 'team' && <AdminTeamModule />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -440,6 +492,9 @@ export const AdminLayout = memo(({ children: _children }: AdminLayoutProps) => {
         amountDzd={selectedQuittanceData?.amountDzd}
         motif={selectedQuittanceData?.motif}
       />
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
+      <PaywallModal isOpen={isPaywallModalOpen} onClose={() => setPaywallModalOpen(false)} />
+      <EnaabaModal isOpen={isEnaabaModalOpen} onClose={() => setEnaabaModalOpen(false)} />
     </div>
   )
 })

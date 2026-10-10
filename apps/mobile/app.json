@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "El-Mouhami Pro — Courtroom Companion",
+    "slug": "el-mouhami-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0D17"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dz.elmouhami.courtroom",
+      "infoPlist": {
+        "NSCameraUsageDescription": "L'appareil photo est requis pour scanner le QR Code du bureau et synchroniser les dossiers.",
+        "NSMicrophoneUsageDescription": "Le microphone est requis pour enregistrer les mémos vocaux des décisions d'audience.",
+        "NSFaceIDUsageDescription": "FaceID sécurise l'accès confidentiel aux dossiers judiciaires du cabinet."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0B0D17"
+      },
+      "package": "dz.elmouhami.courtroom",
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-sqlite"
+    ],
+    "extra": {
+      "vpsAlgerUrl": "https://vps-alger.cabinet-slimani.dz",
+      "barreau": "Barreau d'Alger — نقابة المحامين لناحية الجزائر",
+      "theme": "Prestige Dark Obsidian & Warm Brass"
+    }
+  }
+}

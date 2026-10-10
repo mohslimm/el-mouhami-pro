@@ -1,8 +1,22 @@
 'use client'
 
+// ArabicQuittanceModal.tsx
+// ─────────────────────────────────────────────────────────────────────────────
+// CABINET SLIMANI — AL-MOUHAMI PRO DESKTOP (QUIET LUXURY & PRESTIGE SPEC)
+// Modernized Arabic Quittance Modal: Obsidian Glass #121526, BorderBeam,
+// High-Fidelity Print Engine, Algerian Tafqeet & Fee Presets
+// ─────────────────────────────────────────────────────────────────────────────
+
 import { memo, useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Printer, Download, X, Edit3 } from 'lucide-react'
+import {
+  Printer,
+  X,
+  Edit3,
+  Receipt,
+  Sparkles,
+} from 'lucide-react'
+import { BorderBeam } from '@/components/ui/magicui/border-beam'
 
 interface ArabicQuittanceModalProps {
   isOpen: boolean
@@ -13,324 +27,403 @@ interface ArabicQuittanceModalProps {
   motif?: string
 }
 
-export const ArabicQuittanceModal = memo(({
-  isOpen,
-  onClose,
-  clientName = 'بن علي عبد القادر',
-  dossierRef = 'DOS-2026/084',
-  amountDzd = 45000,
-  motif = 'أتعاب المرافعة والاستشارة القانونية في القضية العقارية أمام محكمة بئر خادم',
-}: ArabicQuittanceModalProps) => {
-  const receiptRef = useRef<HTMLDivElement>(null)
+/**
+ * Algerian Arabic Tafqeet (تحويل الأرقام إلى كتابة باللغة العربية للدنانير)
+ */
+function toArabicWords(n: number): string {
+  if (!n || isNaN(n) || n <= 0) return ''
 
-  const [editableClient, setEditableClient] = useState(clientName)
-  const [editableRef, setEditableRef] = useState(dossierRef)
-  const [editableAmount, setEditableAmount] = useState<number>(amountDzd)
-  const [editableMotif, setEditableMotif] = useState(motif)
-  const [isEditing, setIsEditing] = useState(false)
-  const [receiptNo] = useState(() => `2026/Q-${Math.floor(1000 + Math.random() * 9000)}`)
+  const ones = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة']
+  const teens = [
+    'عشرة',
+    'أحد عشر',
+    'اثنا عشر',
+    'ثلاثة عشر',
+    'أربعة عشر',
+    'خمسة عشر',
+    'ستة عشر',
+    'سبعة عشر',
+    'ثمانية عشر',
+    'تسعة عشر',
+  ]
+  const tens = ['', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون']
+  const hundreds = [
+    '',
+    'مائة',
+    'مئتان',
+    'ثلاثمائة',
+    'أربعمائة',
+    'خمسمائة',
+    'ستمائة',
+    'سبعمائة',
+    'ثمانمائة',
+    'تسعمائة',
+  ]
 
-  useEffect(() => {
-    setEditableClient(clientName)
-    setEditableRef(dossierRef)
-    setEditableAmount(amountDzd)
-    setEditableMotif(motif)
-  }, [clientName, dossierRef, amountDzd, motif])
+  function convertGroup(val: number): string {
+    const h = Math.floor(val / 100)
+    const rem = val % 100
+    const parts: string[] = []
 
-  if (!isOpen) return null
+    if (h > 0) parts.push(hundreds[h])
 
-  const handlePrint = () => {
-    window.print()
+    if (rem > 0) {
+      if (rem < 10) {
+        parts.push(ones[rem])
+      } else if (rem < 20) {
+        parts.push(teens[rem - 10])
+      } else {
+        const t = Math.floor(rem / 10)
+        const o = rem % 10
+        if (o > 0) {
+          parts.push(`${ones[o]} و${tens[t]}`)
+        } else {
+          parts.push(tens[t])
+        }
+      }
+    }
+
+    return parts.join(' و')
   }
 
-  return (
-    <AnimatePresence>
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(6, 6, 16, 0.85)',
-          backdropFilter: 'blur(12px)',
-          padding: '1rem',
-          overflowY: 'auto', // Enables full modal scrolling
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          style={{
-            width: '100%',
-            maxWidth: '740px',
-            background: 'var(--bg-surface, #1e1e2d)',
-            border: '1px solid var(--border-gold, #b8924a)',
-            borderRadius: '16px',
-            boxShadow: '0 24px 48px rgba(0,0,0,0.5)',
-            overflow: 'hidden',
-            margin: 'auto', // Centers nicely when scrolling
-          }}
+  const millions = Math.floor(n / 1000000)
+  const thousands = Math.floor((n % 1000000) / 1000)
+  const remainder = n % 1000
+
+  const groups: string[] = []
+
+  if (millions > 0) {
+    if (millions === 1) groups.push('مليون')
+    else if (millions === 2) groups.push('مليونان')
+    else if (millions >= 3 && millions <= 10) groups.push(`${convertGroup(millions)} ملايين`)
+    else groups.push(`${convertGroup(millions)} مليون`)
+  }
+
+  if (thousands > 0) {
+    if (thousands === 1) groups.push('ألف')
+    else if (thousands === 2) groups.push('ألفان')
+    else if (thousands >= 3 && thousands <= 10) groups.push(`${convertGroup(thousands)} آلاف`)
+    else groups.push(`${convertGroup(thousands)} ألف`)
+  }
+
+  if (remainder > 0) {
+    groups.push(convertGroup(remainder))
+  }
+
+  return `${groups.join(' و')} دينار جزائري لا غير`
+}
+
+export const ArabicQuittanceModal = memo(
+  ({
+    isOpen,
+    onClose,
+    clientName = 'بن علي عبد القادر',
+    dossierRef = 'DOS-2026/084',
+    amountDzd = 45000,
+    motif = 'أتعاب المرافعة والاستشارة القانونية في القضية العقارية أمام محكمة بئر خادم',
+  }: ArabicQuittanceModalProps) => {
+    const receiptRef = useRef<HTMLDivElement>(null)
+
+    const [editableClient, setEditableClient] = useState(clientName)
+    const [editableRef, setEditableRef] = useState(dossierRef)
+    const [editableAmount, setEditableAmount] = useState<number>(amountDzd)
+    const [editableMotif, setEditableMotif] = useState(motif)
+    const [isEditing, setIsEditing] = useState(false)
+    const [receiptNo] = useState(() => `2026/Q-${Math.floor(1000 + Math.random() * 9000)}`)
+
+    useEffect(() => {
+      setEditableClient(clientName)
+      setEditableRef(dossierRef)
+      setEditableAmount(amountDzd)
+      setEditableMotif(motif)
+    }, [clientName, dossierRef, amountDzd, motif])
+
+    if (!isOpen) return null
+
+    const handlePrint = () => {
+      window.print()
+    }
+
+    const writtenAmount = toArabicWords(editableAmount)
+
+    return (
+      <AnimatePresence>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-xl overflow-y-auto"
+          dir="rtl"
         >
-          {/* Header */}
-          <div
-            style={{
-              padding: '1.25rem 1.5rem',
-              borderBottom: '1px solid var(--border-subtle, #2a2a3c)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              background: 'var(--bg-elevated, #252538)',
-            }}
+          {/* Print isolation styles injected into document */}
+          <style>{`
+            @media print {
+              body * {
+                visibility: hidden !important;
+              }
+              .quittance-print-voucher, .quittance-print-voucher * {
+                visibility: visible !important;
+              }
+              .quittance-print-voucher {
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto !important;
+                padding: 30px !important;
+                background: white !important;
+                box-shadow: none !important;
+                border: 2px solid #b8924a !important;
+                z-index: 999999 !important;
+              }
+            }
+          `}</style>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-3xl bg-[#0f1222] border border-amber-500/40 rounded-3xl shadow-2xl shadow-black/90 overflow-hidden my-auto text-[#F0EDE8]"
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#22c55e' }} />
-              <h3 style={{ fontFamily: "'IBM Plex Sans Arabic', sans-serif", fontSize: '1.1rem', color: '#fff', margin: 0, direction: 'rtl' }}>
-                تحرير ومعاينة وصل سداد الأتعاب (النموذج الرسمي للمحامي)
-              </h3>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                style={{ fontSize: '0.78rem', padding: '0.35rem 0.65rem', display: 'flex', alignItems: 'center', gap: '0.35rem', background: 'transparent', border: '1px solid #b8924a', color: '#b8924a', borderRadius: '6px', cursor: 'pointer' }}
-              >
-                <Edit3 size={14} />
-                {isEditing ? 'إخفاء التعديل' : 'تعديل البيانات'}
-              </button>
-              <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#888', cursor: 'pointer' }}>
-                <X size={20} />
-              </button>
-            </div>
-          </div>
+            {/* Border Beam Effect */}
+            <BorderBeam size={160} duration={8} colorFrom="#c5a059" colorTo="#f59e0b" />
 
-          <div style={{ padding: '1.25rem', maxHeight: '75vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            {/* Modal Header */}
+            <div className="relative px-6 sm:px-8 py-5 border-b border-white/10 bg-[#121526]/90 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-lg">
+                  <Receipt size={22} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white font-serif tracking-wide">
+                    تحرير ومعاينة وصل سداد الأتعاب الرسمي
+                  </h3>
+                  <p className="text-xs text-stone-400 mt-0.5">
+                    النموذج الرسمي المعتمد للمحامي &bull; طابع جبائي وسرية مهنية
+                  </p>
+                </div>
+              </div>
 
-            {/* Manual Form Editing Controls */}
-            {isEditing && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="py-1.5 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <Edit3 size={14} />
+                  <span>{isEditing ? 'إخفاء التعديل' : 'تعديل البيانات'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-400 hover:text-white transition-colors cursor-pointer border border-transparent hover:border-white/10"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Content Body */}
+            <div className="p-6 sm:p-8 space-y-5 max-h-[75vh] overflow-y-auto">
+
+              {/* Editing Controls Card (Collapsible) */}
+              {isEditing && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="p-4 rounded-2xl bg-[#060610] border border-amber-500/40 space-y-3.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                      <Sparkles size={14} /> تعبئة وتعديل بيانات الوصل:
+                    </span>
+                    <span className="text-[0.68rem] text-stone-400">تحديث فوري للمعاينة</span>
+                  </div>
+
+                  {/* Fee Presets */}
+                  <div className="space-y-1">
+                    <span className="text-[0.68rem] text-stone-400 block font-medium">أتعاب سريعة شائعة:</span>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { label: 'استشارة قانونية (15,000 د.ج)', amount: 15000, motif: 'استشارة قانونية ودراسة وثائق' },
+                        { label: 'عريضة افتتاحية (35,000 د.ج)', amount: 35000, motif: 'تحرير عريضة افتتاح دعوى وتأسيس وكالة' },
+                        { label: 'تمثيل ومرافعة (50,000 د.ج)', amount: 50000, motif: 'أتعاب المرافعة والتمثيل القضائي أمام المحكمة' },
+                        { label: 'طعن بالنقض (80,000 د.ج)', amount: 80000, motif: 'إعداد عريضة الطعن بالنقض أمام المحكمة العليا' },
+                      ].map((preset, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            setEditableAmount(preset.amount)
+                            setEditableMotif(preset.motif)
+                          }}
+                          className="py-1 px-2.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[0.68rem] cursor-pointer transition-all"
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <label className="block text-stone-300 font-semibold mb-1">اسم الموكل / الشركة:</label>
+                      <input
+                        type="text"
+                        value={editableClient}
+                        onChange={(e) => setEditableClient(e.target.value)}
+                        className="w-full bg-[#121526] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-stone-300 font-semibold mb-1">رقم القضية / الجدول:</label>
+                      <input
+                        type="text"
+                        value={editableRef}
+                        onChange={(e) => setEditableRef(e.target.value)}
+                        className="w-full bg-[#121526] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-xs text-white font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div>
+                      <label className="block text-stone-300 font-semibold mb-1">المبلغ المالي (د.ج):</label>
+                      <input
+                        type="number"
+                        value={editableAmount}
+                        onChange={(e) => setEditableAmount(Number(e.target.value) || 0)}
+                        className="w-full bg-[#121526] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-xs font-bold text-emerald-400 font-mono"
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="block text-stone-300 font-semibold mb-1">مقابل الخدمة القانونية:</label>
+                      <input
+                        type="text"
+                        value={editableMotif}
+                        onChange={(e) => setEditableMotif(e.target.value)}
+                        className="w-full bg-[#121526] border border-white/15 focus:border-amber-400 rounded-xl px-3 py-2 text-xs text-white"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Printable Official Receipt Card (A5 Landscape / High-End Legal Style) */}
               <div
-                dir="rtl"
-                style={{
-                  background: '#252538',
-                  border: '1px solid #b8924a',
-                  borderRadius: '12px',
-                  padding: '1rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem',
-                }}
+                ref={receiptRef}
+                className="quittance-print-voucher w-full max-w-2xl mx-auto bg-[#faf8f5] text-stone-900 rounded-2xl p-6 sm:p-8 border-2 border-amber-600/50 shadow-2xl shadow-black/60 font-serif relative overflow-hidden"
               >
-                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#e2b764', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Edit3 size={15} />
-                  <span>تعبئة وتعديل بيانات الوصل يدويًا :</span>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                {/* Decorative Gold Header Border */}
+                <div className="border-b-2 border-amber-800/40 pb-3 mb-4 flex items-start justify-between">
                   <div>
-                    <label style={{ fontSize: '0.75rem', color: '#aaa', display: 'block', marginBottom: '0.25rem' }}>اسم الموكل / الشركة :</label>
-                    <input
-                      type="text"
-                      value={editableClient}
-                      onChange={(e) => setEditableClient(e.target.value)}
-                      style={{ width: '100%', fontSize: '0.85rem', padding: '0.45rem 0.75rem', background: '#1a1a24', border: '1px solid #444', color: '#fff', borderRadius: '6px' }}
-                    />
+                    <h4 className="text-base font-extrabold text-stone-950 font-serif">
+                      مكتب الأستاذ نور الدين سليماني
+                    </h4>
+                    <p className="text-[0.72rem] text-stone-600 font-sans mt-0.5">
+                      محام معتمد لدى المحكمة العليا ومجلس الدولة
+                    </p>
+                    <p className="text-[0.68rem] text-stone-500 font-sans">
+                      منظمة المحامين لناحية الجزائر &bull; بطاقة مهنية: 16-08422
+                    </p>
                   </div>
-                  <div>
-                    <label style={{ fontSize: '0.75rem', color: '#aaa', display: 'block', marginBottom: '0.25rem' }}>رقم القضية / الجدول :</label>
-                    <input
-                      type="text"
-                      value={editableRef}
-                      onChange={(e) => setEditableRef(e.target.value)}
-                      style={{ width: '100%', fontSize: '0.85rem', padding: '0.45rem 0.75rem', fontFamily: 'monospace', background: '#1a1a24', border: '1px solid #444', color: '#fff', borderRadius: '6px' }}
-                    />
+
+                  <div className="text-left font-sans">
+                    <span className="text-xs font-bold font-mono text-amber-900 block">{receiptNo}</span>
+                    <span className="text-[0.72rem] text-stone-600 block mt-0.5">
+                      الجزائر في: {new Date().toLocaleDateString('ar-DZ')}
+                    </span>
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '0.75rem' }}>
-                  <div>
-                    <label style={{ fontSize: '0.75rem', color: '#aaa', display: 'block', marginBottom: '0.25rem' }}>المبلغ المستلم (د.ج) :</label>
-                    <input
-                      type="number"
-                      value={editableAmount}
-                      onChange={(e) => setEditableAmount(Number(e.target.value) || 0)}
-                      style={{ width: '100%', fontSize: '0.85rem', padding: '0.45rem 0.75rem', fontWeight: 700, color: '#22c55e', background: '#1a1a24', border: '1px solid #444', borderRadius: '6px' }}
-                    />
+                {/* Voucher Title */}
+                <div className="text-center my-3 py-1.5 bg-amber-100/60 border-y border-amber-300">
+                  <h3 className="text-lg font-black text-stone-950 font-serif tracking-wider">
+                    وصـــل ســـداد أتعـــاب قضائيـــة
+                  </h3>
+                  <span className="text-[0.68rem] text-stone-700 font-sans">
+                    QUITTANCE OFFICIELLE D’HONORAIRES
+                  </span>
+                </div>
+
+                {/* Receipt Data Details */}
+                <div className="text-xs space-y-3.5 my-4 leading-relaxed">
+                  <div className="flex items-baseline gap-2 border-b border-dotted border-stone-400 pb-1">
+                    <span className="text-stone-700 font-bold w-36 shrink-0">استلمت من السيد(ة) / الشركة:</span>
+                    <span className="text-sm font-extrabold text-stone-950 font-sans">{editableClient || '—'}</span>
                   </div>
-                  <div>
-                    <label style={{ fontSize: '0.75rem', color: '#aaa', display: 'block', marginBottom: '0.25rem' }}>مقابل الخدمة القانونية :</label>
-                    <input
-                      type="text"
-                      value={editableMotif}
-                      onChange={(e) => setEditableMotif(e.target.value)}
-                      style={{ width: '100%', fontSize: '0.85rem', padding: '0.45rem 0.75rem', background: '#1a1a24', border: '1px solid #444', color: '#fff', borderRadius: '6px' }}
-                    />
+
+                  <div className="flex items-baseline gap-2 border-b border-dotted border-stone-400 pb-1">
+                    <span className="text-stone-700 font-bold w-36 shrink-0">رقم القضية / الجدول:</span>
+                    <span className="font-mono font-bold text-amber-900 text-[0.85rem]">{editableRef || '—'}</span>
+                  </div>
+
+                  <div className="flex items-baseline gap-2 border-b border-dotted border-stone-400 pb-1">
+                    <span className="text-stone-700 font-bold w-36 shrink-0">المبلغ المالي المستلم:</span>
+                    <span className="font-mono font-extrabold text-emerald-800 text-sm">
+                      {editableAmount ? `${editableAmount.toLocaleString('fr-DZ')} د.ج` : '—'}
+                    </span>
+                  </div>
+
+                  {/* Tafqeet in Arabic Words */}
+                  {writtenAmount && (
+                    <div className="p-2 rounded bg-amber-50/70 border border-amber-200 text-[0.78rem] text-amber-950 font-bold">
+                      <span>المبلغ كتابة بالحروف: </span>
+                      <span className="underline underline-offset-4">{writtenAmount}</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-start gap-2 border-b border-dotted border-stone-400 pb-1">
+                    <span className="text-stone-700 font-bold w-36 shrink-0 mt-0.5">مقابل الخدمة القانونية:</span>
+                    <span className="text-stone-900 font-medium leading-relaxed">{editableMotif || '—'}</span>
                   </div>
                 </div>
-              </div>
-            )}
 
-            {/* Printable Receipt Area */}
-            <div
-              ref={receiptRef}
-              dir="rtl"
-              style={{
-                position: 'relative',
-                width: '100%',
-                maxWidth: '600px',
-                margin: '0 auto',
-                background: '#fff',
-                borderRadius: '12px',
-                border: '2px solid #b8924a',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-              }}
-            >
-              {/* Locked Aspect Ratio Box matching Photoshop canvas proportions */}
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1.35', overflow: 'hidden' }}>
-
-                {/* Receipt Image Document Base */}
-                <img
-                  src="/wasl.png"
-                  alt="وصل سداد أتعاب قضائية"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    display: 'block',
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.src = '/images/wasl.png'
-                  }}
-                />
-
-                {/* Precise Data Overlay using Proportional % Coordinates on wasl.png */}
-                <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-
-                  {/* 1. Receipt No */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '45.8%',
-                      right: '35.5%',
-                      fontSize: '0.88rem',
-                      fontWeight: 700,
-                      color: '#1a1200',
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {receiptNo}
+                {/* Footer with Seal */}
+                <div className="mt-6 pt-3 border-t border-stone-300 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="text-[0.68rem] text-stone-500 block font-sans">
+                      * هذا الوصل يعتبر إبراءً لذمة الموكل عن المبلغ المبين أعلاه.
+                    </span>
                   </div>
 
-                  {/* 2. Date */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '45.8%',
-                      right: '70.0%',
-                      fontSize: '0.88rem',
-                      fontWeight: 700,
-                      color: '#1a1200',
-                    }}
-                  >
-                    {new Date().toLocaleDateString('ar-DZ')}
-                  </div>
-
-                  {/* 3. Client Name ("استلمت من السيد(ة):") */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '50.5%',
-                      right: '31.5%',
-                      fontSize: '0.92rem',
-                      fontWeight: 700,
-                      color: '#1a1200',
-                    }}
-                  >
-                    {editableClient || '—'}
-                  </div>
-
-                  {/* 4. Dossier Ref ("رقم الملف / القضية:") */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '55.2%',
-                      right: '31.5%',
-                      fontSize: '0.92rem',
-                      fontWeight: 700,
-                      color: '#b8924a',
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {editableRef || '—'}
-                  </div>
-
-                  {/* 5. Amount DZD ("المبلغ المالي:") */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '59.8%',
-                      right: '25.0%',
-                      fontSize: '1.0rem',
-                      fontWeight: 800,
-                      color: '#0d9488',
-                    }}
-                  >
-                    {editableAmount ? `${editableAmount.toLocaleString('fr-DZ')} د.ج` : '—'}
-                  </div>
-
-                  {/* 6. Motif ("مقابل:") */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '64.5%',
-                      right: '18.5%',
-                      left: '8.0%',
-                      fontSize: '0.86rem',
-                      fontWeight: 600,
-                      color: '#333',
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {editableMotif || '—'}
+                  <div className="text-center pl-6">
+                    <strong className="block mb-6 font-serif">ختم وإمضاء المحامي</strong>
+                    <div className="w-24 h-12 border-2 border-dashed border-stone-400 rounded-lg flex items-center justify-center text-[0.65rem] text-stone-400 font-sans">
+                      [ختم المكتب]
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-            {/* Footer actions */}
-            <div
-              style={{
-                padding: '1rem 1.5rem',
-                borderTop: '1px solid var(--border-subtle, #2a2a3c)',
-                background: 'var(--bg-elevated, #252538)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <button onClick={onClose} style={{ fontSize: '0.85rem', background: 'transparent', border: '1px solid #555', color: '#ccc', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer' }}>
+            {/* Modal Footer Actions */}
+            <div className="px-6 sm:px-8 py-4 bg-[#121526] border-t border-white/10 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={onClose}
+                className="py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 text-xs font-semibold border border-white/10 cursor-pointer"
+              >
                 إغلاق
               </button>
 
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button onClick={handlePrint} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.375rem', background: 'transparent', border: '1px solid #b8924a', color: '#b8924a', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer' }}>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handlePrint}
+                  className="py-2.5 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-stone-950 font-bold text-xs hover:brightness-110 flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-950/40 transition-all active:scale-[0.99]"
+                >
                   <Printer size={16} />
-                  طباعة الوصل
-                </button>
-                <button onClick={handlePrint} style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.375rem', background: '#b8924a', border: 'none', color: '#fff', padding: '0.5rem 1rem', borderRadius: '6px', cursor: 'pointer' }}>
-                  <Download size={16} />
-                  تحميل نسختي (PDF)
+                  <span>طباعة الوصل فوراً</span>
                 </button>
               </div>
             </div>
-        </motion.div>
-      </div>
-    </AnimatePresence>
-  )
-})
+          </motion.div>
+        </div>
+      </AnimatePresence>
+    )
+  }
+)
 
 ArabicQuittanceModal.displayName = 'ArabicQuittanceModal'
