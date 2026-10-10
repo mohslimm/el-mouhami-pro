@@ -6,6 +6,12 @@ import { LicenseManagerView } from './components/views/LicenseManagerView'
 import { PaymentApprovalQueueView } from './components/views/PaymentApprovalQueueView'
 import { ClientsDirectoryView } from './components/views/ClientsDirectoryView'
 import { InfrastructureTelemetryView } from './components/views/InfrastructureTelemetryView'
+import { InvoicesAccountingView } from './components/views/InvoicesAccountingView'
+import { AiUsageWatchdogView } from './components/views/AiUsageWatchdogView'
+import { BroadcastCenterView } from './components/views/BroadcastCenterView'
+import { SupportTicketsView } from './components/views/SupportTicketsView'
+import { SecurityAuditLogsView } from './components/views/SecurityAuditLogsView'
+import { CommercialQuotationsView } from './components/views/CommercialQuotationsView'
 import { IssueLicenseModal } from './components/modals/IssueLicenseModal'
 import { ReceiptViewerModal } from './components/modals/ReceiptViewerModal'
 import { ResetFingerprintModal } from './components/modals/ResetFingerprintModal'
@@ -18,6 +24,12 @@ import {
   LawFirmClient,
   HardwareSeat,
   PLAN_CONFIGS,
+  AgencyInvoice,
+  AiCabinetUsage,
+  BroadcastMessage,
+  SupportTicket,
+  SecurityAuditLog,
+  CommercialQuotation,
 } from './types'
 import {
   INITIAL_LICENSES,
@@ -25,6 +37,12 @@ import {
   INITIAL_CLIENTS,
   INITIAL_WILAYA_STATS,
   SOVEREIGN_VPS_TELEMETRY,
+  INITIAL_INVOICES,
+  INITIAL_AI_USAGE,
+  INITIAL_BROADCASTS,
+  INITIAL_TICKETS,
+  INITIAL_SECURITY_LOGS,
+  INITIAL_QUOTATIONS,
 } from './data/mockData'
 import { generateEd25519LicenseKey, calculateExpiryDate, formatDzd } from './services/cryptoLicense'
 
@@ -39,6 +57,101 @@ export function App() {
   const [clients, setClients] = useState<LawFirmClient[]>(INITIAL_CLIENTS)
   const [wilayaStats] = useState(INITIAL_WILAYA_STATS)
   const [telemetry, setTelemetry] = useState(SOVEREIGN_VPS_TELEMETRY)
+
+  // 6 Expansion Modules State
+  const [invoices, setInvoices] = useState<AgencyInvoice[]>(INITIAL_INVOICES)
+  const [aiUsages, setAiUsages] = useState<AiCabinetUsage[]>(INITIAL_AI_USAGE)
+  const [broadcasts, setBroadcasts] = useState<BroadcastMessage[]>(INITIAL_BROADCASTS)
+  const [tickets, setTickets] = useState<SupportTicket[]>(INITIAL_TICKETS)
+  const [securityLogs, setSecurityLogs] = useState<SecurityAuditLog[]>(INITIAL_SECURITY_LOGS)
+  const [quotations, setQuotations] = useState<CommercialQuotation[]>(INITIAL_QUOTATIONS)
+
+  // Invoices Handlers
+  const handleMarkInvoiceAsPaid = (invoiceId: string) => {
+    setInvoices((prev) =>
+      prev.map((inv) => (inv.id === invoiceId ? { ...inv, status: 'PAID' } : inv))
+    )
+    addToast('Facture Acquittée', 'Statut mis à jour et quittance fiscale validée.', 'success')
+  }
+
+  const handleAddInvoice = (newInvoice: AgencyInvoice) => {
+    setInvoices((prev) => [newInvoice, ...prev])
+    addToast('Facture Émise', `Facture ${newInvoice.invoiceNumber} générée pour ${newInvoice.cabinetName}.`, 'success')
+  }
+
+  // AI Watchdog Handler
+  const handleAdjustAiCap = (cabinetId: string, addedCap: number) => {
+    setAiUsages((prev) =>
+      prev.map((u) =>
+        u.cabinetId === cabinetId
+          ? {
+              ...u,
+              monthlyTokenCap: u.monthlyTokenCap + addedCap,
+              status: 'NORMAL',
+            }
+          : u
+      )
+    )
+    addToast('Recharge Quota Validée', `+${(addedCap / 1000).toFixed(0)}k tokens crédités avec succès.`, 'success')
+  }
+
+  // Broadcast Handler
+  const handlePublishBroadcast = (newBroadcast: BroadcastMessage) => {
+    setBroadcasts((prev) => [newBroadcast, ...prev])
+    addToast('Diffusion Push Réseau Émise', `Message envoyé en direct à ${newBroadcast.reachCount} cabinets.`, 'success')
+  }
+
+  // Support Tickets Handlers
+  const handleReplyTicket = (ticketId: string, replyText: string) => {
+    setTickets((prev) =>
+      prev.map((t) => {
+        if (t.id === ticketId) {
+          return {
+            ...t,
+            status: 'IN_PROGRESS',
+            messages: [
+              ...t.messages,
+              {
+                sender: 'AGENCY',
+                text: replyText,
+                time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+              },
+            ],
+          }
+        }
+        return t
+      })
+    )
+    addToast('Réponse Support Transmise', 'Message envoyé au cabinet d\'avocat.', 'info')
+  }
+
+  const handleUpdateTicketStatus = (ticketId: string, status: SupportTicket['status']) => {
+    setTickets((prev) =>
+      prev.map((t) => (t.id === ticketId ? { ...t, status } : t))
+    )
+    addToast('Statut du Ticket Modifié', `Ticket marqué comme ${status}.`, 'info')
+  }
+
+  // Security Logs Handler
+  const handleUnblockIp = (logId: string) => {
+    setSecurityLogs((prev) =>
+      prev.map((l) => (l.id === logId ? { ...l, actionTaken: 'RESOLVED' } : l))
+    )
+    addToast('Accès Rétabli', 'L\'IP ou le matériel a été débloqué.', 'success')
+  }
+
+  // Commercial Quotations Handlers
+  const handleAddQuotation = (quote: CommercialQuotation) => {
+    setQuotations((prev) => [quote, ...prev])
+    addToast('Proposition Commerciale Créée', `Devis ${quote.quoteNumber} généré pour ${quote.clientName}.`, 'success')
+  }
+
+  const handleUpdateQuoteStatus = (quoteId: string, status: CommercialQuotation['status']) => {
+    setQuotations((prev) =>
+      prev.map((q) => (q.id === quoteId ? { ...q, status } : q))
+    )
+    addToast('Statut Proposition Actualisé', `Devis marqué comme ${status}.`, 'info')
+  }
 
   // Modals state
   const [isIssueModalOpen, setIsIssueModalOpen] = useState(false)
@@ -314,6 +427,10 @@ export function App() {
   const expiringLicensesCount = licenses.filter(
     (l) => l.status === 'EXPIRING_SOON'
   ).length
+  const openTicketsCount = tickets.filter((t) => t.status === 'OPEN').length
+  const securityAlertsCount = securityLogs.filter(
+    (l) => l.severity === 'CRITICAL' || l.severity === 'WARNING'
+  ).length
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#080911] text-[#F0EDE8]">
@@ -323,6 +440,8 @@ export function App() {
         onSelectTab={setCurrentTab}
         pendingPaymentsCount={pendingPaymentsCount}
         expiringLicensesCount={expiringLicensesCount}
+        openTicketsCount={openTicketsCount}
+        securityAlertsCount={securityAlertsCount}
       />
 
       {/* Main Container */}
@@ -383,6 +502,51 @@ export function App() {
             <InfrastructureTelemetryView
               telemetry={telemetry}
               onTriggerBackup={handleTriggerManualBackup}
+            />
+          )}
+
+          {currentTab === 'invoices' && (
+            <InvoicesAccountingView
+              invoices={invoices}
+              onMarkAsPaid={handleMarkInvoiceAsPaid}
+              onAddInvoice={handleAddInvoice}
+            />
+          )}
+
+          {currentTab === 'ai_usage' && (
+            <AiUsageWatchdogView
+              usages={aiUsages}
+              onAdjustCap={handleAdjustAiCap}
+            />
+          )}
+
+          {currentTab === 'broadcast' && (
+            <BroadcastCenterView
+              broadcasts={broadcasts}
+              onPublishBroadcast={handlePublishBroadcast}
+            />
+          )}
+
+          {currentTab === 'support' && (
+            <SupportTicketsView
+              tickets={tickets}
+              onReplyTicket={handleReplyTicket}
+              onUpdateStatus={handleUpdateTicketStatus}
+            />
+          )}
+
+          {currentTab === 'security_logs' && (
+            <SecurityAuditLogsView
+              logs={securityLogs}
+              onUnblockIp={handleUnblockIp}
+            />
+          )}
+
+          {currentTab === 'quotations' && (
+            <CommercialQuotationsView
+              quotations={quotations}
+              onAddQuotation={handleAddQuotation}
+              onUpdateQuoteStatus={handleUpdateQuoteStatus}
             />
           )}
         </main>

@@ -176,9 +176,105 @@ export interface VpsTelemetry {
   securityEventsCount: number
 }
 
+// ── 6 NEW EXPANSION MODULES ──
+
+export interface AgencyInvoice {
+  id: string
+  invoiceNumber: string
+  cabinetName: string
+  leadAttorney: string
+  nif: string
+  nis: string
+  rc: string
+  barreau: Barreau
+  plan: PlanTier
+  amountHt: number
+  tvaAmount: number
+  amountTtc: number
+  status: 'PAID' | 'PENDING' | 'CANCELLED'
+  issueDate: string
+  dueDate: string
+  paymentMethod: string
+}
+
+export interface AiCabinetUsage {
+  cabinetId: string
+  cabinetName: string
+  leadAttorney: string
+  barreau: Barreau
+  plan: PlanTier
+  tokensUsedThisMonth: number
+  monthlyTokenCap: number
+  petitionsDrafted: number
+  voiceMinutes: number
+  estimatedCostDzd: number
+  status: 'NORMAL' | 'WARNING' | 'EXCEEDED'
+}
+
+export interface BroadcastMessage {
+  id: string
+  title: string
+  content: string
+  type: 'UPDATE' | 'MAINTENANCE' | 'LEGAL_ALERT' | 'INFO'
+  target: 'ALL' | 'BARREAU_ALGER' | 'BARREAU_ORAN' | 'PRO_TIER'
+  versionTag?: string
+  publishedAt: string
+  status: 'ACTIVE' | 'ARCHIVED'
+  reachCount: number
+}
+
+export interface SupportTicket {
+  id: string
+  ticketNumber: string
+  cabinetName: string
+  attorneyName: string
+  phone: string
+  subject: string
+  category: 'SCANNER_EPSON' | 'CPCA_DELAYS' | 'BILLING' | 'MOBILE_APP' | 'OTHER'
+  priority: 'HIGH' | 'MEDIUM' | 'LOW'
+  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED'
+  anydeskId?: string
+  createdAt: string
+  messages: Array<{ sender: 'CLIENT' | 'AGENCY'; text: string; time: string }>
+}
+
+export interface SecurityAuditLog {
+  id: string
+  timestamp: string
+  eventType: 'UNAUTHORIZED_SEAT' | 'CLOCK_ROLLBACK' | 'INVALID_KEY' | 'IP_BLOCKED' | 'SUSPICIOUS_DECRYPT'
+  cabinetName?: string
+  ipAddress: string
+  wilaya: string
+  hardwareHash: string
+  details: string
+  severity: 'CRITICAL' | 'WARNING' | 'INFO'
+  actionTaken: 'BLOCKED' | 'FLAGGED' | 'RESOLVED'
+}
+
+export interface CommercialQuotation {
+  id: string
+  quoteNumber: string
+  clientName: string
+  barreau: Barreau
+  leadAttorney: string
+  desktopsCount: number
+  mobilesCount: number
+  hasHardwareScannerAddon: boolean
+  hasSovereignCloudAddon: boolean
+  totalAmountDzd: number
+  validUntil: string
+  status: 'DRAFT' | 'SENT' | 'ACCEPTED' | 'EXPIRED'
+}
+
 export type NavigationTab =
   | 'overview'
   | 'licenses'
   | 'payments'
   | 'directory'
   | 'telemetry'
+  | 'invoices'
+  | 'ai_usage'
+  | 'broadcast'
+  | 'support'
+  | 'security_logs'
+  | 'quotations'

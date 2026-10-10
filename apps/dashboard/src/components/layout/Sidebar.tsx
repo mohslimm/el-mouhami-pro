@@ -7,6 +7,12 @@ import {
   Server,
   ShieldCheck,
   Sparkles,
+  FileText,
+  Cpu,
+  Radio,
+  LifeBuoy,
+  ShieldAlert,
+  Calculator,
 } from 'lucide-react'
 import { NavigationTab } from '../../types'
 
@@ -15,6 +21,19 @@ interface SidebarProps {
   onSelectTab: (tab: NavigationTab) => void
   pendingPaymentsCount: number
   expiringLicensesCount: number
+  openTicketsCount?: number
+  securityAlertsCount?: number
+}
+
+interface NavSection {
+  title: string
+  items: {
+    id: NavigationTab
+    label: string
+    icon: React.ReactNode
+    badge?: string | null
+    badgeColor?: string
+  }[]
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -22,40 +41,94 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectTab,
   pendingPaymentsCount,
   expiringLicensesCount,
+  openTicketsCount = 2,
+  securityAlertsCount = 4,
 }) => {
-  const navItems = [
+  const sections: NavSection[] = [
     {
-      id: 'overview' as NavigationTab,
-      label: 'Revenus ARR & Cockpit',
-      icon: <LayoutDashboard className="w-4 h-4" />,
-      badge: null,
+      title: 'Console Principale',
+      items: [
+        {
+          id: 'overview',
+          label: 'Revenus ARR & Cockpit',
+          icon: <LayoutDashboard className="w-4 h-4" />,
+        },
+        {
+          id: 'licenses',
+          label: 'Gestionnaire de Licences',
+          icon: <KeyRound className="w-4 h-4" />,
+          badge: expiringLicensesCount > 0 ? `${expiringLicensesCount} urgent` : null,
+          badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        },
+        {
+          id: 'payments',
+          label: 'Validations CCP & Banques',
+          icon: <CreditCard className="w-4 h-4" />,
+          badge: pendingPaymentsCount > 0 ? `${pendingPaymentsCount} attente` : null,
+          badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30 animate-pulse',
+        },
+        {
+          id: 'directory',
+          label: 'Cabinets & Empreintes TPM',
+          icon: <Building2 className="w-4 h-4" />,
+        },
+        {
+          id: 'telemetry',
+          label: 'Télémétrie VPS Souverain',
+          icon: <Server className="w-4 h-4" />,
+          badge: '99.98%',
+          badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+        },
+      ],
     },
     {
-      id: 'licenses' as NavigationTab,
-      label: 'Gestionnaire de Licences',
-      icon: <KeyRound className="w-4 h-4" />,
-      badge: expiringLicensesCount > 0 ? `${expiringLicensesCount} urgent` : null,
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+      title: 'Finances & Devis',
+      items: [
+        {
+          id: 'invoices',
+          label: 'Facturation Fiscale & TVA',
+          icon: <FileText className="w-4 h-4" />,
+        },
+        {
+          id: 'quotations',
+          label: 'Simulateur de Devis B2B',
+          icon: <Calculator className="w-4 h-4" />,
+        },
+      ],
     },
     {
-      id: 'payments' as NavigationTab,
-      label: 'Validations CCP & Banques',
-      icon: <CreditCard className="w-4 h-4" />,
-      badge: pendingPaymentsCount > 0 ? `${pendingPaymentsCount} en attente` : null,
-      badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30 animate-pulse',
+      title: 'Opérations & IA',
+      items: [
+        {
+          id: 'ai_usage',
+          label: 'Surveillance Tokens IA',
+          icon: <Cpu className="w-4 h-4" />,
+        },
+        {
+          id: 'broadcast',
+          label: 'Diffusion & Notifications',
+          icon: <Radio className="w-4 h-4" />,
+        },
+      ],
     },
     {
-      id: 'directory' as NavigationTab,
-      label: 'Cabinets & Empreintes TPM',
-      icon: <Building2 className="w-4 h-4" />,
-      badge: null,
-    },
-    {
-      id: 'telemetry' as NavigationTab,
-      label: 'Télémétrie VPS Souverain',
-      icon: <Server className="w-4 h-4" />,
-      badge: '99.98%',
-      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      title: 'Assistance & Sécurité',
+      items: [
+        {
+          id: 'support',
+          label: 'Tickets & Téléassistance',
+          icon: <LifeBuoy className="w-4 h-4" />,
+          badge: openTicketsCount > 0 ? `${openTicketsCount} ouverts` : null,
+          badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+        },
+        {
+          id: 'security_logs',
+          label: 'Audit & Anti-Piratage',
+          icon: <ShieldAlert className="w-4 h-4" />,
+          badge: securityAlertsCount > 0 ? `${securityAlertsCount} alertes` : null,
+          badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+        },
+      ],
     },
   ]
 
@@ -83,43 +156,46 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Navigation List */}
-      <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
-        <div className="px-3 pb-2 text-[10px] uppercase tracking-wider text-white/40 font-semibold">
-          Console Propriétaire
-        </div>
-
-        {navItems.map((item) => {
-          const isActive = currentTab === item.id
-          return (
-            <button
-              key={item.id}
-              onClick={() => onSelectTab(item.id)}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
-                isActive
-                  ? 'bg-gradient-to-r from-[#C39B57]/20 to-[#C39B57]/5 text-[#E8C77A] border border-[#C39B57]/40 shadow-[0_2px_12px_rgba(195,155,87,0.15)] font-semibold'
-                  : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <span className={isActive ? 'text-[#E8C77A]' : 'text-white/50'}>
-                  {item.icon}
-                </span>
-                <span>{item.label}</span>
-              </div>
-
-              {item.badge && (
-                <span
-                  className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold ${
-                    item.badgeColor || 'bg-white/10 text-white/70 border-white/10'
+      {/* Navigation List grouped into sections */}
+      <div className="flex-1 py-3 px-3 space-y-4 overflow-y-auto custom-scrollbar">
+        {sections.map((section, idx) => (
+          <div key={idx} className="space-y-1">
+            <div className="px-3 pb-1 text-[10px] uppercase tracking-wider text-white/35 font-semibold">
+              {section.title}
+            </div>
+            {section.items.map((item) => {
+              const isActive = currentTab === item.id
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onSelectTab(item.id)}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all duration-200 cursor-pointer ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#C39B57]/20 to-[#C39B57]/5 text-[#E8C77A] border border-[#C39B57]/40 shadow-[0_2px_12px_rgba(195,155,87,0.15)] font-semibold'
+                      : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
                   }`}
                 >
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          )
-        })}
+                  <div className="flex items-center gap-2.5">
+                    <span className={isActive ? 'text-[#E8C77A]' : 'text-white/50'}>
+                      {item.icon}
+                    </span>
+                    <span>{item.label}</span>
+                  </div>
+
+                  {item.badge && (
+                    <span
+                      className={`text-[9px] px-1.5 py-0.5 rounded-full border font-semibold ${
+                        item.badgeColor || 'bg-white/10 text-white/70 border-white/10'
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        ))}
       </div>
 
       {/* Sovereign VPS Health Pill */}

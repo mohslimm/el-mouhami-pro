@@ -40,6 +40,30 @@ const TAB_TITLES: Record<NavigationTab, { title: string; subtitle: string }> = {
     title: 'Télémétrie VPS Cloud Souverain Algérie Télécom',
     subtitle: 'Monitoring temps-réel du cluster PostgreSQL, WebSockets et sauvegardes',
   },
+  invoices: {
+    title: 'Facturation Fiscale & Comptabilité',
+    subtitle: 'Suivi des factures acquittées, TVA 19%, NIF/NIS et déclarations fiscales G50',
+  },
+  ai_usage: {
+    title: 'Surveillance des Tokens IA & Marges',
+    subtitle: 'Consommation LLM par cabinet, coûts API et alertes de dépassement de quota',
+  },
+  broadcast: {
+    title: 'Centre de Diffusion & Notifications Push',
+    subtitle: 'Annonces en temps réel, bannières dorées et mises à jour système déployées',
+  },
+  support: {
+    title: 'Support Client & Tickets d\'Assistance',
+    subtitle: 'Résolution des incidents techniques, calibration scanners et téléassistance AnyDesk',
+  },
+  security_logs: {
+    title: 'Sécurité & Audit Anti-Piratage',
+    subtitle: 'Journal des tentatives d\'activation bloquées, horloges altérées et intégrité TPM',
+  },
+  quotations: {
+    title: 'Simulateur de Devis & Propositions B2B',
+    subtitle: 'Génération d\'offres commerciales sur-mesure pour cabinets d\'avocats et barreaux',
+  },
 }
 
 export function Header({
