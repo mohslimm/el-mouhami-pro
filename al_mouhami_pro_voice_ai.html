@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Mouhami Pro | المحامي برو - Gestion de Cabinet d'Avocat (Algérie)</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        navy: {
+                            800: '#0f172a',
+                            900: '#0b0f19',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .font-ar { font-family: 'Cairo', sans-serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        [dir="rtl"] { font-family: 'Cairo', sans-serif; }
+        
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Scan Animation */
+        @keyframes scanLine {
+            0% { top: 0%; opacity: 0.8; }
+            50% { top: 95%; opacity: 1; }
+            100% { top: 0%; opacity: 0.8; }
+        }
+        .scan-animation-line {
+            animation: scanLine 2s ease-in-out infinite;
+        }
+
+        /* Print Media Styles for Official Documents */
+        @media print {
+            header, nav, .no-print, button:not(.print-keep), input, select {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            main {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .printable-area {
+                box-shadow: none !important;
+                border: 1px solid #94a3b8 !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <div id="app" :class="{'rtl': isRTL}" :dir="isRTL ? 'rtl' : 'ltr'" class="flex-1 flex flex-col">
+        
+        <!-- TOP HEADER BAR -->
+        <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-600 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-emerald-900/40">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight flex items-center gap-2">
+                            <span>Al-Mouhami Pro</span>
+                            <span class="text-xs bg-emerald-700/60 text-emerald-200 px-2 py-0.5 rounded font-arabic">المحامي برو</span>
+                        </h1>
+                        <p class="text-xs text-slate-400 font-medium">Système Avancé de Gestion de Cabinet d'Avocat (DZ)</p>
+                    </div>
+                </div>
+
+                <!-- Hardware Status Indicator & Language Toggle -->
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    
+                    <!-- Scanner Status Badge -->
+                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <i class="fa-solid fa-print text-slate-400"></i>
+                        <span class="text-slate-300 font-mono text-[11px]">{{ t('scannerStatusText') }}</span>
+                    </div>
+
+                    <!-- Language Switcher -->
+                    <button @click="toggleLanguage" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition">
+                        <i class="fa-solid fa-globe text-emerald-400"></i>
+                        <span>{{ lang === 'fr' ? 'العربية (الوضع الكامل)' : 'Français (LTR)' }}</span>
+                    </button>
+
+                    <!-- Quick Print Button for Current Page -->
+                    <button @click="printPage" title="Imprimer la vue courante" class="no-print hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-lg text-xs font-semibold">
+                        <i class="fa-solid fa-print text-amber-400"></i>
+                        <span>{{ t('btnPrint') }}</span>
+                    </button>
+
+                    <!-- User Profile / Cabinet Info -->
+                    <div class="flex items-center gap-2 border-l rtl:border-r rtl:border-l-0 border-slate-700 pl-3 rtl:pr-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-emerald-400 text-xs font-bold border border-slate-600">
+                            م.س
+                        </div>
+                        <div class="hidden lg:block text-xs">
+                            <div class="font-semibold text-slate-200">{{ t('lawyerName') }}</div>
+                            <div class="text-[10px] text-slate-400">{{ t('lawyerBar') }}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN NAVIGATION TABS -->
+        <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-16 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-1 rtl:space-x-reverse overflow-x-auto py-2 scrollbar-none">
+                    
+                    <button @click="activeTab = 'dashboard'" 
+                            :class="activeTab === 'dashboard' ? 'bg-emerald-50 text-emerald-700 border-emerald-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>{{ t('tabDashboard') }}</span>
+                    </button>
+
+                    <button @click="activeTab = 'registry'" 
+                            :class="activeTab === 'registry' ? 'bg-emerald-50 text-emerald-700 border-emerald-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span>{{ t('tabRegistry') }}</span>
+                        <span class="ml-1 bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">{{ cases.length }}</span>
+                    </button>
+
+                    <button @click="activeTab = 'epson_scan'" 
+                            :class="activeTab === 'epson_scan' ? 'bg-emerald-50 text-emerald-700 border-emerald-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-print"></i>
+                        <span>{{ t('tabEpsonScan') }}</span>
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                    </button>
+
+                    <button @click="activeTab = 'agenda'" 
+                            :class="activeTab === 'agenda' ? 'bg-emerald-50 text-emerald-700 border-emerald-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>{{ t('tabAgenda') }}</span>
+                    </button>
+
+                    <button @click="activeTab = 'finances'" 
+                            :class="activeTab === 'finances' ? 'bg-emerald-50 text-emerald-700 border-emerald-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>{{ t('tabFinances') }}</span>
+                    </button>
+
+                    <!-- 🎙️ NOUVEAU : VOICE AI INTAKE TAB -->
+                    <button @click="activeTab = 'voice_intake'" 
+                            :class="activeTab === 'voice_intake' ? 'bg-amber-500/10 text-amber-500 border-amber-500 shadow-sm' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-semibold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition relative">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                        </span>
+                        <i class="fa-solid fa-microphone-lines text-amber-500"></i>
+                        <span>Voice AI Intake (المساعد الصوتي)</span>
+                        <span class="bg-gradient-to-r from-amber-600 to-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-xs">Temps Réel</span>
+                    </button>
+
+                    <button @click="activeTab = 'ai_assistant'" 
+                            :class="activeTab === 'ai_assistant' ? 'bg-purple-50 text-purple-700 border-purple-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-brain text-purple-600"></i>
+                        <span>{{ t('tabAi') }}</span>
+                        <span class="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0.5 rounded font-bold">Gemini 3</span>
+                    </button>
+
+                    <button @click="activeTab = 'public_portal'" 
+                            :class="activeTab === 'public_portal' ? 'bg-amber-50 text-amber-800 border-amber-600' : 'text-slate-600 hover:bg-slate-100 border-transparent'" 
+                            class="px-4 py-2.5 rounded-lg border-b-2 font-medium text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition">
+                        <i class="fa-solid fa-user-clock text-amber-600"></i>
+                        <span>{{ t('tabPublicPortal') }}</span>
+                    </button>
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN BODY CONTENT AREA -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            
+            <!-- 🎙️ NOUVELLE VUE : VOICE AI INTAKE & SECRÉTARIAT VOCAL AUTONOME -->
+            <div v-if="activeTab === 'voice_intake'" class="space-y-6">
+                <!-- Header Banner -->
+                <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 text-white p-6 sm:p-8 rounded-2xl shadow-xl border border-amber-500/20 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold tracking-wider uppercase mb-3">
+                                <i class="fa-solid fa-robot"></i> Stepping Stones Agency • Voice AI Engine
+                            </div>
+                            <h2 class="text-2xl sm:text-3xl font-bold font-ar tracking-tight">السكريتيرة الصوتية الذكية والمساعد القضائي</h2>
+                            <p class="text-sm text-slate-300 mt-2 max-w-2xl font-light">
+                                Accueil téléphonique 24/7, qualification automatique des justiciables, qualification juridique (CPCA / Code Civil) et création instantanée de dossiers dans votre registre.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Agent Vocal Prêt
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Colonne Gauche : Station d'Appel & Onde Vocale (5 cols) -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 flex flex-col items-center text-center relative overflow-hidden">
+                            <!-- Visual Waveform Display -->
+                            <div class="w-full h-40 bg-slate-950 rounded-xl flex flex-col items-center justify-center relative overflow-hidden mb-5 border border-slate-800">
+                                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-transparent"></div>
+                                
+                                <!-- Reactive Animated Soundwave Bars -->
+                                <div class="flex items-center gap-1.5 h-16 z-10">
+                                    <span v-for="i in 18" :key="i" 
+                                          :class="voiceState.isCalling ? 'bg-amber-400' : 'bg-slate-700'"
+                                          :style="{ height: voiceState.isCalling ? (Math.sin(i * 0.5 + voiceWaveTick) * 35 + 40) + '%' : '12%' }"
+                                          class="w-1.5 rounded-full transition-all duration-150"></span>
+                                </div>
+                                <div class="text-[11px] font-mono mt-3 text-slate-400 z-10 flex items-center gap-2">
+                                    <i class="fa-solid fa-signal text-amber-400"></i>
+                                    <span>{{ voiceState.statusText }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Call Controls & Status -->
+                            <div class="w-full space-y-3">
+                                <div v-if="!voiceState.isCalling" class="flex gap-3">
+                                    <button @click="startLiveVoiceCall" class="flex-1 py-3 px-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-phone-volume"></i>
+                                        <span>Lancer un Appel Vocal</span>
+                                    </button>
+                                </div>
+                                <div v-else class="flex gap-3">
+                                    <button @click="endVoiceCall" class="flex-1 py-3 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-phone-slash"></i>
+                                        <span>Raccrocher & Traiter</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Scénarios Démo Pré-enregistrés (Closing Client) -->
+                            <div class="w-full mt-6 text-left border-t border-slate-100 pt-5">
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Simuler un Litige Réel (Scénarios Démo) :</p>
+                                <div class="space-y-2">
+                                    <button @click="simulateScenario('foncier')" class="w-full p-2.5 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50 hover:bg-amber-50/50 text-xs text-slate-700 transition flex items-center justify-between">
+                                        <span class="font-medium">🏡 Litige Foncier (نزاع عقاري وزحف على أرض)</span>
+                                        <span class="text-amber-600 font-bold">Lancer →</span>
+                                    </button>
+                                    <button @click="simulateScenario('commercial')" class="w-full p-2.5 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50 hover:bg-amber-50/50 text-xs text-slate-700 transition flex items-center justify-between">
+                                        <span class="font-medium">💼 Contentieux Commercial (كمبيالة غير مسددة)</span>
+                                        <span class="text-amber-600 font-bold">Lancer →</span>
+                                    </button>
+                                    <button @click="simulateScenario('social')" class="w-full p-2.5 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50 hover:bg-amber-50/50 text-xs text-slate-700 transition flex items-center justify-between">
+                                        <span class="font-medium">⚖️ Licenciement Abusif (فصل تعسفي وتعويض)</span>
+                                        <span class="text-amber-600 font-bold">Lancer →</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Transcript Box -->
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+                            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center justify-between">
+                                <span><i class="fa-solid fa-comments text-amber-500 mr-1.5"></i> Transcription Directe de l'Appel</span>
+                                <span class="text-[10px] font-mono text-slate-400">Audio WebRTC Stream</span>
+                            </h3>
+                            <div class="space-y-3 max-h-60 overflow-y-auto pr-1 text-xs">
+                                <div v-for="(msg, idx) in voiceTranscript" :key="idx" 
+                                     :class="msg.role === 'ai' ? 'bg-amber-50/80 border-amber-200 text-slate-800' : 'bg-slate-50 border-slate-200 text-slate-900'"
+                                     class="p-3 rounded-xl border leading-relaxed">
+                                    <div class="font-bold text-[10px] uppercase tracking-wider mb-1 flex items-center justify-between"
+                                         :class="msg.role === 'ai' ? 'text-amber-700' : 'text-slate-500'">
+                                        <span>{{ msg.role === 'ai' ? '🤖 Assistante Juridique IA' : '👤 Justiciable' }}</span>
+                                        <span>{{ msg.time }}</span>
+                                    </div>
+                                    <p>{{ msg.text }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Colonne Droite : Fiche de Synthèse & Actions Automatiques (7 cols) -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                            <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
+                                <div>
+                                    <span class="text-[11px] font-bold text-amber-600 uppercase tracking-widest">Analyse Algorithmique Immédiate</span>
+                                    <h3 class="text-lg font-bold text-slate-900 font-ar">بطاقة دراسة القضية وتحديد الاختصاص القانوني</h3>
+                                </div>
+                                <span :class="currentIntake.urgency === 'Urgent' ? 'bg-rose-100 text-rose-700 border-rose-300' : 'bg-amber-100 text-amber-700 border-amber-300'"
+                                      class="px-3 py-1 rounded-full text-xs font-bold border">
+                                    {{ currentIntake.urgency }}
+                                </span>
+                            </div>
+
+                            <!-- Identification Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5 text-xs">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-slate-400 font-medium block mb-1">Justiciable (الموكل)</span>
+                                    <span class="font-bold text-slate-900">{{ currentIntake.clientName }}</span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-slate-400 font-medium block mb-1">Téléphone (الهاتف)</span>
+                                    <span class="font-mono font-bold text-slate-900">{{ currentIntake.phone }}</span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <span class="text-slate-400 font-medium block mb-1">Juridiction Compétente</span>
+                                    <span class="font-bold text-amber-800">{{ currentIntake.juridiction }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Legal Analysis & Applicable Law -->
+                            <div class="space-y-4 text-xs">
+                                <div class="p-4 bg-amber-50/50 rounded-xl border border-amber-200/70">
+                                    <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-scale-balanced"></i> Qualification Juridique Retenue
+                                    </h4>
+                                    <p class="text-slate-700 leading-relaxed">{{ currentIntake.qualification }}</p>
+                                </div>
+
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                    <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-book-bookmark text-slate-600"></i> Fondement Légal & Articles du Code Algérien
+                                    </h4>
+                                    <p class="text-slate-700 font-mono text-[11px] leading-relaxed">{{ currentIntake.legalBasis }}</p>
+                                </div>
+
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                    <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-file-pen text-slate-600"></i> Synthèse des Faits pour l'Avocat
+                                    </h4>
+                                    <p class="text-slate-700 leading-relaxed">{{ currentIntake.factsSummary }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Boutons d'Action Automatisée (Intégration Registre & WhatsApp) -->
+                            <div class="mt-6 pt-5 border-t border-slate-200 flex flex-wrap gap-3">
+                                <button @click="convertIntakeToRegistryCase" class="flex-1 py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 transition">
+                                    <i class="fa-solid fa-folder-plus text-amber-400"></i>
+                                    <span>Insérer au Registre du Cabinet</span>
+                                </button>
+                                <button @click="sendWhatsAppDepositLink" class="py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm flex items-center justify-center gap-2 transition">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    <span>Envoyer Lien WhatsApp</span>
+                                </button>
+                                <button @click="printIntakeSheet" class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                                    <i class="fa-solid fa-print"></i>
+                                    <span>Imprimer Fiche</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. DASHBOARD VIEW -->
+            <div v-if="activeTab === 'dashboard'" class="space-y-6">
+                
+                <!-- Stat Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">{{ t('statTotalCases') }}</p>
+                            <p class="text-2xl font-bold text-slate-900 mt-1">{{ cases.length }}</p>
+                            <p class="text-[11px] text-emerald-600 font-medium mt-1"><i class="fa-solid fa-arrow-trend-up"></i> +4 ce mois-ci</p>
+                        </div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 text-xl">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">{{ t('statUpcomingHearings') }}</p>
+                            <p class="text-2xl font-bold text-slate-900 mt-1">{{ upcomingHearingsCount }}</p>
+                            <p class="text-[11px] text-amber-600 font-medium mt-1"><i class="fa-solid fa-clock"></i> 7 prochains jours</p>
+                        </div>
+                        <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 text-xl">
+                            <i class="fa-solid fa-gavel"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">{{ t('statCriticalDeadlines') }}</p>
+                            <p class="text-2xl font-bold text-rose-600 mt-1">{{ urgentDeadlines.length }}</p>
+                            <p class="text-[11px] text-rose-600 font-medium mt-1"><i class="fa-solid fa-triangle-exclamation"></i> Action requise CPCA</p>
+                        </div>
+                        <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600 text-xl">
+                            <i class="fa-solid fa-bell font-bold"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">{{ t('statUnpaidFees') }}</p>
+                            <p class="text-2xl font-bold text-slate-900 mt-1">{{ formatDZD(totalUnpaidFees) }}</p>
+                            <p class="text-[11px] text-slate-500 font-medium mt-1">DZD (Provisions restant)</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 text-xl">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Critical Alerts (CPCA Rules Engine) -->
+                <div class="bg-rose-50 border border-rose-200 rounded-xl p-5 shadow-sm">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2 text-rose-800 font-bold text-sm">
+                            <i class="fa-solid fa-shield-cat text-lg"></i>
+                            <span>{{ t('cpcaAlertHeader') }}</span>
+                        </div>
+                        <span class="text-xs bg-rose-200 text-rose-900 font-bold px-2.5 py-0.5 rounded-full">Automatique CPCA (Loi 08-09 / 22-13)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                        <div v-for="deadline in urgentDeadlines" :key="deadline.id" class="bg-white p-3.5 rounded-lg border border-rose-200 shadow-xs flex items-center justify-between">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-slate-900">{{ deadline.clientName }}</span>
+                                    <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono">{{ deadline.roleNo }}</span>
+                                </div>
+                                <p class="text-xs text-slate-600">{{ deadline.typeRecours }} - <strong class="text-slate-800">{{ deadline.juridiction }}</strong></p>
+                                <p class="text-[11px] text-rose-700 font-semibold">
+                                    <i class="fa-solid fa-clock-rotate-left"></i> Date limite : {{ formatDate(deadline.dateButoir) }} (il reste {{ deadline.daysLeft }} jours)
+                                </p>
+                            </div>
+                            <button @click="openCaseModal(deadline.caseId)" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium rounded-md shadow-xs transition">
+                                Vérifier Dossier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Dashboard Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Left: Upcoming Audiences Schedule -->
+                    <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-days text-emerald-600"></i>
+                                <span>{{ t('dashboardHearingsTitle') }}</span>
+                            </h3>
+                            <button @click="activeTab = 'agenda'" class="text-xs text-emerald-700 hover:text-emerald-800 font-semibold">Voir tout l'agenda →</button>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div v-for="hearing in upcomingHearings" :key="hearing.id" class="p-3.5 rounded-lg border border-slate-100 bg-slate-50/70 hover:bg-slate-100/80 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-12 h-12 rounded-lg bg-emerald-100 text-emerald-800 flex flex-col items-center justify-center flex-shrink-0 font-bold">
+                                        <span class="text-xs uppercase">{{ getMonthShort(hearing.date) }}</span>
+                                        <span class="text-base leading-none">{{ getDayNum(hearing.date) }}</span>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-xs font-bold text-slate-900">{{ hearing.clientName }}</h4>
+                                            <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-mono">{{ hearing.roleNo }}</span>
+                                        </div>
+                                        <p class="text-xs text-slate-600 font-medium mt-0.5">{{ hearing.juridiction }} — <span class="text-emerald-700">{{ hearing.chambre }}</span></p>
+                                        <p class="text-[11px] text-slate-500 mt-0.5"><i class="fa-solid fa-tag"></i> Motif renvoi : {{ hearing.motifRenvoi }}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button @click="openCaseModal(hearing.caseId)" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-lg text-xs font-medium shadow-xs">
+                                        Ouvrir Fiche
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Quick Actions & Hardware Status -->
+                    <div class="space-y-6">
+                        
+                        <!-- Epson Hardware Quick Panel -->
+                        <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-xl p-5 shadow-md border border-slate-700">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-print text-emerald-400 text-xl"></i>
+                                    <h4 class="font-bold text-sm">Epson Scanner Direct</h4>
+                                </div>
+                                <span class="text-[10px] bg-emerald-900/80 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded-full font-mono">TWAIN/WIA Active</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                                Numérisez directement les pièces remises au cabinet sans passer par une application tierce.
+                            </p>
+                            <button @click="activeTab = 'epson_scan'" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs shadow-md flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-print"></i>
+                                <span>Lancer Epson Scan Direct</span>
+                            </button>
+                        </div>
+
+                        <!-- Legal AI Prompt Trigger -->
+                        <div class="bg-purple-900 text-white rounded-xl p-5 shadow-md border border-purple-800">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-purple-300 text-lg"></i>
+                                <h4 class="font-bold text-sm">Assistant IA Juridique DZ</h4>
+                            </div>
+                            <p class="text-xs text-purple-200 mb-4">
+                                Rédigez des عريضة ou des مذكرات جوابية en langue arabe selon le CPCA algérien.
+                            </p>
+                            <button @click="activeTab = 'ai_assistant'" class="w-full py-2 px-4 bg-purple-700 hover:bg-purple-600 text-white font-semibold rounded-lg text-xs shadow-md flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-brain"></i>
+                                <span>Ouvrir l'Assistant IA</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- 2. REGISTRE COMPLET DES CLIENTS ET AFFAIRES -->
+            <div v-if="activeTab === 'registry'" class="space-y-6">
+                
+                <!-- Filter Bar Header -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-4 no-print">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 rtl:right-3 rtl:left-auto top-3 text-slate-400 text-sm"></i>
+                            <input v-model="registrySearch" type="text" :placeholder="t('searchPlaceholder')" 
+                                   class="w-full pl-9 rtl:pr-9 rtl:pl-3 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 focus:bg-white focus:outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button @click="printPage" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-print text-slate-600"></i>
+                                <span>{{ t('btnPrintRegistry') }}</span>
+                            </button>
+                            <button @click="showNewCaseModal = true" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs flex items-center gap-2 shadow-sm transition whitespace-nowrap">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>{{ t('btnNewCase') }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Multi-criteria Filter Selects -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 border-t border-slate-100">
+                        
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">{{ t('filterJuridiction') }}</label>
+                            <select v-model="filterJuridiction" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                <option value="">{{ t('allJuridictions') }}</option>
+                                <option value="Tribunal de Sidi M'Hamed">{{ t('jSidiMhamed') }}</option>
+                                <option value="Tribunal de Bab El Oued">{{ t('jBabElOued') }}</option>
+                                <option value="Cour d'Alger">{{ t('jCourAlger') }}</option>
+                                <option value="Cour Suprême">{{ t('jCourSupreme') }}</option>
+                                <option value="Tribunal Administratif d'Alger">{{ t('jTribAdmin') }}</option>
+                                <option value="Conseil d'État">{{ t('jConseilEtat') }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">{{ t('filterSection') }}</label>
+                            <select v-model="filterSection" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                <option value="">{{ t('allSections') }}</option>
+                                <option value="Section Civile">{{ t('secCivil') }}</option>
+                                <option value="Section Foncière">{{ t('secFoncier') }}</option>
+                                <option value="Statut Personnel">{{ t('secFamille') }}</option>
+                                <option value="Section Sociale">{{ t('secSocial') }}</option>
+                                <option value="Section Commerciale">{{ t('secCommercial') }}</option>
+                                <option value="Chambre Pénale">{{ t('secPenal') }}</option>
+                                <option value="Référés">{{ t('secReferes') }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">{{ t('filterStatus') }}</label>
+                            <select v-model="filterStatus" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                <option value="">{{ t('allStatuses') }}</option>
+                                <option value="Pré-contentieux">{{ t('stPreContentieux') }}</option>
+                                <option value="Enrôlement">{{ t('stEnrolement') }}</option>
+                                <option value="Instruction / Renvois">{{ t('stInstruction') }}</option>
+                                <option value="Délibéré">{{ t('stDelibere') }}</option>
+                                <option value="Exécution (Grosse)">{{ t('stExecution') }}</option>
+                                <option value="En cours de Recours">{{ t('stRecours') }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">{{ t('filterRole') }}</label>
+                            <select v-model="filterRole" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                                <option value="">{{ t('allRoles') }}</option>
+                                <option value="Demandeur">{{ t('roleDemandeur') }}</option>
+                                <option value="Défendeur">{{ t('roleDefendeur') }}</option>
+                                <option value="Partie Civile">{{ t('rolePartieCivile') }}</option>
+                                <option value="Inculpé / Prévenu">{{ t('roleInculpe') }}</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Case Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden printable-area">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left rtl:text-right border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                    <th class="p-3.5">{{ t('thRoleNo') }}</th>
+                                    <th class="p-3.5">{{ t('thClientAdversary') }}</th>
+                                    <th class="p-3.5">{{ t('thJuridictionSection') }}</th>
+                                    <th class="p-3.5">{{ t('thStatus') }}</th>
+                                    <th class="p-3.5">{{ t('thNextAudience') }}</th>
+                                    <th class="p-3.5">{{ t('thFees') }}</th>
+                                    <th class="p-3.5 text-center no-print">{{ t('thActions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr v-for="c in filteredCases" :key="c.id" class="hover:bg-slate-50 transition">
+                                    <td class="p-3.5 font-mono font-bold text-slate-900">
+                                        {{ c.roleNo }}
+                                        <div class="text-[10px] text-slate-400 font-normal">{{ t('lblCode') }}: {{ c.internalCode }}</div>
+                                    </td>
+                                    <td class="p-3.5">
+                                        <div class="font-bold text-slate-900">{{ lang === 'ar' ? c.clientNameAr : c.clientNameFr }}</div>
+                                        <div class="text-[11px] text-slate-500">
+                                            <span class="bg-slate-100 text-slate-700 px-1 py-0.2 rounded text-[10px] font-semibold">{{ getTranslatedRole(c.qualiteClient) }}</span>
+                                            <span class="mx-1">vs</span> {{ c.adversaryName }}
+                                        </div>
+                                    </td>
+                                    <td class="p-3.5">
+                                        <div class="font-semibold text-slate-800">{{ getTranslatedJuridiction(c.juridiction) }}</div>
+                                        <div class="text-[11px] text-emerald-700 font-medium">{{ getTranslatedSection(c.section) }}</div>
+                                    </td>
+                                    <td class="p-3.5">
+                                        <span :class="getStatusBadgeClass(c.status)" class="px-2.5 py-1 rounded-full text-[10px] font-bold inline-block">
+                                            {{ getTranslatedStatus(c.status) }}
+                                        </span>
+                                    </td>
+                                    <td class="p-3.5 font-medium">
+                                        <div v-if="c.nextAudience" class="text-slate-900">
+                                            <i class="fa-solid fa-calendar-day text-emerald-600 mr-1"></i>
+                                            {{ formatDate(c.nextAudience) }}
+                                        </div>
+                                        <div v-else class="text-slate-400 italic">{{ t('noneFixed') }}</div>
+                                    </td>
+                                    <td class="p-3.5">
+                                        <div class="font-bold text-slate-900">{{ formatDZD(c.paidFee) }} / {{ formatDZD(c.totalFee) }} DZD</div>
+                                        <div class="w-24 bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden no-print">
+                                            <div class="bg-emerald-600 h-1.5 rounded-full" :style="{ width: Math.min(100, Math.round((c.paidFee / c.totalFee) * 100)) + '%' }"></div>
+                                        </div>
+                                    </td>
+                                    <td class="p-3.5 text-center space-x-1 rtl:space-x-reverse no-print">
+                                        <button @click="openCaseModal(c.id)" :title="t('btnConsultFile')" class="p-1.5 bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 rounded-md transition">
+                                            <i class="fa-solid fa-folder-open"></i>
+                                        </button>
+                                        <button @click="triggerScanForCase(c)" :title="t('btnScanPiece')" class="p-1.5 bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded-md transition">
+                                            <i class="fa-solid fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. EPSON HARDWARE SCANNING VIEW -->
+            <div v-if="activeTab === 'epson_scan'" class="space-y-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-print text-emerald-600"></i>
+                            <span>{{ t('scanHubTitle') }}</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">{{ t('scanHubSub') }}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-mono font-bold">Driver TWAIN v2.4 OK</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Scanner Controls -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-900 text-sm border-b pb-2"><i class="fa-solid fa-sliders text-emerald-600 mr-2"></i>{{ t('scanConfigHeader') }}</h3>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">{{ t('lblScannerDevice') }}</label>
+                            <select v-model="selectedScanner" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
+                                <option value="Epson WorkForce DS-530 II (ADF Duplex)">Epson WorkForce DS-530 II (ADF Duplex)</option>
+                                <option value="Epson Perfection V600 (Aplat)">Epson Perfection V600 (Aplat)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">{{ t('lblTargetCase') }}</label>
+                            <select v-model="scanTargetCaseId" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
+                                <option value="">{{ t('selectCasePrompt') }}</option>
+                                <option v-for="c in cases" :key="c.id" :value="c.id">{{ c.roleNo }} - {{ c.clientNameFr }} ({{ c.clientNameAr }})</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Résolution (DPI)</label>
+                                <select v-model="scanDpi" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
+                                    <option value="150">150 DPI (Standard)</option>
+                                    <option value="300">300 DPI (Recommandé)</option>
+                                    <option value="600">600 DPI (Haute Définition)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Source</label>
+                                <select v-model="scanSource" class="w-full p-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
+                                    <option value="ADF Duplex">ADF Recto-Verso</option>
+                                    <option value="ADF Simplex">ADF Recto Simple</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 pt-2 border-t border-slate-100">
+                            <label class="flex items-center gap-2 text-xs text-slate-700">
+                                <input type="checkbox" v-model="scanOcrActive" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                <span>{{ t('chkOcr') }}</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-xs text-slate-700">
+                                <input type="checkbox" v-model="scanAutoDeskew" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                <span>{{ t('chkDeskew') }}</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-xs text-slate-700">
+                                <input type="checkbox" v-model="scanBlankPageSkip" class="rounded text-emerald-600 focus:ring-emerald-500">
+                                <span>{{ t('chkBlankPage') }}</span>
+                            </label>
+                        </div>
+
+                        <button @click="startScanProcess" :disabled="isScanning" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold rounded-lg text-xs shadow-md flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-print"></i>
+                            <span>{{ isScanning ? t('scanningStatus') : t('btnStartScan') }}</span>
+                        </button>
+                    </div>
+
+                    <!-- Interactive Scan Monitor & Live Preview -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-800 shadow-md relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-sm flex items-center gap-2">
+                                    <i class="fa-solid fa-microchip text-emerald-400"></i>
+                                    <span>Moniteur de numérisation Epson Direct</span>
+                                </h3>
+                                <span class="text-[11px] font-mono bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 px-2 py-0.5 rounded">Hardware Link OK</span>
+                            </div>
+
+                            <!-- Live Scan Animation Area -->
+                            <div class="bg-slate-950 border border-slate-800 rounded-lg p-6 min-h-[220px] flex flex-col items-center justify-center relative overflow-hidden">
+                                <div v-if="isScanning" class="w-full space-y-4 text-center">
+                                    <div class="relative w-48 h-32 mx-auto bg-slate-900 border border-emerald-500/40 rounded-lg overflow-hidden flex items-center justify-center">
+                                        <i class="fa-solid fa-file-lines text-emerald-400/40 text-5xl"></i>
+                                        <div class="absolute inset-x-0 h-1 bg-emerald-400 shadow-[0_0_15px_#34d399] scan-animation-line"></div>
+                                    </div>
+                                    <p class="text-xs font-mono text-emerald-300 animate-pulse">{{ scanStatusText }}</p>
+                                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-emerald-500 h-2 transition-all duration-300" :style="{ width: scanProgress + '%' }"></div>
+                                    </div>
+                                    <p class="text-[11px] font-mono text-slate-400">{{ scanProgress }}% - Numérisation des pièces du dossier...</p>
+                                </div>
+
+                                <div v-else-if="lastScannedDoc" class="w-full text-center space-y-3">
+                                    <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-500/40 rounded-full flex items-center justify-center text-emerald-400 mx-auto">
+                                        <i class="fa-solid fa-check text-xl"></i>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-slate-200">Document numérisé avec succès !</h4>
+                                    <p class="text-[11px] text-slate-400 font-mono">{{ lastScannedDoc.filename }} ({{ lastScannedDoc.caseRoleNo }})</p>
+                                    <div class="flex justify-center gap-2 pt-2">
+                                        <button @click="activeTab = 'registry'" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold">Voir au Registre</button>
+                                        <button @click="lastScannedDoc = null" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs">Numériser à nouveau</button>
+                                    </div>
+                                </div>
+
+                                <div v-else class="text-center text-slate-500 space-y-2">
+                                    <i class="fa-solid fa-print text-4xl text-slate-700"></i>
+                                    <p class="text-xs font-medium">Placez vos documents dans le chargeur Epson DS-530 et cliquez sur "Lancer la numérisation".</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scanned Vault History Table -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-3">
+                            <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">{{ t('scannedVaultTitle') }}</h3>
+                            <div class="divide-y divide-slate-100 text-xs">
+                                <div v-for="doc in scannedDocumentsVault" :key="doc.id" class="py-3 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-file-pdf text-rose-600 text-lg"></i>
+                                        <div>
+                                            <div class="font-bold text-slate-800">{{ doc.filename }}</div>
+                                            <div class="text-[11px] text-slate-500">Rôle : {{ doc.caseRoleNo }} | Client : {{ doc.clientName }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">{{ doc.timestamp }}</span>
+                                        <button @click="printPage" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded"><i class="fa-solid fa-print"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. AGENDA ET CALENDRIER DES AUDIENCES -->
+            <div v-if="activeTab === 'agenda'" class="space-y-6">
+                
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-days text-emerald-600"></i>
+                            <span>{{ t('agendaHeaderTitle') }}</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">{{ t('agendaHeaderSub') }}</p>
+                    </div>
+                    <div class="flex items-center gap-2 no-print">
+                        <button @click="printPage" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 shadow-xs">
+                            <i class="fa-solid fa-print text-emerald-700"></i>
+                            <span>{{ t('btnPrintRole') }}</span>
+                        </button>
+                        <button @click="showAddHearingModal = true" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>{{ t('btnScheduleHearing') }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hearings List grouped by date -->
+                <div class="space-y-4 printable-area">
+                    <div v-for="(group, dateStr) in groupedHearings" :key="dateStr" class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-slate-100 px-4 py-2.5 font-bold text-xs text-slate-800 border-b border-slate-200 flex items-center justify-between">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-calendar text-emerald-600"></i>
+                                <span>{{ formatDateHeader(dateStr) }}</span>
+                            </span>
+                            <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded text-[10px]">{{ group.length }} {{ t('hearingsCount') }}</span>
+                        </div>
+
+                        <div class="divide-y divide-slate-100">
+                            <div v-for="h in group" :key="h.id" class="p-4 hover:bg-slate-50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-xs text-slate-900">{{ h.clientName }}</span>
+                                        <span class="text-[10px] font-mono bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">{{ h.roleNo }}</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600">
+                                        <strong>{{ getTranslatedJuridiction(h.juridiction) }}</strong> — <span class="text-emerald-700 font-semibold">{{ h.chambre }}</span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-500">
+                                        {{ t('lblMotifRenvoi') }} : <span class="italic text-slate-800">{{ h.motifRenvoi }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 no-print">
+                                    <button @click="openCaseModal(h.caseId)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">
+                                        {{ t('btnViewCase') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 5. FINANCIALS & PAYMENT RECEIPT GENERATOR -->
+            <div v-if="activeTab === 'finances'" class="space-y-6">
+                
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-receipt text-emerald-600"></i>
+                            <span>{{ t('financesHeaderTitle') }}</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">{{ t('financesHeaderSub') }}</p>
+                    </div>
+                    <div class="flex items-center gap-2 no-print">
+                        <button @click="printPage" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-print text-slate-600"></i>
+                            <span>{{ t('btnPrintFinances') }}</span>
+                        </button>
+                        <button @click="openReceiptModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <span>{{ t('btnEmitReceipt') }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Financial Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden printable-area">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left rtl:text-right border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                    <th class="p-3.5">{{ t('thClient') }}</th>
+                                    <th class="p-3.5">{{ t('thRoleNo') }}</th>
+                                    <th class="p-3.5">{{ t('thTotalFee') }}</th>
+                                    <th class="p-3.5">{{ t('thPaidFee') }}</th>
+                                    <th class="p-3.5">{{ t('thRemainingFee') }}</th>
+                                    <th class="p-3.5 text-center no-print">{{ t('thActions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr v-for="c in cases" :key="c.id" class="hover:bg-slate-50">
+                                    <td class="p-3.5 font-bold text-slate-900">{{ lang === 'ar' ? c.clientNameAr : c.clientNameFr }}</td>
+                                    <td class="p-3.5 font-mono text-slate-700">{{ c.roleNo }}</td>
+                                    <td class="p-3.5 font-semibold text-slate-900">{{ formatDZD(c.totalFee) }} DZD</td>
+                                    <td class="p-3.5 font-semibold text-emerald-700">{{ formatDZD(c.paidFee) }} DZD</td>
+                                    <td class="p-3.5 font-bold text-rose-600">{{ formatDZD(c.totalFee - c.paidFee) }} DZD</td>
+                                    <td class="p-3.5 text-center no-print">
+                                        <button @click="generateReceiptForCase(c)" class="px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-300 rounded font-semibold text-[11px]">
+                                            <i class="fa-solid fa-print mr-1"></i> {{ t('btnQuittance') }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 6. ASSISTANT IA JURIDIQUE (CPCA DZ) -->
+            <div v-if="activeTab === 'ai_assistant'" class="space-y-6">
+                <div class="bg-purple-900 text-white p-5 rounded-xl border border-purple-800 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-purple-300"></i>
+                            <span>{{ t('aiTitle') }}</span>
+                        </h2>
+                        <p class="text-xs text-purple-200">{{ t('aiSub') }}</p>
+                    </div>
+                    <span class="px-3 py-1 bg-purple-800 text-purple-200 border border-purple-700 rounded-full text-xs font-mono">Gemini 3 Legal Tech Engine</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Quick Templates / Shortcuts -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                        <h3 class="font-bold text-xs text-slate-900 uppercase tracking-wider">{{ t('aiTemplatesTitle') }}</h3>
+                        <div class="space-y-2 text-xs">
+                            <button @click="selectAiPrompt('صياغة عريضة افتتاح دعوى قسم عقاري لاسترجاع ملكية عقار')" class="w-full text-left rtl:text-right p-2.5 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-lg transition font-medium text-slate-700 hover:text-purple-900">
+                                ⚖️ عريضة افتتاح دعوى عقارية
+                            </button>
+                            <button @click="selectAiPrompt('مذكرة جوابية في قضية طلاق بالتراضي وفق المادة 48 من قانون الأسرة')" class="w-full text-left rtl:text-right p-2.5 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-lg transition font-medium text-slate-700 hover:text-purple-900">
+                                📜 مذكرة جوابية (قانون الأسرة)
+                            </button>
+                            <button @click="selectAiPrompt('حساب مواعيد الطعن بالنواقص والاجراءات أمام المحكمة العليا (المادة 354 ق.إ.م.إ)')" class="w-full text-left rtl:text-right p-2.5 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-lg transition font-medium text-slate-700 hover:text-purple-900">
+                                ⏳ مواعيد الطعن بالنقض CPCA
+                            </button>
+                            <button @click="selectAiPrompt('صياغة إنذار رسمي عن طريق المحضر القضائي لتسديد مبلغ مال')" class="w-full text-left rtl:text-right p-2.5 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-lg transition font-medium text-slate-700 hover:text-purple-900">
+                                📩 إنذار رسمي عبر محضر قضائي
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Chat Box Area -->
+                    <div class="lg:col-span-3 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col h-[560px]">
+                        <!-- Chat Header -->
+                        <div class="p-3.5 border-b border-slate-200 bg-slate-50 rounded-t-xl flex items-center justify-between text-xs">
+                            <span class="font-semibold text-slate-700 flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                Base Juridique : CPCA (08-09 / 22-13) & Code Civil Dz
+                            </span>
+                            <button @click="aiChatHistory = [{ role: 'model', text: 'مرحباً أستاذ. أنا مساعدك الذكي المتخصص في القانون الجزائري.' }]" class="text-slate-400 hover:text-slate-600">
+                                <i class="fa-solid fa-rotate-right"></i> Réinitialiser
+                            </button>
+                        </div>
+
+                        <!-- Chat Messages Container -->
+                        <div class="flex-1 p-4 overflow-y-auto space-y-4">
+                            <div v-for="(msg, idx) in aiChatHistory" :key="idx" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'" class="flex">
+                                <div :class="msg.role === 'user' ? 'bg-purple-700 text-white rounded-2xl rounded-tr-none' : 'bg-slate-100 text-slate-800 border border-slate-200 rounded-2xl rounded-tl-none'" class="max-w-[85%] p-4 text-xs leading-relaxed font-ar whitespace-pre-line shadow-xs">
+                                    {{ msg.text }}
+                                </div>
+                            </div>
+                            <div v-if="isLoadingAi" class="flex justify-start">
+                                <div class="bg-slate-100 text-slate-500 rounded-2xl p-3 text-xs flex items-center gap-2">
+                                    <i class="fa-solid fa-spinner animate-spin text-purple-600"></i>
+                                    <span>جاري تحليل النص والاستشهاد بالمواد القانونية...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Bar -->
+                        <div class="p-3 border-t border-slate-200 bg-white rounded-b-xl flex gap-2">
+                            <textarea v-model="aiUserPrompt" @keyup.enter.exact.prevent="sendAiMessage" placeholder="اكتب سؤالك القانوني أو ملخص القضية هنا..." class="flex-1 p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-ar focus:ring-2 focus:ring-purple-500 focus:bg-white focus:outline-none resize-none h-12"></textarea>
+                            <button @click="sendAiMessage" :disabled="isLoadingAi || !aiUserPrompt.trim()" class="px-5 bg-purple-700 hover:bg-purple-800 disabled:opacity-50 text-white rounded-lg text-xs font-bold transition flex items-center justify-center">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. PORTAIL RÉSERVATION PUBLIC -->
+            <div v-if="activeTab === 'public_portal'" class="space-y-6">
+                <div class="bg-gradient-to-r from-slate-900 to-amber-950 text-white p-6 rounded-2xl shadow-md text-center max-w-3xl mx-auto space-y-2">
+                    <span class="text-[11px] uppercase tracking-widest text-amber-400 font-bold bg-amber-900/60 border border-amber-700/50 px-3 py-1 rounded-full">Portail Client Avocat</span>
+                    <h2 class="text-xl font-bold font-ar">حجز موعد استشارة قانونية - مكتب الأستاذ نور الدين سليماني</h2>
+                    <p class="text-xs text-slate-300 max-w-xl mx-auto">Prise de rendez-vous directe au cabinet ou pour consultation en ligne.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm max-w-2xl mx-auto space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm text-center border-b pb-3">Formulaire de Demande de Consultation</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Nom & Prénom (الاسم الكامل)</label>
+                            <input v-model="bookingForm.name" type="text" placeholder="Ex: Mohamed Slimani" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Numéro Téléphone (رقم الهاتف)</label>
+                            <input v-model="bookingForm.phone" type="text" placeholder="Ex: 0550 12 34 56" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg">
+                        </div>
+                    </div>
+
+                    <div class="text-xs">
+                        <label class="block font-semibold text-slate-700 mb-1">Domaine juridique (موضوع الاستشارة)</label>
+                        <select v-model="bookingForm.domain" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg">
+                            <option value="Droit Foncier & Immobilier">Droit Foncier & Immobilier (قضايا العقار)</option>
+                            <option value="Droit Commercial & Affaires">Droit Commercial & Affaires (قضايا تجارية)</option>
+                            <option value="Statut Personnel & Famille">Statut Personnel & Famille (قضايا الأسرة)</option>
+                            <option value="Droit Pénal">Droit Pénal (قضايا جزائية)</option>
+                        </select>
+                    </div>
+
+                    <div class="text-xs">
+                        <label class="block font-semibold text-slate-700 mb-1">Date souhaitée (تاريخ الجلسة المطلوبة)</label>
+                        <input v-model="bookingForm.date" type="date" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg">
+                    </div>
+
+                    <button @click="submitBooking" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow-md transition">
+                        تأكيد طلب الموعد (Confirmer le Rendez-vous)
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- MODAL: CASE DETAILS & DOCUMENTS -->
+        <div v-if="activeCaseModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 flex flex-col printable-area">
+                
+                <div class="p-5 bg-slate-900 text-white flex items-center justify-between rounded-t-2xl">
+                    <div>
+                        <span class="text-[10px] bg-emerald-700 text-emerald-100 font-mono px-2 py-0.5 rounded">{{ t('thRoleNo') }} : {{ activeCaseModal.roleNo }}</span>
+                        <h3 class="text-base font-bold mt-1">{{ lang === 'ar' ? activeCaseModal.clientNameAr : activeCaseModal.clientNameFr }}</h3>
+                        <p class="text-xs text-slate-400">{{ getTranslatedJuridiction(activeCaseModal.juridiction) }} — {{ getTranslatedSection(activeCaseModal.section) }}</p>
+                    </div>
+                    <div class="flex items-center gap-2 no-print">
+                        <button @click="printPage" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1">
+                            <i class="fa-solid fa-print text-amber-400"></i> {{ t('btnPrint') }}
+                        </button>
+                        <button @click="activeCaseModal = null" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
+                        <h4 class="font-bold text-xs text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-clock text-emerald-600"></i>
+                            <span>{{ t('cpcaDeadlinesHeader') }}</span>
+                        </h4>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                <span class="text-slate-500 text-[10px] block">{{ t('lblAppealDeadline') }}</span>
+                                <strong class="text-slate-900 font-mono">{{ formatDate(activeCaseModal.appealDeadline) }}</strong>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                <span class="text-slate-500 text-[10px] block">{{ t('lblCassationDeadline') }}</span>
+                                <strong class="text-slate-900 font-mono">{{ formatDate(activeCaseModal.cassationDeadline) }}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-xs text-slate-900">{{ t('lblScannedDocs') }} ({{ activeCaseModal.documents ? activeCaseModal.documents.length : 0 }})</h4>
+                            <button @click="triggerScanForCase(activeCaseModal)" class="no-print px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-print"></i> {{ t('btnEpsonScanDirect') }}
+                            </button>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div v-for="doc in activeCaseModal.documents" :key="doc.id" class="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-file-pdf text-rose-600 text-base"></i>
+                                    <div>
+                                        <div class="font-bold text-slate-800">{{ doc.title }}</div>
+                                        <div class="text-[10px] text-slate-500">{{ t('lblAddedOn') }} {{ doc.date }} — Source: {{ doc.source }}</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button @click="printPage" class="no-print p-1 bg-white hover:bg-slate-100 border border-slate-300 rounded text-slate-700 text-[11px]" title="Imprimer document">
+                                        <i class="fa-solid fa-print"></i>
+                                    </button>
+                                    <span class="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded">AES-256</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: NEW CASE -->
+        <div v-if="showNewCaseModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+                <div class="flex justify-between items-center border-b pb-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Créer un Nouveau Dossier Contentieux</h3>
+                    <button @click="showNewCaseModal = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">N° Rôle Greffe</label>
+                        <input v-model="newCaseForm.roleNo" type="text" placeholder="Ex: 24/00590" class="w-full p-2 bg-slate-50 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Client (FR)</label>
+                        <input v-model="newCaseForm.clientNameFr" type="text" placeholder="Ex: Karim Zerrouki" class="w-full p-2 bg-slate-50 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Client (AR)</label>
+                        <input v-model="newCaseForm.clientNameAr" type="text" placeholder="Ex: كريم زروقي" class="w-full p-2 bg-slate-50 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Adversaire</label>
+                        <input v-model="newCaseForm.adversaryName" type="text" placeholder="Ex: Société X" class="w-full p-2 bg-slate-50 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Juridiction</label>
+                        <select v-model="newCaseForm.juridiction" class="w-full p-2 bg-slate-50 border rounded-lg">
+                            <option value="Tribunal de Sidi M'Hamed">Tribunal de Sidi M'Hamed</option>
+                            <option value="Tribunal de Bab El Oued">Tribunal de Bab El Oued</option>
+                            <option value="Cour d'Alger">Cour d'Alger</option>
+                            <option value="Cour Suprême">Cour Suprême</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Section</label>
+                        <select v-model="newCaseForm.section" class="w-full p-2 bg-slate-50 border rounded-lg">
+                            <option value="Section Civile">Section Civile</option>
+                            <option value="Section Foncière">Section Foncière</option>
+                            <option value="Statut Personnel">Statut Personnel</option>
+                            <option value="Section Commerciale">Section Commerciale</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Honoraires Total (DZD)</label>
+                        <input v-model.number="newCaseForm.totalFee" type="number" class="w-full p-2 bg-slate-50 border rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Provision Versée (DZD)</label>
+                        <input v-model.number="newCaseForm.paidFee" type="number" class="w-full p-2 bg-slate-50 border rounded-lg">
+                    </div>
+                </div>
+                <button @click="addNewCase" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-md">
+                    Enregistrer le dossier
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL: ADD HEARING -->
+        <div v-if="showAddHearingModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200 text-xs">
+                <div class="flex justify-between items-center border-b pb-3">
+                    <h3 class="font-bold text-slate-900">Programmer une Nouvelle Audience</h3>
+                    <button @click="showAddHearingModal = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Dossier concerné</label>
+                    <select v-model="newHearingForm.caseId" class="w-full p-2 bg-slate-50 border rounded-lg">
+                        <option v-for="c in cases" :key="c.id" :value="c.id">{{ c.roleNo }} - {{ c.clientNameFr }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Date d'audience</label>
+                    <input v-model="newHearingForm.date" type="date" class="w-full p-2 bg-slate-50 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Chambre / Salle</label>
+                    <input v-model="newHearingForm.chambre" type="text" placeholder="Ex: Chambre 3 - Salle 12" class="w-full p-2 bg-slate-50 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Motif Renvoi</label>
+                    <input v-model="newHearingForm.motifRenvoi" type="text" placeholder="Ex: Pour réponse du défendeur" class="w-full p-2 bg-slate-50 border rounded-lg">
+                </div>
+                <button @click="addNewHearing" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-md">
+                    Programmer l'audience
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL: QUITTANCE RECEIPT -->
+        <div v-if="receiptModalData" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl max-w-xl w-full p-8 space-y-6 shadow-2xl border border-slate-300 text-xs printable-area">
+                <div class="flex justify-between items-start border-b pb-4">
+                    <div>
+                        <h2 class="font-bold text-base text-slate-900 uppercase">CABINET D'AVOCAT MAÎTRE NOUREDDINE SLIMANI</h2>
+                        <p class="text-[11px] text-slate-500">Barreau d'Alger — Cour d'Alger & Cour Suprême</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-sm font-bold text-emerald-800">REÇU D'HONORAIRES N° {{ receiptModalData.receiptNo }}</span>
+                        <p class="text-[10px] text-slate-400">Loi 13-07 Art. 23</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-slate-800 leading-relaxed font-mono">
+                    <p>Je soussigné, Maître Noureddine Slimani, Avocat à la Cour,</p>
+                    <p>Reconnaît avoir reçu de M./Mme : <strong>{{ receiptModalData.clientName }}</strong></p>
+                    <p>La somme de : <strong class="text-slate-900 text-sm font-bold">{{ formatDZD(receiptModalData.amount) }} DZD</strong> ({{ receiptModalData.amountWords }})</p>
+                    <p>Au titre de provision pour le dossier N° Rôle : <strong>{{ receiptModalData.roleNo }}</strong></p>
+                    <p>Affaire opposant le client à : <strong>{{ receiptModalData.adversary }}</strong></p>
+                </div>
+
+                <div class="pt-6 border-t flex justify-between items-center text-[11px] text-slate-600">
+                    <span>Fait à Alger, le {{ receiptModalData.date }}</span>
+                    <div class="text-center">
+                        <p class="font-bold text-slate-900">Cachet & Signature de l'Avocat</p>
+                        <div class="w-24 h-12 border border-dashed border-slate-300 rounded mt-2 mx-auto flex items-center justify-center text-[9px] text-slate-400">
+                            [Sceau Cabinet]
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t flex justify-end gap-2 no-print">
+                    <button @click="printPage" class="px-4 py-2 bg-emerald-600 text-white rounded font-bold">Imprimer ce reçu</button>
+                    <button @click="receiptModalData = null" class="px-4 py-2 bg-slate-200 text-slate-700 rounded">Fermer</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    lang: 'fr',
+                    isRTL: false,
+                    activeTab: 'dashboard',
+                    
+                    // Hardware Scan Simulator State
+                    selectedScanner: 'Epson WorkForce DS-530 II (ADF Duplex)',
+                    scanTargetCaseId: '',
+                    scanDpi: '300',
+                    scanSource: 'ADF Duplex',
+                    scanOcrActive: true,
+                    scanAutoDeskew: true,
+                    scanBlankPageSkip: true,
+                    isScanning: false,
+                    scanProgress: 0,
+                    scanStatusText: '',
+                    lastScannedDoc: null,
+
+                    // Filters
+                    registrySearch: '',
+                    filterJuridiction: '',
+                    filterSection: '',
+                    filterStatus: '',
+                    filterRole: '',
+
+                    // Modals
+                    showNewCaseModal: false,
+                    showAddHearingModal: false,
+                    activeCaseModal: null,
+                    receiptModalData: null,
+
+                    // New Case Form State
+                    newCaseForm: {
+                        roleNo: '',
+                        clientNameFr: '',
+                        clientNameAr: '',
+                        adversaryName: '',
+                        juridiction: "Tribunal de Sidi M'Hamed",
+                        section: 'Section Civile',
+                        totalFee: 100000,
+                        paidFee: 50000
+                    },
+
+                    // New Hearing Form State
+                    newHearingForm: {
+                        caseId: 1,
+                        date: '2026-05-25',
+                        chambre: 'Chambre 2',
+                        motifRenvoi: 'Pour dépôt de mémoire'
+                    },
+
+                    // AI Assistant
+                    aiUserPrompt: '',
+                    isLoadingAi: false,
+                    aiChatHistory: [
+                        { role: 'model', text: 'مرحباً أستاذ نور الدين. أنا مساعدك الذكي المتخصص في القانون الجزائري (قانون الإجراءات المدنية والإدارية 08-09 المعدل). كيف يمكنني مساعدتك اليوم في صياغة العرائض، استخراج المواعيد، أو مراجعة النصوص القانونية؟' }
+                    ],
+
+                    // 🎙️ Voice AI Intake State
+                    voiceWaveTick: 0,
+                    voiceWaveInterval: null,
+                    voiceState: {
+                        isCalling: false,
+                        statusText: 'Prêt pour appel entrant ou simulation',
+                        activeScenario: null
+                    },
+                    voiceTranscript: [
+                        { role: 'ai', time: '10:00', text: 'مكتب الأستاذ نور الدين سليماني، المحامي المعتمد لدى المحكمة العليا ومجلس الدولة. مرحباً بكم، تفضلوا بشرح موضوع قضيتكم.' }
+                    ],
+                    currentIntake: {
+                        clientName: 'Yacine Kheddim',
+                        phone: '0550 44 88 12',
+                        juridiction: "Tribunal de Chéraga (Section Foncière)",
+                        urgency: 'Urgent (Référé d'heure à heure)',
+                        qualification: 'Action en cessation de trouble de possession et démolition d'ouvrage illicite sur terrain titré.',
+                        legalBasis: 'Articles 713 & 822 du Code Civil algérien, Article 299 du Code de Procédure Civile et Administrative (CPCA 08-09).',
+                        factsSummary: 'Le justiciable est titulaire d'un acte de propriété notarié et livret foncier à Zeralda. Un voisin a entrepris la construction d'un mur empiétant sur 120m² sans droit ni titre. Travaux en cours nécessitant un référé conservatoire immédiat.'
+                    },
+
+                    // Public Booking Form
+                    bookingForm: {
+                        name: '',
+                        phone: '',
+                        domain: 'Droit Foncier & Immobilier',
+                        date: ''
+                    },
+
+                    // Scanned Vault Demo Data
+                    scannedDocumentsVault: [
+                        { id: 1, timestamp: '2026-05-10 10:15', filename: 'Requete_Initiale_Foncier.pdf', caseRoleNo: '24/00412', clientName: 'Benmohamed Reda', source: 'Epson DS-530' },
+                        { id: 2, timestamp: '2026-05-08 14:30', filename: 'Jugement_Avant_Dire_Droit.pdf', caseRoleNo: '23/01890', clientName: 'SARL El-Djazair', source: 'Epson DS-530' }
+                    ],
+
+                    // Master Case Registry Data
+                    cases: [
+                        {
+                            id: 1,
+                            roleNo: '24/00412',
+                            internalCode: 'DZ-2024-88',
+                            clientNameFr: 'Benmohamed Reda',
+                            clientNameAr: 'بن محمد رضا',
+                            qualiteClient: 'Demandeur',
+                            adversaryName: 'Benaissa Kamel',
+                            juridiction: "Tribunal de Sidi M'Hamed",
+                            section: 'Section Foncière',
+                            status: 'Instruction / Renvois',
+                            nextAudience: '2026-05-18',
+                            appealDeadline: '2026-06-20',
+                            cassationDeadline: '2026-07-20',
+                            totalFee: 150000,
+                            paidFee: 90000,
+                            documents: [
+                                { id: 101, title: 'Acte de Propriété Notarié.pdf', date: '2026-04-10', source: 'Epson DS-530' },
+                                { id: 102, title: 'Procès-Verbal d\'Huissier de Justice.pdf', date: '2026-04-12', source: 'Epson DS-530' }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            roleNo: '23/01890',
+                            internalCode: 'DZ-2023-14',
+                            clientNameFr: 'SARL El-Djazair Import',
+                            clientNameAr: 'شركة الجزائر للاستيراد',
+                            qualiteClient: 'Défendeur',
+                            adversaryName: 'Banque Nationale d\'Algérie (BNA)',
+                            juridiction: "Cour d'Alger",
+                            section: 'Section Commerciale',
+                            status: 'En cours de Recours',
+                            nextAudience: '2026-05-14',
+                            appealDeadline: '2026-05-25',
+                            cassationDeadline: '2026-06-25',
+                            totalFee: 300000,
+                            paidFee: 300000,
+                            documents: [
+                                { id: 103, title: 'Arrêt de la Cour d\'Alger.pdf', date: '2026-03-01', source: 'Epson DS-530' }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            roleNo: '24/00109',
+                            internalCode: 'DZ-2024-03',
+                            clientNameFr: 'Messaoudi Fatma',
+                            clientNameAr: 'مسعودي فاطمة',
+                            qualiteClient: 'Demandeur',
+                            adversaryName: 'Messaoudi Ahmed',
+                            juridiction: 'Tribunal de Bab El Oued',
+                            section: 'Statut Personnel',
+                            status: 'Délibéré',
+                            nextAudience: '2026-05-22',
+                            appealDeadline: '2026-07-01',
+                            cassationDeadline: '2026-08-01',
+                            totalFee: 80000,
+                            paidFee: 40000,
+                            documents: [
+                                { id: 104, title: 'Livret de Famille Scanné.pdf', date: '2026-02-15', source: 'Epson DS-530' }
+                            ]
+                        }
+                    ],
+
+                    // Hearings master schedule
+                    hearings: [
+                        { id: 1, caseId: 2, date: '2026-05-14', clientName: 'SARL El-Djazair Import', roleNo: '23/01890', juridiction: "Cour d'Alger", chambre: 'Chambre Commerciale 2', motifRenvoi: 'Réponse de la Banque BNA' },
+                        { id: 2, caseId: 1, date: '2026-05-18', clientName: 'Benmohamed Reda', roleNo: '24/00412', juridiction: "Tribunal de Sidi M'Hamed", chambre: 'Section Foncière 1', motifRenvoi: 'Rapport d\'Expertise Géomètre' },
+                        { id: 3, caseId: 3, date: '2026-05-22', clientName: 'Messaoudi Fatma', roleNo: '24/00109', juridiction: 'Tribunal de Bab El Oued', chambre: 'Statut Personnel', motifRenvoi: 'Prononcé du Jugement' }
+                    ]
+                }
+            },
+
+            computed: {
+                filteredCases() {
+                    let res = this.cases;
+                    if (this.registrySearch) {
+                        const q = this.registrySearch.toLowerCase();
+                        res = res.filter(c => 
+                            c.clientNameFr.toLowerCase().includes(q) ||
+                            c.clientNameAr.includes(q) ||
+                            c.roleNo.toLowerCase().includes(q) ||
+                            c.adversaryName.toLowerCase().includes(q)
+                        );
+                    }
+                    if (this.filterJuridiction) res = res.filter(c => c.juridiction === this.filterJuridiction);
+                    if (this.filterSection) res = res.filter(c => c.section === this.filterSection);
+                    if (this.filterStatus) res = res.filter(c => c.status === this.filterStatus);
+                    if (this.filterRole) res = res.filter(c => c.qualiteClient === this.filterRole);
+                    return res;
+                },
+
+                urgentDeadlines() {
+                    const list = [];
+                    const today = new Date();
+                    this.cases.forEach(c => {
+                        if (c.appealDeadline) {
+                            const target = new Date(c.appealDeadline);
+                            const diffTime = target.getTime() - today.getTime();
+                            const daysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+                            list.push({
+                                id: c.id + '_appeal',
+                                caseId: c.id,
+                                clientName: this.lang === 'ar' ? c.clientNameAr : c.clientNameFr,
+                                roleNo: c.roleNo,
+                                juridiction: c.juridiction,
+                                typeRecours: 'Délai d\'Appel (شهران)',
+                                dateButoir: c.appealDeadline,
+                                daysLeft: daysLeft
+                            });
+                        }
+                    });
+                    return list;
+                },
+
+                upcomingHearings() {
+                    return this.hearings;
+                },
+
+                upcomingHearingsCount() {
+                    return this.hearings.length;
+                },
+
+                totalUnpaidFees() {
+                    return this.cases.reduce((sum, c) => sum + (c.totalFee - c.paidFee), 0);
+                },
+
+                groupedHearings() {
+                    const groups = {};
+                    this.hearings.forEach(h => {
+                        if (!groups[h.date]) groups[h.date] = [];
+                        groups[h.date].push(h);
+                    });
+                    return groups;
+                }
+            },
+
+            methods: {
+                // 🎙️ VOICE AI INTAKE METHODS
+                startLiveVoiceCall() {
+                    this.voiceState.isCalling = true;
+                    this.voiceState.statusText = 'Appel en direct • Reconnaissance vocale WebRTC active';
+                    if (!this.voiceWaveInterval) {
+                        this.voiceWaveInterval = setInterval(() => {
+                            this.voiceWaveTick += 0.2;
+                        }, 80);
+                    }
+                    // Web Speech API for real mic input if supported
+                    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        try {
+                            const recognition = new SpeechRecognition();
+                            recognition.lang = 'fr-FR';
+                            recognition.onresult = (event) => {
+                                const transcript = event.results[0][0].transcript;
+                                this.voiceTranscript.push({
+                                    role: 'user',
+                                    time: new Date().toLocaleTimeString().slice(0, 5),
+                                    text: transcript
+                                });
+                                this.speakAiResponse("Bien reçu. J'analyse vos propos au regard des lois algériennes en vigueur.");
+                            };
+                            recognition.start();
+                        } catch (e) {
+                            console.log('Voice mic init:', e);
+                        }
+                    } else {
+                        this.speakAiResponse("Bonjour. Je suis l'assistante juridique du cabinet. Je vous écoute.");
+                    }
+                },
+
+                endVoiceCall() {
+                    this.voiceState.isCalling = false;
+                    this.voiceState.statusText = 'Appel terminé • Analyse de qualification finalisée';
+                    if (this.voiceWaveInterval) {
+                        clearInterval(this.voiceWaveInterval);
+                        this.voiceWaveInterval = null;
+                    }
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.cancel();
+                    }
+                },
+
+                speakAiResponse(text) {
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.cancel();
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        utterance.lang = 'fr-FR';
+                        utterance.rate = 1.0;
+                        window.speechSynthesis.speak(utterance);
+                    }
+                },
+
+                simulateScenario(type) {
+                    this.voiceState.isCalling = true;
+                    this.voiceState.activeScenario = type;
+                    this.voiceState.statusText = 'Simulation en cours • Analyse par l\'IA juridique';
+                    if (!this.voiceWaveInterval) {
+                        this.voiceWaveInterval = setInterval(() => {
+                            this.voiceWaveTick += 0.25;
+                        }, 70);
+                    }
+
+                    if (type === 'foncier') {
+                        this.voiceTranscript = [
+                            { role: 'ai', time: '10:02', text: 'مكتب الأستاذ سليماني، تفضلوا بتوضيح النزاع والبلدية المعنية.' },
+                            { role: 'user', time: '10:03', text: 'عندي قطعة أرض في زرالدة بعقد ملكية مشهر ودفتر عقاري، جاري قام ببناء جدار تعدّى به على 120 متر مربع من أرضي ورفض يوقف البناء.' },
+                            { role: 'ai', time: '10:04', text: 'تم فهم الموضوع. هذه دعوى منع التعرض في الحيازة ووقف الأشغال بصيغة استعجالية من ساعة إلى ساعة. سأستخرج البطاقة للأستاذ.' }
+                        ];
+                        this.currentIntake = {
+                            clientName: 'Yacine Kheddim (ياسين خديم)',
+                            phone: '0550 44 88 12',
+                            juridiction: "Tribunal de Chéraga (Section Foncière / Référés)",
+                            urgency: 'Urgent (Référé d'heure à heure)',
+                            qualification: 'Action possessoire en cessation de trouble et remise des lieux en l'état (Droit Foncier).',
+                            legalBasis: 'Articles 713 & 822 du Code Civil algérien, Art. 299 & 300 du CPCA (Loi 08-09).',
+                            factsSummary: 'Empiètement flagrant sur parcelle titrée avec début d'édification sans permis. Procédure urgente recommandée avant consolidation des fondations.'
+                        };
+                        this.speakAiResponse("Dossier foncier qualifié. Compétence Tribunal de Chéraga. Fiche de référé prête.");
+                    } else if (type === 'commercial') {
+                        this.voiceTranscript = [
+                            { role: 'ai', time: '10:05', text: 'مكتب الأستاذ، ما هي طبيعة المعاملة التجارية والمبلغ المطالب به؟' },
+                            { role: 'user', time: '10:06', text: 'قدمنا بضاعة لشركة شريكة بقيمة 4.800.000 دج منذ 6 أشهر مع فواتير وسندات تسليم ممضاة، ويرفضون الدفع دون مبرر.' },
+                            { role: 'ai', time: '10:07', text: 'الدين ثابت بالكتابة ومستحق الأداء. الإجراء الأنسب هو أمر بالأداء السريع لتفادي المماطلة.' }
+                        ];
+                        this.currentIntake = {
+                            clientName: 'SARL Maghreb Plastique (شركة مغرب بلاستيك)',
+                            phone: '0560 99 11 22',
+                            juridiction: "Tribunal Commercial d'Oran",
+                            urgency: 'Moyenne (Injonction de payer)',
+                            qualification: 'Recouvrement de créance commerciale certaine, liquide et exigible.',
+                            legalBasis: 'Article 306 et suivants du CPCA, Articles 543 & 544 du Code de Commerce algérien.',
+                            factsSummary: 'Créance de 4.800.000 DZD avec bons de livraison signés et facture acceptée. Requête aux fins d'ordonnance d'injonction de payer.'
+                        };
+                        this.speakAiResponse("Contentieux commercial qualifié. Procédure d'injonction de payer prête.");
+                    } else if (type === 'social') {
+                        this.voiceTranscript = [
+                            { role: 'ai', time: '10:10', text: 'مكتب الأستاذ، كم مدة العمل وهل تم استدعاؤك للجنة التأديب؟' },
+                            { role: 'user', time: '10:11', text: 'خدمت 4 سنوات بعقد غير محدد المدة، المدير طردني مباشرة بدون إشعار وبدون مجلس تأديبي بسبب خلاف بسيط.' },
+                            { role: 'ai', time: '10:12', text: 'طرد تعسفي صريح مخالف للإجراءات القانونية. لديك الحق في التعويض أو إعادة الإدماج.' }
+                        ];
+                        this.currentIntake = {
+                            clientName: 'Amina Mansouri (أمينة منصوري)',
+                            phone: '0770 33 22 11',
+                            juridiction: "Tribunal de Blida (Section Sociale)",
+                            urgency: 'Normale (Tentative de conciliation obligatoire)',
+                            qualification: 'Rupture abusive de relation de travail (Licenciement sans respect des procédures légales).',
+                            legalBasis: 'Loi 90-11 relative aux relations de travail, notamment les articles 73, 73-1 et suivants.',
+                            factsSummary: 'Salariée en CDI licenciée sans préavis ni convocation devant la commission de discipline. Demande de réintégration ou dommages-intérêts.'
+                        };
+                        this.speakAiResponse("Litige social qualifié. Procédure de conciliation préalable et demande de dommages et intérêts.");
+                    }
+                },
+
+                convertIntakeToRegistryCase() {
+                    const newCase = {
+                        id: this.cases.length + 1,
+                        roleNo: '26/' + String(Math.floor(Math.random() * 900) + 100).padStart(5, '0'),
+                        internalCode: 'INTAKE-AI-' + String(this.cases.length + 1),
+                        clientNameFr: this.currentIntake.clientName.split('(')[0].trim(),
+                        clientNameAr: this.currentIntake.clientName.includes('(') ? this.currentIntake.clientName.split('(')[1].replace(')', '').trim() : '',
+                        qualiteClient: 'Demandeur',
+                        adversaryName: 'Partie Adverse (À notifier)',
+                        juridiction: this.currentIntake.juridiction,
+                        section: this.currentIntake.qualification.includes('Foncier') ? 'Section Foncière' : 'Section Commerciale',
+                        status: 'Nouveau / Qualification Voice AI',
+                        nextAudience: '2026-06-15',
+                        appealDeadline: '2026-07-15',
+                        cassationDeadline: '2026-08-15',
+                        totalFee: 120000,
+                        paidFee: 40000,
+                        documents: [
+                            { id: Date.now(), title: 'Fiche_Intake_Voice_AI.pdf', date: new Date().toISOString().slice(0, 10), source: 'Voice AI Intake' }
+                        ]
+                    };
+                    this.cases.unshift(newCase);
+                    alert("✅ Succès ! L'affaire de " + newCase.clientNameFr + " a été insérée directement au Registre Général avec le N° de rôle " + newCase.roleNo);
+                    this.activeTab = 'registry';
+                },
+
+                sendWhatsAppDepositLink() {
+                    const msg = encodeURIComponent(
+                        "Cabinet Maître Noureddine SLIMANI\nBonjour " + this.currentIntake.clientName + ",\nSuite à votre échange avec notre assistante d'intake pour votre dossier (" + this.currentIntake.qualification + "), veuillez téléverser vos pièces justificatives via ce lien sécurisé :\nhttps://cabinet-slimani.dz/depot-securise?token=" + Math.random().toString(36).substring(7)
+                    );
+                    window.open('https://api.whatsapp.com/send?phone=' + this.currentIntake.phone.replace(/\s/g, '') + '&text=' + msg, '_blank');
+                },
+
+                printIntakeSheet() {
+                    window.print();
+                },
+
+                toggleLanguage() {
+                    this.lang = this.lang === 'fr' ? 'ar' : 'fr';
+                    this.isRTL = this.lang === 'ar';
+                },
+
+                printPage() {
+                    window.print();
+                },
+
+                formatDZD(val) {
+                    if (typeof val !== 'number') return val;
+                    return val.toLocaleString('fr-DZ');
+                },
+
+                formatDate(dateStr) {
+                    if (!dateStr) return '';
+                    const parts = dateStr.split('-');
+                    if (parts.length !== 3) return dateStr;
+                    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                },
+
+                formatDateHeader(dateStr) {
+                    return `Audience du ${this.formatDate(dateStr)}`;
+                },
+
+                getDayNum(dateStr) {
+                    if (!dateStr) return '18';
+                    return dateStr.split('-')[2] || '18';
+                },
+
+                getMonthShort(dateStr) {
+                    if (!dateStr) return 'MAI';
+                    const months = ['JAN', 'FÉV', 'MAR', 'AVR', 'MAI', 'JUIN', 'JUIL', 'AOÛT', 'SEP', 'OCT', 'NOV', 'DÉC'];
+                    const idx = parseInt(dateStr.split('-')[1], 10) - 1;
+                    return months[idx] || 'MAI';
+                },
+
+                getStatusBadgeClass(status) {
+                    switch (status) {
+                        case 'Pré-contentieux': return 'bg-amber-100 text-amber-800 border border-amber-300';
+                        case 'Enrôlement': return 'bg-blue-100 text-blue-800 border border-blue-300';
+                        case 'Instruction / Renvois': return 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+                        case 'Délibéré': return 'bg-purple-100 text-purple-800 border border-purple-300';
+                        case 'Exécution (Grosse)': return 'bg-slate-800 text-white';
+                        case 'En cours de Recours': return 'bg-rose-100 text-rose-800 border border-rose-300';
+                        default: return 'bg-slate-100 text-slate-700';
+                    }
+                },
+
+                openCaseModal(caseId) {
+                    const found = this.cases.find(c => c.id === caseId);
+                    if (found) this.activeCaseModal = found;
+                },
+
+                triggerScanForCase(c) {
+                    this.scanTargetCaseId = c.id;
+                    this.activeTab = 'epson_scan';
+                },
+
+                startScanProcess() {
+                    if (this.isScanning) return;
+                    this.isScanning = true;
+                    this.scanProgress = 10;
+                    this.scanStatusText = 'Initialisation du moteur TWAIN Epson DS-530...';
+
+                    const interval = setInterval(() => {
+                        this.scanProgress += 20;
+                        if (this.scanProgress === 30) this.scanStatusText = 'Alimentation des feuilles ADF (Recto-Verso)...';
+                        if (this.scanProgress === 70) this.scanStatusText = 'Application OCR & Numérisation PDF/A...';
+
+                        if (this.scanProgress >= 100) {
+                            clearInterval(interval);
+                            this.isScanning = false;
+                            const foundCase = this.cases.find(c => c.id === this.scanTargetCaseId) || this.cases[0];
+                            const newDoc = {
+                                id: Date.now(),
+                                timestamp: new Date().toLocaleString(),
+                                filename: `Scan_Epson_Piece_${Date.now().toString().slice(-4)}.pdf`,
+                                caseRoleNo: foundCase.roleNo,
+                                clientName: foundCase.clientNameFr,
+                                source: 'Epson DS-530'
+                            };
+                            this.scannedDocumentsVault.unshift(newDoc);
+                            if (!foundCase.documents) foundCase.documents = [];
+                            foundCase.documents.push({ id: newDoc.id, title: newDoc.filename, date: '2026-05-12', source: 'Epson DS-530' });
+                            this.lastScannedDoc = newDoc;
+                        }
+                    }, 500);
+                },
+
+                generateReceiptForCase(c) {
+                    const amount = c.paidFee || 50000;
+                    this.receiptModalData = {
+                        receiptNo: `REC-${Date.now().toString().slice(-5)}`,
+                        clientName: `${c.clientNameFr} (${c.clientNameAr})`,
+                        amount: amount,
+                        amountWords: 'Cinquante Mille Dinars Algériens',
+                        roleNo: c.roleNo,
+                        adversary: c.adversaryName,
+                        date: new Date().toLocaleDateString('fr-DZ')
+                    };
+                },
+
+                openReceiptModal() {
+                    if (this.cases.length > 0) this.generateReceiptForCase(this.cases[0]);
+                },
+
+                addNewCase() {
+                    if (!this.newCaseForm.roleNo || !this.newCaseForm.clientNameFr) return;
+                    const newId = this.cases.length + 1;
+                    this.cases.push({
+                        id: newId,
+                        roleNo: this.newCaseForm.roleNo,
+                        internalCode: `DZ-2024-${Math.floor(Math.random()*90 + 10)}`,
+                        clientNameFr: this.newCaseForm.clientNameFr,
+                        clientNameAr: this.newCaseForm.clientNameAr || this.newCaseForm.clientNameFr,
+                        qualiteClient: 'Demandeur',
+                        adversaryName: this.newCaseForm.adversaryName || 'Adversaire',
+                        juridiction: this.newCaseForm.juridiction,
+                        section: this.newCaseForm.section,
+                        status: 'Instruction / Renvois',
+                        nextAudience: '2026-05-30',
+                        appealDeadline: '2026-07-30',
+                        cassationDeadline: '2026-08-30',
+                        totalFee: this.newCaseForm.totalFee,
+                        paidFee: this.newCaseForm.paidFee,
+                        documents: []
+                    });
+                    this.showNewCaseModal = false;
+                },
+
+                addNewHearing() {
+                    if (!this.newHearingForm.date) return;
+                    const foundCase = this.cases.find(c => c.id === this.newHearingForm.caseId) || this.cases[0];
+                    this.hearings.push({
+                        id: Date.now(),
+                        caseId: foundCase.id,
+                        date: this.newHearingForm.date,
+                        clientName: foundCase.clientNameFr,
+                        roleNo: foundCase.roleNo,
+                        juridiction: foundCase.juridiction,
+                        chambre: this.newHearingForm.chambre,
+                        motifRenvoi: this.newHearingForm.motifRenvoi
+                    });
+                    foundCase.nextAudience = this.newHearingForm.date;
+                    this.showAddHearingModal = false;
+                },
+
+                selectAiPrompt(p) {
+                    this.aiUserPrompt = p;
+                },
+
+                sendAiMessage() {
+                    if (!this.aiUserPrompt.trim() || this.isLoadingAi) return;
+                    const userText = this.aiUserPrompt;
+                    this.aiChatHistory.push({ role: 'user', text: userText });
+                    this.aiUserPrompt = '';
+                    this.isLoadingAi = true;
+
+                    setTimeout(() => {
+                        this.isLoadingAi = false;
+                        this.aiChatHistory.push({
+                            role: 'model',
+                            text: `بناءً على قانون الإجراءات المدنية والإدارية (القانون رقم 08-09 المعدل بالقانون 22-13) وفي إطار نص المادة المطلوب:\n\n1. التأصيل القانوني: تنص المادة 336 ق.إ.م.إ على أن مهلة الاستئناف محددة بشهرين (02) ابتداءً من تاريخ التبليغ الرسمي للحكم.\n2. التكليف بالحضور: يتم إيداع العريضة لدى كتابة ضبط المحكمة المختصة محلياً ونوعياً مرفقة بجميع المستندات والمؤيدات الممسوحة ضوئياً.\n3. صيغة الاقتراح:\n"مجلس قضاء الجزائر - الغرفة العقارية\nعريضة استئناف ضد الحكم الصادر عن محكمة سيدي امحمد بتاريخ..."`
+                        });
+                    }, 1200);
+                },
+
+                submitBooking() {
+                    if (!this.bookingForm.name || !this.bookingForm.phone) {
+                        alert('يرجى كتابة الاسم ورقم الهاتف لمواصلة الحجز.');
+                        return;
+                    }
+                    alert(`تم تسجيل طلب الموعد بنجاح للزبون ${this.bookingForm.name}. سيتم الاتصال بك لتأكيد التوقيت.`);
+                    this.bookingForm.name = '';
+                    this.bookingForm.phone = '';
+                },
+
+                t(key) {
+                    const dict = {
+                        lawyerName: { fr: 'Maître N. Slimani', ar: 'الأستاذ نور الدين سليماني' },
+                        lawyerBar: { fr: "Barreau d'Alger", ar: 'منظمة المحامين ناحية الجزائر' },
+                        scannerStatusText: { fr: 'Epson WorkForce DS-530 [TWAIN Ready]', ar: 'إبسون WorkForce DS-530 [جاهز]' },
+                        tabDashboard: { fr: 'Tableau de Bord', ar: 'لوحة القيادة' },
+                        tabRegistry: { fr: 'Registre des Affaires', ar: 'سجل القضايا والزبائن' },
+                        tabEpsonScan: { fr: 'Numérisation Epson Scan', ar: 'الماسح الضوئي إبسون' },
+                        tabAgenda: { fr: 'Agenda & Audiences', ar: 'جدول الجلسات' },
+                        tabFinances: { fr: 'Honoraires & Quittances', ar: 'الأتعاب والإيصالات' },
+                        tabAi: { fr: 'Assistant IA (CPCA)', ar: 'المساعد الذكي (ق.إ.م.إ)' },
+                        tabPublicPortal: { fr: 'Portail Réservation', ar: 'بوابة المواعيد' },
+                        btnPrint: { fr: 'Imprimer', ar: 'طباعة' },
+                        btnPrintRegistry: { fr: 'Imprimer le Registre', ar: 'طباعة السجل' },
+                        btnPrintRole: { fr: 'Imprimer le Rôle', ar: 'طباعة جدول الجلسات' },
+                        btnPrintFinances: { fr: 'Imprimer le Bilan', ar: 'طباعة الكشف المالي' },
+                        statTotalCases: { fr: 'Dossiers Actifs', ar: 'إجمالي القضايا النشطة' },
+                        statUpcomingHearings: { fr: 'Audiences Prochaines', ar: 'الجلسات القادمة' },
+                        statCriticalDeadlines: { fr: 'Délais Urgents (CPCA)', ar: 'مواعيد سريان الآجال' },
+                        statUnpaidFees: { fr: 'Honoraires à Recouvrer', ar: 'الأتعاب المتبقية' },
+                        cpcaAlertHeader: { fr: 'Alerte de Forclusion Automatique (CPCA)', ar: 'تنبيه انقضاء المواعيد الإجرائية تلقائياً' },
+                        dashboardHearingsTitle: { fr: 'Rôle des Audiences de la Semaine', ar: 'جدول جلسات الأسبوع' },
+                        searchPlaceholder: { fr: 'Rechercher par nom client, N° de rôle greffe, mot-clé...', ar: 'بحث باسم الزبون، رقم الجدول، القضية...' },
+                        btnNewCase: { fr: 'Nouveau Dossier', ar: 'قضية جديدة' },
+                        filterJuridiction: { fr: 'Juridiction', ar: 'الجهة القضائية' },
+                        filterSection: { fr: 'Section / Chambre', ar: 'القسم / الغرفة' },
+                        filterStatus: { fr: 'État d\'avancement', ar: 'مرحلة التقاضي' },
+                        filterRole: { fr: 'Qualité Client', ar: 'صفة الموكل' },
+                        allJuridictions: { fr: 'Toutes les juridictions', ar: 'جميع الجهات القضائية' },
+                        allSections: { fr: 'Toutes les sections', ar: 'جميع الأقسام والغرف' },
+                        allStatuses: { fr: 'Tous les états', ar: 'جميع المراحل الإجرائية' },
+                        allRoles: { fr: 'Toutes les qualités', ar: 'جميع الصفات' },
+                        thRoleNo: { fr: 'N° Rôle Greffe', ar: 'رقم الجدول / القضية' },
+                        thClientAdversary: { fr: 'Client & Adversaire', ar: 'الموكل والخصم' },
+                        thJuridictionSection: { fr: 'Juridiction & Section', ar: 'الجهة والقسم' },
+                        thStatus: { fr: 'État d\'avancement', ar: 'مرحلة التقاضي' },
+                        thNextAudience: { fr: 'Prochaine Audience', ar: 'الجلسة القادمة' },
+                        thFees: { fr: 'Provisions / Honoraires', ar: 'الأتعاب والمستحقات' },
+                        thActions: { fr: 'Actions', ar: 'الإجراءات' },
+                        lblCode: { fr: 'Code', ar: 'الرمز الداخلي' },
+                        noneFixed: { fr: 'Aucune fixée', ar: 'غير محددة' },
+                        btnConsultFile: { fr: 'Consulter la fiche', ar: 'معاينة الملف' },
+                        btnScanPiece: { fr: 'Scanner pièce via Epson', ar: 'مسح وثيقة عبر إبسون' },
+                        scanHubTitle: { fr: 'Hub de Numérisation Matérielle Epson', ar: 'مركز الماسح الضوئي إبسون' },
+                        scanHubSub: { fr: 'Interface directe TWAIN/WIA avec les numériseurs Epson WorkForce DS-530', ar: 'ربط مباشر مع الماسح الضوئي إبسون DS-530' },
+                        scanConfigHeader: { fr: 'Configuration du Scanner', ar: 'إعدادات الماسح الضوئي' },
+                        lblScannerDevice: { fr: 'Scanner détecté', ar: 'الماسح الضوئي المتصل' },
+                        lblTargetCase: { fr: 'Dossier de destination', ar: 'الملف الهدف' },
+                        selectCasePrompt: { fr: '-- Sélectionner un dossier --', ar: '-- اختر القضية --' },
+                        chkOcr: { fr: 'Reconnaissance OCR automatique (PDF Recherchable)', ar: 'تحويل إلى نص قابل للبحث OCR' },
+                        chkDeskew: { fr: 'Redressement automatique des pièces (Auto-deskew)', ar: 'تعديل انحراف الصفحات تلقائياً' },
+                        chkBlankPage: { fr: 'Supprimer les pages blanches (Blank skip)', ar: 'حذف الصفحات البيضاء تلقائياً' },
+                        btnStartScan: { fr: 'Lancer la Numérisation Epson Direct', ar: 'بدء المسح الضوئي إبسون' },
+                        scanningStatus: { fr: 'Numérisation en cours...', ar: 'جاري المسح الضوئي...' },
+                        scannedVaultTitle: { fr: 'Historique des Pièces Numérisées', ar: 'أرشيف الوثائق الممسوحة' },
+                        agendaHeaderTitle: { fr: 'Agenda Unifié du Cabinet & Rôles des Audiences', ar: 'جدول الجلسات الموحد والمواعيد' },
+                        agendaHeaderSub: { fr: 'Planification des passages devant le tribunal et des consultations clients.', ar: 'تنظيم الحضور أمام المحاكم والاستشارات بمقر المكتب.' },
+                        btnScheduleHearing: { fr: 'Programmer une Audience / Renvoi', ar: 'برمجة جلسة / تأجيل' },
+                        lblMotifRenvoi: { fr: 'Motif renvoi', ar: 'سبب التأجيل' },
+                        btnViewCase: { fr: 'Voir Dossier', ar: 'معاينة القضية' },
+                        hearingsCount: { fr: 'audience(s)', ar: 'جلسة (جلسات)' },
+                        financesHeaderTitle: { fr: 'Suivi Comptable & Émission des Quittances', ar: 'المتابعة المالية وإصدار الإيصالات' },
+                        financesHeaderSub: { fr: 'Conforme à la réglementation des honoraires (Loi n° 13-07 Art. 23).', ar: 'مطابق لقانون المحاماة رقم 13-07 المادة 23.' },
+                        btnEmitReceipt: { fr: 'Émettre un Reçu d\'Honoraires (وصل أتعاب)', ar: 'إصدار وصل أتعاب رسمية' },
+                        thClient: { fr: 'Client', ar: 'الموكل' },
+                        thTotalFee: { fr: 'Convention Initiale', ar: 'الاتفاق الإجمالي' },
+                        thPaidFee: { fr: 'Provisions Versées', ar: 'التسقيع المدفوع' },
+                        thRemainingFee: { fr: 'Solde Restant', ar: 'المبلغ المتبقي' },
+                        btnQuittance: { fr: 'وصل (Quittance)', ar: 'وصل استلام' },
+                        cpcaDeadlinesHeader: { fr: 'Délais Procéduraux Automatiques CPCA', ar: 'الآجال القانونية التلقائية (ق.إ.م.إ)' },
+                        lblAppealDeadline: { fr: 'Délai d\'Appel (2 Mois - Art. 336 CPCA)', ar: 'أجل الاستئناف (شهران - المادة 336)' },
+                        lblCassationDeadline: { fr: 'Pourvoi en Cassation (2 Mois - Art. 354 CPCA)', ar: 'أجل الطعن بالنقض (شهران - المادة 354)' },
+                        lblScannedDocs: { fr: 'Pièces & Documents Scannés GED', ar: 'الوثائق الممسوحة بالأرشيف' },
+                        btnEpsonScanDirect: { fr: 'Scan Epson Direct', ar: 'مسح مباشر إبسون' },
+                        lblAddedOn: { fr: 'Ajouté le', ar: 'تمت الإضافة بتاريخ' },
+                        aiTitle: { fr: 'Assistant IA Juridique Algérien (CPCA)', ar: 'المساعد الذكي للقانون الجزائري' },
+                        aiSub: { fr: 'Spécialisé en Code de Procédure Civile et Administrative (Loi 08-09 / 22-13)', ar: 'متخصص في قانون الإجراءات المدنية والإدارية والاجتهاد القضائي' },
+                        aiTemplatesTitle: { fr: 'Modèles de Rédaction Rapides', ar: 'نماذج عريضة سريعة' },
+                        jSidiMhamed: { fr: 'Tribunal de Sidi M\'Hamed', ar: 'محكمة سيدي امحمد' },
+                        jBabElOued: { fr: 'Tribunal de Bab El Oued', ar: 'محكمة باب الوادي' },
+                        jCourAlger: { fr: 'Cour d\'Alger', ar: 'مجلس قضاء الجزائر' },
+                        jCourSupreme: { fr: 'Cour Suprême', ar: 'المحكمة العليا' },
+                        jTribAdmin: { fr: 'Tribunal Administratif d\'Alger', ar: 'المحكمة الإدارية بالجزائر' },
+                        jConseilEtat: { fr: 'Conseil d\'État', ar: 'مجلس الدولة' },
+                        secCivil: { fr: 'Section Civile', ar: 'القسم المدني' },
+                        secFoncier: { fr: 'Section Foncière', ar: 'القسم العقاري' },
+                        secFamille: { fr: 'Statut Personnel', ar: 'قسم شؤون الأسرة' },
+                        secSocial: { fr: 'Section Sociale', ar: 'القسم الاجتماعي' },
+                        secCommercial: { fr: 'Section Commerciale', ar: 'القسم التجاري' },
+                        secPenal: { fr: 'Chambre Pénale', ar: 'الغرفة الجزائية' },
+                        secReferes: { fr: 'Référés', ar: 'قسم الاستعجالي' },
+                        stPreContentieux: { fr: 'Pré-contentieux', ar: 'مرحلة ما قبل النزاع' },
+                        stEnrolement: { fr: 'Enrôlement', ar: 'مرحلة التسجيل والتقييد' },
+                        stInstruction: { fr: 'Instruction / Renvois', ar: 'التحقيق / التأجيلات' },
+                        stDelibere: { fr: 'Délibéré', ar: 'مرحلة المداولة' },
+                        stExecution: { fr: 'Exécution (Grosse)', ar: 'التنفيذ (الصيغة التنفيذية)' },
+                        stRecours: { fr: 'En cours de Recours', ar: 'في مرحلة الطعن' },
+                        roleDemandeur: { fr: 'Demandeur', ar: 'مدعي' },
+                        roleDefendeur: { fr: 'Défendeur', ar: 'مدعى عليه' },
+                        rolePartieCivile: { fr: 'Partie Civile', ar: 'طرف مدني' },
+                        roleInculpe: { fr: 'Inculpé / Prévenu', ar: 'متهم' }
+                    };
+                    return dict[key] ? dict[key][this.lang] || dict[key].fr : key;
+                },
+
+                getTranslatedJuridiction(val) {
+                    if (this.lang !== 'ar') return val;
+                    const map = {
+                        "Tribunal de Sidi M'Hamed": "محكمة سيدي امحمد",
+                        "Tribunal de Bab El Oued": "محكمة باب الوادي",
+                        "Cour d'Alger": "مجلس قضاء الجزائر",
+                        "Cour Suprême": "المحكمة العليا",
+                        "Tribunal Administratif d'Alger": "المحكمة الإدارية بالجزائر",
+                        "Conseil d'État": "مجلس الدولة"
+                    };
+                    return map[val] || val;
+                },
+
+                getTranslatedSection(val) {
+                    if (this.lang !== 'ar') return val;
+                    const map = {
+                        "Section Civile": "القسم المدني",
+                        "Section Foncière": "القسم العقاري",
+                        "Statut Personnel": "قسم شؤون الأسرة",
+                        "Section Sociale": "القسم الاجتماعي",
+                        "Section Commerciale": "القسم التجاري",
+                        "Chambre Pénale": "الغرفة الجزائية",
+                        "Référés": "قسم الاستعجالي"
+                    };
+                    return map[val] || val;
+                },
+
+                getTranslatedStatus(val) {
+                    if (this.lang !== 'ar') return val;
+                    const map = {
+                        "Pré-contentieux": "مرحلة ما قبل النزاع",
+                        "Enrôlement": "مرحلة التسجيل والتقييد",
+                        "Instruction / Renvois": "التحقيق / التأجيلات",
+                        "Délibéré": "مرحلة المداولة",
+                        "Exécution (Grosse)": "التنفيذ (الصيغة التنفيذية)",
+                        "En cours de Recours": "في مرحلة الطعن"
+                    };
+                    return map[val] || val;
+                },
+
+                getTranslatedRole(val) {
+                    if (this.lang !== 'ar') return val;
+                    const map = {
+                        "Demandeur": "مدعي",
+                        "Défendeur": "مدعى عليه",
+                        "Partie Civile": "طرف مدني",
+                        "Inculpé / Prévenu": "متهم"
+                    };
+                    return map[val] || val;
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
